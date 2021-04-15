@@ -1,65 +1,99 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/client'
+
+import { welcomeMessage } from '@/lib/utils'
+
+import { Container, Typography, Paper, Grid } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const menuItems = [
+  { title: "Gestor d'absències", path: '/absences', icon: 'absencies' }
+]
 
 export default function Home() {
+  const classes = useStyles()
+  const router = useRouter()
+
+  const [session] = useSession()
+
+  useEffect(() => {
+    console.log('nova sessio')
+    console.log(session)
+  }, [session])
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Create Next App</title>
+        <title>Dashboard | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+      <Container className={classes.container}>
+        {session && (
+          <Typography variant="h5" className={classes.title}>
+            {`${welcomeMessage()} ${session.user.name}`},
+          </Typography>
+        )}
+        <Typography variant="h5" className={classes.subtitle}>
+          Ets a l&apos;espai virtual de l&apos;ET
+        </Typography>
+        <Grid className={classes.mainGrid} container spacing={5}>
+          {menuItems.map(({ title, path, icon }) => (
+            <Grid item key={path} className={classes.itemGrid}>
+              <Paper
+                className={classes.itemIcon}
+                elevation={0}
+                onClick={() => router.push(path)}>
+                <Image src={`/icons/${icon}.svg`} width={70} height={70} />
+              </Paper>
+              <Typography variant="h6" className={classes.itemTitle}>
+                {title}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </>
   )
 }
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: theme.spacing(4)
+  },
+  title: {
+    fontWeight: 500
+  },
+  subtitle: {
+    marginTop: theme.spacing(1),
+    fontSize: '1.25rem'
+  },
+  mainGrid: {
+    marginTop: theme.spacing(1)
+  },
+  itemGrid: {
+    minWidth: '180px'
+  },
+  itemIcon: {
+    cursor: 'pointer',
+    padding: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    height: '160px',
+    minWidth: '160px',
+    borderRadius: '36px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main
+    }
+  },
+  itemTitle: {
+    textAlign: 'center',
+    marginTop: theme.spacing(2),
+    fontWeight: 500,
+    fontSize: '1rem',
+    height: '60px'
+  }
+}))
