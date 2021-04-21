@@ -1,4 +1,33 @@
+Som Energia Intranet with Next.js
+## Getting Started
 
+First, run the development server:
 
-#!/bin/bash DATE=`date +%Y%m%d` DEST=$DATE"-all-dbs.sql.gz" CAS_USER=cas OV_USER=oficinavirtual LOCAL_DB_PORT=5433 LOCAL_DB_NAME=ov_db PROD_DB_NAME=oficinavirtual_db echo "Downloading the today sqldump file from OV, the result will be: "$DEST scp somdevel@192.168.1.51:/mnt/backups/$DEST . echo "Dump file downloaded!" echo "CREATE USER $CAS_USER" | psql -h localhost -p $LOCAL_DB_PORT -U $OV_USER -d postgres -W echo "CREATE DATABASE $LOCAL_DB_NAME OWNER $OV_USER" | psql -h localhost -p $LOCAL_DB_PORT -U $OV_USER -d oficinavirtual -W # Exclude SET users db password and dump tables from db in LOCAL_DB_NAME, not in PROD_DB_NAME zcat $DEST | grep -I -v PASSWORD | sed "s/$PROD_DB_NAME/$LOCAL_DB_NAME/g" | psql -h localhost -p $LOCAL_DB_PORT -U $OV_USER -d $LOCAL_DB_NAME -W # password = somhi1234 echo "UPDATE auth_user SET password='pbkdf2_sha256\$36000\$lYejmo8cldY2\$ME07zJPAnRGrmfqLVfj9/bd6m/YF1UEFpxxVIhjneu0='" | psql -h localhost -p $LOCAL_DB_PORT -U $OV_USER -d $LOCAL_DB_NAME -W echo "UPDATE auth_user SET email='benjami.ramos@somenergia.coop'" | psql -h localhost -p $LOCAL_DB_PORT -U $OV_USER -d $LOCAL_DB_NAME -W
+```bash
+npm run dev
+# or
+yarn dev
+```
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
