@@ -27,7 +27,6 @@ const TableResource = (props) => {
 
 const Table = styled.div`
   padding: 24px;
-  border: 1px solid rgb(233, 223, 196);
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -54,7 +53,6 @@ const Table = styled.div`
     display: inline-block;
     position: relative;
     overflow: hidden;
-    border: 1px solid #eee;
     color: #eee;
     background-color: #eee;
 

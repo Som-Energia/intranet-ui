@@ -52,9 +52,9 @@ const Breadcrumbs = () => {
       </Link>
       {breadcrumbs.map((breadcrumb, i) => {
         return (
-          <Link key={breadcrumb.href} href={breadcrumb.href}>
+          <Link key={breadcrumb.href} href={breadcrumb.href} passHref>
             <MuiLink color="inherit">
-              {convertBreadcrumb(breadcrumb.breadcrumb)}
+              <a>{convertBreadcrumb(breadcrumb.breadcrumb)}</a>
             </MuiLink>
           </Link>
         )

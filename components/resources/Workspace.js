@@ -55,14 +55,6 @@ const Workspace = ({ resources, events, token, buildingId }) => {
     getAsyncEvents()
   }, [date])
 
-  // const token = null
-  /*
-  const { data, isValidating: loading, error } = useSWR(
-    [`${process.env.NEXT_PUBLIC_API_URL}/absencies/absences`, token],
-    fetchWithToken
-  )
-  */
-
   return (
     <>
       <Grid container spacing={1}>
@@ -75,11 +67,16 @@ const Workspace = ({ resources, events, token, buildingId }) => {
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper} elevation={0}>
-            <JunglaCristal
-              resources={resourcesMap}
-              events={eventsMap}
-              isLoading={isLoading}
-            />
+            {buildingId === 'MONTURIOL' && (
+              <JunglaCristal
+                resources={resourcesMap}
+                events={eventsMap}
+                isLoading={isLoading}
+              />
+            )}
+            {buildingId !== 'MONTURIOL' && (
+              <h3 className={classes.emptyContent}>Espai pendent de mapejar</h3>
+            )}
           </Paper>
         </Grid>
       </Grid>
@@ -92,7 +89,7 @@ export default Workspace
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(1),
-    padding: theme.spacing(3)
+    padding: theme.spacing(1)
   },
   noMarginTop: {
     marginTop: 0

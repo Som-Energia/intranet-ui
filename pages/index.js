@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/client'
+import { useSession, getSession, signIn } from 'next-auth/client'
 
 import { welcomeMessage } from '@/lib/utils'
 
@@ -10,7 +10,6 @@ import { Container, Typography, Paper, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const menuItems = [
-  { title: "Gestor d'absències", path: '/absences', icon: 'absencies' },
   { title: "Reserva d'espais", path: '/resources', icon: 'absencies' }
 ]
 
@@ -18,17 +17,16 @@ export default function Home() {
   const classes = useStyles()
   const router = useRouter()
 
-  const [session] = useSession()
+  const [session, loading] = useSession()
 
   useEffect(() => {
-    console.log('nova sessio')
-    console.log(session)
-  }, [session])
+    if (!loading && !session) signIn()
+  })
 
   return (
     <>
       <Head>
-        <title>Dashboard | Som Energia</title>
+        <title>Intranet | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container className={classes.container}>
@@ -98,3 +96,12 @@ const useStyles = makeStyles((theme) => ({
     height: '60px'
   }
 }))
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+  if (!session) {
+    context.res.statusCode = 302
+    context.res.setHeader('Location', '/auth/signin')
+  }
+  return { props: {} }
+}

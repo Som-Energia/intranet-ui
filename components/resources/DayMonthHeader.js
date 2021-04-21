@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginTop: '16px',
+    marginTop: '0',
     '& h5': {
       fontSize: '1.5rem',
       fontWeight: 400,

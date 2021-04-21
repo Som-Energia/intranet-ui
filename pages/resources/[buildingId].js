@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { getToken } from 'next-auth/jwt'
 
 import Head from 'next/head'
-import { signIn, useSession } from 'next-auth/client'
+import { signIn, useSession, getSession } from 'next-auth/client'
 
 import { Container, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Breadcrumbs from 'components/layout/Breadcrumbs'
 import Workspace from 'components/resources/Workspace'
 
-import { getResources, getEvents } from 'lib/resources'
+import { resources, getResources, getEvents } from 'lib/resources'
 
 export default function ResourcePage({
   resourcesMap,
@@ -36,7 +36,7 @@ export default function ResourcePage({
       <Container className={classes.container}>
         <div className={classes.header}>
           <Typography variant="h3" className={classes.title}>
-            Reserva d&apos;espais
+            {resources.find((resource) => resource.id === buildingId)?.name}
           </Typography>
           <Breadcrumbs />
         </div>
@@ -55,8 +55,14 @@ export default function ResourcePage({
 }
 
 export async function getServerSideProps(context) {
-  const { buildingId } = context.query
+  const session = await getSession(context)
+  if (!session) {
+    context.res.statusCode = 302
+    context.res.setHeader('Location', '/auth/signin')
+    return { props: {} }
+  }
 
+  const { buildingId } = context.query
   const secret = process.env.SECRET
   const req = context.req
   const token = await getToken({ req, secret })

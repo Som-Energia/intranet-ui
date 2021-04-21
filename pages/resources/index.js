@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import { signIn, useSession } from 'next-auth/client'
+import { signIn, useSession, getSession } from 'next-auth/client'
 
 import { Container, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -50,3 +50,12 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 400
   }
 }))
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+  if (!session) {
+    context.res.statusCode = 302
+    context.res.setHeader('Location', '/auth/signin')
+  }
+  return { props: {} }
+}
