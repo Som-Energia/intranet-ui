@@ -10,7 +10,8 @@ import { Container, Typography, Paper, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const menuItems = [
-  { title: "Gestor d'absències", path: '/absences', icon: 'absencies' }
+  { title: "Gestor d'absències", path: '/absences', icon: 'absencies' },
+  { title: "Reserva d'espais", path: '/resources', icon: 'absencies' }
 ]
 
 export default function Home() {
