@@ -4,7 +4,7 @@ function GoogleIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      ariaHidden="true"
+      aria-hidden="true"
       className="svg-inline--fa fa-google fa-w-16"
       width={16}
       data-icon="google"
