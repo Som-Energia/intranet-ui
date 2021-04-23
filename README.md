@@ -1,4 +1,4 @@
-Som Energia Intranet with Next.js
+# Som Energia Intranet with Next.js
 ## Getting Started
 
 First, run the development server:

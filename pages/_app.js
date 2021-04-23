@@ -34,7 +34,12 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider session={pageProps.session}>
+        <Provider
+          session={pageProps.session}
+          options={{
+            clientMaxAge: 300,
+            keepAlive: 5 * 60
+          }}>
           <div className={classes.root}>
             <Header />
             <main className={classes.main}>

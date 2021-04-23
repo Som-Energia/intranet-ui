@@ -18,7 +18,10 @@ import { fetchWithToken } from '@/lib/utils'
 import { getEvents } from '@/lib/resources'
 
 import DayMonthHeader from 'components/resources/DayMonthHeader'
+
 import JunglaCristal from 'components/resources/workspaces/JunglaCristal'
+import Balneari from 'components/resources/workspaces/Balneari'
+import Casademont from 'components/resources/workspaces/Casademont'
 
 const Workspace = ({ resources, events, token, buildingId }) => {
   const classes = useStyles()
@@ -74,7 +77,26 @@ const Workspace = ({ resources, events, token, buildingId }) => {
                 isLoading={isLoading}
               />
             )}
-            {buildingId !== 'MONTURIOL' && (
+
+            {buildingId === 'GIROEMPREN' && (
+              <Balneari
+                resources={resourcesMap}
+                events={eventsMap}
+                isLoading={isLoading}
+              />
+            )}
+
+            {buildingId === 'CASADEMONT' && (
+              <Casademont
+                resources={resourcesMap}
+                events={eventsMap}
+                isLoading={isLoading}
+              />
+            )}
+
+            {!['MONTURIOL', 'GIROEMPREN', 'CASADEMONT'].includes(
+              buildingId
+            ) && (
               <h3 className={classes.emptyContent}>Espai pendent de mapejar</h3>
             )}
           </Paper>

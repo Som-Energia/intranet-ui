@@ -17,6 +17,12 @@ export default function ResourcesPage() {
     if (!loading && !session) signIn()
   })
 
+  useEffect(() => {
+    if (session?.error === 'RefreshAccessTokenError') {
+      signIn() // Force sign in to hopefully resolve error
+    }
+  }, [session])
+
   return (
     <>
       <Head>

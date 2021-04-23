@@ -6,36 +6,29 @@ import TableResource from '@/components/resources/TableResource'
 const JunglaCristal = ({ resources, events, isLoading }) => {
   return (
     <Workspace>
-      <Window>
-        <WindowV />
-      </Window>
-
+      <DoorLeft />
       <TableZone>
-        <Window>
-          <WindowH />
-        </Window>
-
         <TableBlock>
           <TableResource
-            name="JUNGLA_IT_1"
+            name=""
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_IT_2"
+            name="UPPERCASADEMONT23_T1"
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_IT_3"
+            name="UPPERCASADEMONT23_T3"
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_IT_4"
+            name=""
             resources={resources}
             events={events}
             isLoading={isLoading}
@@ -44,25 +37,25 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
 
         <TableBlock>
           <TableResource
-            name="JUNGLA_IT_5"
+            name=""
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_IT_6"
+            name="UPPERCASADEMONT23_T5"
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_T1"
+            name="UPPERCASADEMONT23_T7"
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_T2"
+            name=""
             resources={resources}
             events={events}
             isLoading={isLoading}
@@ -71,66 +64,121 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
 
         <TableBlock>
           <TableResource
-            name="JUNGLA_T3"
+            name=""
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_T4"
+            name="UPPERCASADEMONT23_T9"
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_T5"
+            name="UPPERCASADEMONT23_T11"
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
           <TableResource
-            name="JUNGLA_T6"
+            name=""
             resources={resources}
             events={events}
             isLoading={isLoading}
           />
         </TableBlock>
-
-        <TableBlock>
-          <TableResource
-            name="JUNGLA_T7"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-          />
-          <TableResource
-            name="JUNGLA_T8"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-          />
-          <TableResource
-            name="JUNGLA_T9"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-          />
-          <TableResource
-            name="JUNGLA_T10"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-          />
-        </TableBlock>
-
         <Window>
           <WindowH />
         </Window>
       </TableZone>
-      <MeetingRooms>
-        <MeetingRoom>JUNGLA_MAGATZEM</MeetingRoom>
-        <MeetingRoom>JUNGLA_SALA_TV</MeetingRoom>
-      </MeetingRooms>
+
+      <TableZone>
+        <TableBlock>
+          <TableResource
+            name=""
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name="UPPERCASADEMONT23_T2"
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name="UPPERCASADEMONT23_T4"
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name=""
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+        </TableBlock>
+
+        <TableBlock>
+          <TableResource
+            name=""
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name="UPPERCASADEMONT23_T6"
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name="UPPERCASADEMONT23_T8"
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name=""
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+        </TableBlock>
+
+        <TableBlock>
+          <TableResource
+            name=""
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name="UPPERCASADEMONT23_T10"
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name="UPPERCASADEMONT23_T12"
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+          <TableResource
+            name=""
+            resources={resources}
+            events={events}
+            isLoading={isLoading}
+          />
+        </TableBlock>
+        <Window>
+          <WindowH />
+        </Window>
+      </TableZone>
+      <Door />
     </Workspace>
   )
 }
@@ -138,57 +186,40 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
 export default JunglaCristal
 
 const Workspace = styled.div`
-  display: flex;
-`
-
-const TableZone = styled.div`
-  width: 60%;
-  padding-right: 96px;
-`
-
-const MeetingRooms = styled.div`
-  width: 40%;
-  padding-top: 16px;
-  padding-right: 16px;
-  padding-left: 48px;
+  width: 100%;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: auto 1fr 1fr auto;
+  column-gap: 32px;
 `
 
-const MeetingRoom = styled.div`
-  border-radius: 5px;
-  background-color: #eee;
-  padding: 24px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-`
+const TableZone = styled.div``
 
 const TableBlock = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
   gap: 4px;
   margin-bottom: 64px;
 `
 const Window = styled.div`
-  padding: 16px;
-`
-
-const WindowV = styled.div`
-  width: 6px;
-  height: 100%;
-  background: #c0c0ef;
+  padding-bottom: 16px;
 `
 
 const WindowH = styled.div`
   width: 100%;
   height: 6px;
   background: #c0c0ef;
+`
+const Door = styled.div`
+  margin: 16px;
+  margin-left: 0;
+  background: rgb(233, 223, 196);
+  width: 6px;
+  height: 90px;
+`
+
+const DoorLeft = styled(Door)`
+  margin-left: 16px;
+  margin-right: 0;
+  align-self: end;
 `

@@ -25,7 +25,11 @@ export default function ResourcePage({
     if (!loading && !session) signIn()
   })
 
-  console.log(eventsMap)
+  useEffect(() => {
+    if (session?.error === 'RefreshAccessTokenError') {
+      signIn() // Force sign in to hopefully resolve error
+    }
+  }, [session])
 
   return (
     <>
@@ -74,11 +78,9 @@ export async function getServerSideProps(context) {
   const items = resources?.items || []
   for (const item of items) {
     resourcesMap[item.resourceName] = { ...item }
-    /* eventsMap[item.resourceName] = await getEvents(
-      token.accessToken,
-      item?.resourceEmail
-    ) */
   }
+
+  console.log(resources)
 
   return {
     props: { resourcesMap, eventsMap, token: token.accessToken, buildingId } // will be passed to the page component as props
