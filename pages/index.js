@@ -32,7 +32,7 @@ export default function Home() {
       <Container className={classes.container}>
         {session && (
           <Typography variant="h5" className={classes.title}>
-            {`${welcomeMessage()} ${session.user.name}`},
+            {`${welcomeMessage()} ${session.user?.name}`},
           </Typography>
         )}
         <Typography variant="h5" className={classes.subtitle}>

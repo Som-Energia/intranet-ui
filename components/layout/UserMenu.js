@@ -37,12 +37,12 @@ export default function UserMenu() {
       )}
       {session && (
         <div className={classes.userProfile}>
-          <span>{session.user.name}</span>
+          <span>{session?.user?.name}</span>
           <IconButton
             onClick={handleClick}
             aria-controls="userMenu"
             aria-haspopup="true">
-            <Avatar alt={session.user.name} src={session.user.image} />
+            <Avatar alt={session?.user?.name} src={session?.user?.image} />
           </IconButton>
           <Menu
             id="userMenu"
