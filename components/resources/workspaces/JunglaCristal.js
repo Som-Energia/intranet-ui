@@ -184,11 +184,11 @@ const Window = styled.div`
 const WindowV = styled.div`
   width: 6px;
   height: 100%;
-  background: #c0c0ef;
+  background: #adcfec;
 `
 
 const WindowH = styled.div`
   width: 100%;
   height: 6px;
-  background: #c0c0ef;
+  background: #adcfec;
 `

@@ -263,5 +263,5 @@ const Window = styled.div`
 const WindowV = styled.div`
   width: 6px;
   height: 100%;
-  background: #c0c0ef;
+  background: #adcfec;
 `

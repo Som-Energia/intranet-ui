@@ -208,7 +208,7 @@ const Window = styled.div`
 const WindowH = styled.div`
   width: 100%;
   height: 6px;
-  background: #c0c0ef;
+  background: #adcfec;
 `
 const Door = styled.div`
   margin: 16px;
