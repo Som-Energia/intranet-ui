@@ -1,15 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import TableResource from '@/components/resources/TableResource'
+import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
 
-const Balneari = ({ resources, events, isLoading }) => {
+const Balneari = (props) => {
+  const { resources, events, isLoading, token } = props
+  const [selectedResource, setSelectedResource] = useState(false)
+
+  const openDialog = (resource) => {
+    setSelectedResource(resource)
+  }
+
+  const closeDialog = () => {
+    setSelectedResource(false)
+  }
+
   return (
-    <Workspace>
+    <WorkspaceWrapper
+      selectedResource={selectedResource}
+      closeDialogFb={closeDialog}
+      token={token}>
       <MeetingRooms>
-        <Door />
         <MeetingRoom>BALNEARI_SALA</MeetingRoom>
-        <Door />
       </MeetingRooms>
 
       <TableZone>
@@ -20,24 +33,28 @@ const Balneari = ({ resources, events, isLoading }) => {
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T2"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
           </TableBlock>
 
@@ -47,24 +64,28 @@ const Balneari = ({ resources, events, isLoading }) => {
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T4"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
           </TableBlock>
         </TableRow>
@@ -76,24 +97,28 @@ const Balneari = ({ resources, events, isLoading }) => {
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T5"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T7"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
           </TableBlock>
 
@@ -103,24 +128,28 @@ const Balneari = ({ resources, events, isLoading }) => {
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T6"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T8"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
           </TableBlock>
         </MidTableRow>
@@ -132,24 +161,28 @@ const Balneari = ({ resources, events, isLoading }) => {
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T11"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
           </TableBlock>
 
@@ -159,43 +192,37 @@ const Balneari = ({ resources, events, isLoading }) => {
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T10"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name="BALNEARI_T12"
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
             <TableResource
               name=""
               resources={resources}
               events={events}
               isLoading={isLoading}
+              onClick={openDialog}
             />
           </TableBlock>
         </TableRow>
       </TableZone>
-
-      <Window>
-        <WindowV />
-      </Window>
-    </Workspace>
+    </WorkspaceWrapper>
   )
 }
 
 export default Balneari
-
-const Workspace = styled.div`
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-`
 
 const TableZone = styled.div`
   display: flex;
@@ -219,25 +246,23 @@ const TableBlock = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 4px;
+  gap: 8px;
   margin-bottom: 64px;
 `
 
 const MeetingRooms = styled.div`
-  width: 20%;
+  width: 25%;
   padding-top: 16px;
   padding-right: 16px;
-  padding-left: 16px;
-  display: grid;
-  grid-template-rows: auto 200px auto;
-  gap: 8px;
+  display: flex;
+  align-items: center;
 `
 
 const MeetingRoom = styled.div`
   width: 100%;
   border-radius: 5px;
-  background-color: #eee;
-  padding: 24px;
+  background-color: #edeff1;
+  color: #4d5761;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -246,22 +271,5 @@ const MeetingRoom = styled.div`
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  height: 200px;
-`
-const Door = styled.div`
-  margin: 16px;
-  margin-left: 0;
-  background: rgb(233, 223, 196);
-  width: 6px;
-  height: 64px;
-`
-
-const Window = styled.div`
-  padding: 0 8px 0 16px;
-`
-
-const WindowV = styled.div`
-  width: 6px;
-  height: 100%;
-  background: #adcfec;
+  height: 350px;
 `

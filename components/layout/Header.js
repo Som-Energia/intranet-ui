@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 
 import UserMenu from '@/components/layout/UserMenu'
+require('typeface-montserrat')
 
 const Header = () => {
   const classes = useStyles()
@@ -26,7 +27,7 @@ const Header = () => {
         <Link href="/">
           <div className={classes.logo}>
             <img src="/cuca.png" alt="cuca" />
-            <Typography variant="h1">Som Energia</Typography>
+            <Typography variant="h1">Intranet</Typography>
           </div>
         </Link>
         <UserMenu />
@@ -52,8 +53,10 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: '8px'
     },
     '& h1': {
-      fontSize: '1.25rem',
-      fontWeight: 500,
+      fontFamily: 'Montserrat',
+      fontSize: '1.1rem',
+      fontWeight: 600,
+      textTransform: 'uppercase',
       color: theme.palette.text.primary
     }
   },

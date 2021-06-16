@@ -8,6 +8,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import WorkspaceList from 'components/resources/WorkspaceList'
 
+require('typeface-montserrat')
+
 export default function ResourcesPage() {
   const classes = useStyles()
 
@@ -52,8 +54,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   title: {
+    fontFamily: 'Montserrat',
     fontSize: '1.5rem',
-    fontWeight: 400
+    fontWeight: 500
   }
 }))
 

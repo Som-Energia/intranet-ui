@@ -7,10 +7,13 @@ import { signIn, useSession, getSession } from 'next-auth/client'
 import { Container, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
+import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined'
+
 import Breadcrumbs from 'components/layout/Breadcrumbs'
 import Workspace from 'components/resources/Workspace'
 
 import { resources, getResources, getEvents } from 'lib/resources'
+require('typeface-montserrat')
 
 export default function ResourcePage({
   resourcesMap,
@@ -40,6 +43,8 @@ export default function ResourcePage({
       <Container className={classes.container}>
         <div className={classes.header}>
           <Typography variant="h3" className={classes.title}>
+            <PlaceOutlinedIcon />
+            &nbsp;
             {resources.find((resource) => resource.id === buildingId)?.name}
           </Typography>
           <Breadcrumbs />
@@ -80,8 +85,6 @@ export async function getServerSideProps(context) {
     resourcesMap[item.resourceName] = { ...item }
   }
 
-  console.log(resources)
-
   return {
     props: { resourcesMap, eventsMap, token: token.accessToken, buildingId } // will be passed to the page component as props
   }
@@ -97,7 +100,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   title: {
+    fontFamily: 'Montserrat',
     fontSize: '1.5rem',
-    fontWeight: 400
+    fontWeight: 500,
+    display: 'flex',
+    alignItems: 'center'
   }
 }))

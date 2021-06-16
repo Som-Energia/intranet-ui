@@ -1,44 +1,55 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
+import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
 import TableResource from '@/components/resources/TableResource'
 
-const JunglaCristal = ({ resources, events, isLoading }) => {
+const JunglaCristal = (props) => {
+  const { resources, events, isLoading, token } = props
+  const [selectedResource, setSelectedResource] = useState(false)
+
+  const openDialog = (resource) => {
+    setSelectedResource(resource)
+  }
+
+  const closeDialog = () => {
+    setSelectedResource(false)
+  }
+
   return (
-    <Workspace>
-      <Window>
-        <WindowV />
-      </Window>
-
+    <WorkspaceWrapper
+      selectedResource={selectedResource}
+      closeDialogFb={closeDialog}
+      token={token}>
       <TableZone>
-        <Window>
-          <WindowH />
-        </Window>
-
         <TableBlock>
           <TableResource
             name="JUNGLA_IT_1"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_IT_2"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_IT_3"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_IT_4"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
         </TableBlock>
 
@@ -48,24 +59,28 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_IT_6"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T1"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T2"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
         </TableBlock>
 
@@ -75,24 +90,28 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T4"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T5"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T6"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
         </TableBlock>
 
@@ -102,44 +121,40 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T8"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T9"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="JUNGLA_T10"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
         </TableBlock>
-
-        <Window>
-          <WindowH />
-        </Window>
       </TableZone>
       <MeetingRooms>
         <MeetingRoom>JUNGLA_MAGATZEM</MeetingRoom>
         <MeetingRoom>JUNGLA_SALA_TV</MeetingRoom>
       </MeetingRooms>
-    </Workspace>
+    </WorkspaceWrapper>
   )
 }
 
 export default JunglaCristal
-
-const Workspace = styled.div`
-  display: flex;
-`
 
 const TableZone = styled.div`
   width: 60%;
@@ -148,19 +163,17 @@ const TableZone = styled.div`
 
 const MeetingRooms = styled.div`
   width: 40%;
-  padding-top: 16px;
-  padding-right: 16px;
-  padding-left: 48px;
+  padding-left: 60px;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 8px;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
 `
 
 const MeetingRoom = styled.div`
   border-radius: 5px;
-  background-color: #eee;
+  background-color: #edeff1;
+  color: #72808f;
   padding: 24px;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -174,21 +187,6 @@ const TableBlock = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 4px;
+  gap: 10px;
   margin-bottom: 64px;
-`
-const Window = styled.div`
-  padding: 16px;
-`
-
-const WindowV = styled.div`
-  width: 6px;
-  height: 100%;
-  background: #adcfec;
-`
-
-const WindowH = styled.div`
-  width: 100%;
-  height: 6px;
-  background: #adcfec;
 `

@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import styled from 'styled-components'
 
 const TableResource = (props) => {
-  const { name, resources, events, isLoading } = props
+  const { name, resources, events, isLoading, onClick = () => {} } = props
 
   const [connected, setConnected] = useState(false)
   const summary = events?.[name]?.items?.[0]?.summary || false
@@ -14,19 +14,23 @@ const TableResource = (props) => {
 
   return (
     <Table
+      id={name}
+      onClick={() => !summary && onClick(resources?.[name])}
       className={clsx(
         !connected && 'no-connected',
         !summary && 'free',
         isLoading && 'loading'
       )}>
-      {name}
-      {summary && <Summary>{summary}</Summary>}
+      <NameWrapper>
+        {name}
+        {summary && <Summary>{summary}</Summary>}
+      </NameWrapper>
     </Table>
   )
 }
 
 const Table = styled.div`
-  padding: 24px;
+  padding: 16px 8px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -34,27 +38,42 @@ const Table = styled.div`
   align-items: center;
   font-size: 1rem;
   font-weight: 500;
-  cursor: pointer;
-  background: rgb(233, 223, 196);
+  background: #edeff1;
+  color: #4d5761;
+  border: 3px solid transparent;
 
   &:hover {
-    color: #fff;
+    border: 3px solid transparent;
   }
 
   &.free {
-    background: #c3d598;
+    cursor: pointer;
+    color: #546714;
+    background: #b9db42;
+    &:hover {
+      border: 3px solid #546714;
+    }
   }
 
   &.no-connected {
-    background: #f3a2a2 !important;
+    cursor: default;
+    background: #f9eaea !important;
+    &:hover {
+      border: 3px solid transparent;
+    }
   }
 
   &.loading {
     display: inline-block;
     position: relative;
     overflow: hidden;
-    color: #eee;
-    background-color: #eee;
+    color: #edeff1;
+    background-color: #edeff1 !important;
+    border: 3px solid transparent;
+
+    &:hover {
+      border: 3px solid transparent;
+    }
 
     &::after {
       position: absolute;
@@ -65,9 +84,9 @@ const Table = styled.div`
       transform: translateX(-100%);
       background-image: linear-gradient(
         90deg,
-        #eee 0px,
-        #fdfdfd 40px,
-        #eee 80px
+        #edeff1 0px,
+        #d3d3d4 60px,
+        #edeff1 120px
       );
       animation: shimmer 2s infinite;
       content: '';
@@ -82,8 +101,15 @@ const Table = styled.div`
 `
 
 const Summary = styled.div`
+  font-size: 1rem;
   padding-top: 6px;
   font-weight: 400;
+`
+
+const NameWrapper = styled.div`
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 30px;
 `
 
 export default TableResource

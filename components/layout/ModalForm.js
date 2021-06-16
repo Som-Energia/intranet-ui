@@ -28,14 +28,15 @@ const ModalForm = (props) => {
         <DialogContent dividers={true}>{children}</DialogContent>
         {showControls && (
           <DialogActions>
-            <Button data-cy="decline" onClick={onClose}>
+            <Button data-cy="decline" variant="contained" onClick={onClose}>
               {'Cancel·la'}
             </Button>
             <Button
               data-cy="accept"
               onClick={onAccept}
               variant="contained"
-              color="primary">
+              color="primary"
+              disableElevation>
               {'Accepta'}
             </Button>
           </DialogActions>

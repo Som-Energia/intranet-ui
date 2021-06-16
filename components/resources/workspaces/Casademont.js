@@ -1,12 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
+import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
 import TableResource from '@/components/resources/TableResource'
 
-const JunglaCristal = ({ resources, events, isLoading }) => {
+const JunglaCristal = (props) => {
+  const { resources, events, isLoading, token } = props
+  const [selectedResource, setSelectedResource] = useState(false)
+
+  const openDialog = (resource) => {
+    setSelectedResource(resource)
+  }
+
+  const closeDialog = () => {
+    setSelectedResource(false)
+  }
+
   return (
-    <Workspace>
-      <DoorLeft />
+    <WorkspaceWrapper
+      selectedResource={selectedResource}
+      closeDialogFb={closeDialog}
+      token={token}>
       <TableZone>
         <TableBlock>
           <TableResource
@@ -14,24 +28,28 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="UPPERCASADEMONT23_T1"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="UPPERCASADEMONT23_T3"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name=""
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
         </TableBlock>
 
@@ -47,12 +65,14 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="UPPERCASADEMONT23_T7"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name=""
@@ -74,12 +94,14 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="UPPERCASADEMONT23_T11"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name=""
@@ -88,9 +110,6 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             isLoading={isLoading}
           />
         </TableBlock>
-        <Window>
-          <WindowH />
-        </Window>
       </TableZone>
 
       <TableZone>
@@ -106,12 +125,14 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="UPPERCASADEMONT23_T4"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name=""
@@ -133,12 +154,14 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name="UPPERCASADEMONT23_T8"
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name=""
@@ -166,6 +189,7 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             resources={resources}
             events={events}
             isLoading={isLoading}
+            onClick={openDialog}
           />
           <TableResource
             name=""
@@ -174,23 +198,12 @@ const JunglaCristal = ({ resources, events, isLoading }) => {
             isLoading={isLoading}
           />
         </TableBlock>
-        <Window>
-          <WindowH />
-        </Window>
       </TableZone>
-      <Door />
-    </Workspace>
+    </WorkspaceWrapper>
   )
 }
 
 export default JunglaCristal
-
-const Workspace = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: auto 1fr 1fr auto;
-  column-gap: 32px;
-`
 
 const TableZone = styled.div``
 
@@ -198,28 +211,6 @@ const TableBlock = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
-  gap: 4px;
+  gap: 10px;
   margin-bottom: 64px;
-`
-const Window = styled.div`
-  padding-bottom: 16px;
-`
-
-const WindowH = styled.div`
-  width: 100%;
-  height: 6px;
-  background: #adcfec;
-`
-const Door = styled.div`
-  margin: 16px;
-  margin-left: 0;
-  background: rgb(233, 223, 196);
-  width: 6px;
-  height: 90px;
-`
-
-const DoorLeft = styled(Door)`
-  margin-left: 16px;
-  margin-right: 0;
-  align-self: end;
 `

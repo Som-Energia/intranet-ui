@@ -9,12 +9,9 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-import Skeleton from '@material-ui/lab/Skeleton'
-import Fade from '@material-ui/core/Fade'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import { fetchWithToken } from '@/lib/utils'
 import { getEvents } from '@/lib/resources'
 
 import DayMonthHeader from 'components/resources/DayMonthHeader'
@@ -75,6 +72,7 @@ const Workspace = ({ resources, events, token, buildingId }) => {
                 resources={resourcesMap}
                 events={eventsMap}
                 isLoading={isLoading}
+                token={token}
               />
             )}
 
@@ -83,6 +81,7 @@ const Workspace = ({ resources, events, token, buildingId }) => {
                 resources={resourcesMap}
                 events={eventsMap}
                 isLoading={isLoading}
+                token={token}
               />
             )}
 
@@ -91,6 +90,7 @@ const Workspace = ({ resources, events, token, buildingId }) => {
                 resources={resourcesMap}
                 events={eventsMap}
                 isLoading={isLoading}
+                token={token}
               />
             )}
 
@@ -111,7 +111,7 @@ export default Workspace
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(1),
-    padding: theme.spacing(1)
+    padding: theme.spacing(4)
   },
   noMarginTop: {
     marginTop: 0

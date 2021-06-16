@@ -8,6 +8,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import Absences from '@/components/absences/Absences'
 
+require('typeface-montserrat')
+
 export default function AbsencesPage() {
   const classes = useStyles()
 
@@ -46,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   title: {
+    fontFamily: 'Montserrat',
     fontSize: '1.5rem',
     fontWeight: 400
   }

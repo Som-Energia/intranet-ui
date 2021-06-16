@@ -6,7 +6,10 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { Provider } from 'next-auth/client'
 
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+
 import theme from '@/styles/theme'
+import DateFnsUtils from '@date-io/date-fns'
 
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
@@ -33,21 +36,23 @@ export default function MyApp(props) {
         />
       </Head>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Provider
-          session={pageProps.session}
-          options={{
-            clientMaxAge: 300,
-            keepAlive: 5 * 60
-          }}>
-          <div className={classes.root}>
-            <Header />
-            <main className={classes.main}>
-              <Component {...pageProps} />
-            </main>
-            <Footer />
-          </div>
-        </Provider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <CssBaseline />
+          <Provider
+            session={pageProps.session}
+            options={{
+              clientMaxAge: 300,
+              keepAlive: 5 * 60
+            }}>
+            <div className={classes.root}>
+              <Header />
+              <main className={classes.main}>
+                <Component {...pageProps} />
+              </main>
+              <Footer />
+            </div>
+          </Provider>
+        </MuiPickersUtilsProvider>
       </ThemeProvider>
     </>
   )
