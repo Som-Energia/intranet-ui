@@ -21,6 +21,7 @@ export default function WebformsAnalytics() {
   dayjs.locale('ca')
 
   const [session, loading] = useSession()
+  const [clientSide, setClientSide] = useState(false)
   const [data, setData] = useState([])
 
   useEffect(() => {
@@ -28,12 +29,16 @@ export default function WebformsAnalytics() {
   })
 
   useEffect(() => {
+    setClientSide(true)
+  }, [])
+
+  useEffect(() => {
     async function getRemoteDataAsync() {
       const remoteData = await getRemoteData()
       setData(remoteData)
     }
     getRemoteDataAsync()
-  }, [session])
+  }, [clientSide])
 
   useEffect(() => {
     if (session?.error === 'RefreshAccessTokenError') {
