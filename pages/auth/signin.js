@@ -53,107 +53,6 @@ export default function SignIn({ providers }) {
             <Typography component="h1" variant="h5">
               Inicia sessió per continuar
             </Typography>
-            <Formik
-              initialValues={{ email: '', password: '' }}
-              validationSchema={Yup.object().shape({
-                email: Yup.string()
-                  .email('No és un correu vàlid')
-                  .required('El correu és obligatori'),
-                password: Yup.string()
-                  .required('La password és obligatoria')
-                  .min(4, 'Ha de tenir un mínim de 4 caràcters')
-                // .matches(/(?=.*[0-9])/, 'La contraseña debe tener al menos un número')
-              })}
-              onSubmit={(values, { setSubmitting }) => {
-                const { email, password } = values
-                setSubmitting(true)
-                doLogin(email, password)
-                  .then(() => {
-                    setSubmitting(false)
-                  })
-                  .catch((error) => {
-                    console.log(error)
-                    setSubmitting(false)
-                  })
-              }}>
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting
-              }) => (
-                <form
-                  className={classes.form}
-                  onSubmit={handleSubmit}
-                  noValidate>
-                  <TextField
-                    required
-                    fullWidth
-                    autoFocus
-                    id="email"
-                    label="Email"
-                    name="email"
-                    variant="outlined"
-                    margin="normal"
-                    autoComplete="email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.email}
-                    error={errors.email && touched.email}
-                    helperText={touched.email && errors.email}
-                  />
-                  <TextField
-                    required
-                    fullWidth
-                    id="password"
-                    type="password"
-                    label="Password"
-                    name="password"
-                    variant="outlined"
-                    margin="normal"
-                    autoComplete="current-password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                    error={errors.password && touched.password}
-                    helperText={touched.password && errors.password}
-                  />
-                  {/*
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Recorda'm"
-                  />
-                  */}
-                  {isError && (
-                    <FormHelperText variant="standard" error={true}>
-                      Hi ha hagut algun problema!
-                    </FormHelperText>
-                  )}
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    disableElevation
-                    color="primary"
-                    className={classes.submit}
-                    disabled={isSubmitting}>
-                    Entrar
-                  </Button>
-                  {/*                   <Grid container>
-                    <Grid item xs={12} sm={6}>
-                      <Link className={classes.links} href="#" variant="body2">
-                        Has oblidat la password?
-                      </Link>
-                    </Grid>
-                  </Grid>
-                  */}
-                  <Box mt={2}></Box>
-                </form>
-              )}
-            </Formik>
             <div className={classes.providersWrapper}>
               <Divider />
               {Object.values(providers).map((provider) => (
@@ -220,6 +119,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1)
   },
   providersWrapper: {
+    marginTop: '16px',
     width: '100%',
     '& hr': {
       marginBottom: theme.spacing(3)
