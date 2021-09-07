@@ -33,7 +33,7 @@ export default function WebformsAnalytics() {
       setData(remoteData)
     }
     getRemoteDataAsync()
-  }, [])
+  }, [session])
 
   useEffect(() => {
     if (session?.error === 'RefreshAccessTokenError') {
@@ -54,70 +54,74 @@ export default function WebformsAnalytics() {
           </Typography>
           <Breadcrumbs />
         </div>
-        <Grid container spacing={3} style={{ marginTop: '8px' }}>
-          <Grid item xs={12} sm={6}>
-            <Paper elevation={0} className={classes.paper}>
-              <h3 className={classes.paperTitle}>
-                Contractacions darrers 7 dies
-              </h3>
-              <AnalyticsBarChart
-                data={getLastDays(data, 7)}
-                mainValue="contracts_success"
-                secondaryValue="contracts_fail"
-              />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper elevation={0} className={classes.paper}>
-              <h3 className={classes.paperTitle}>
-                Altes de socia darrers 7 dies
-              </h3>
-              <AnalyticsBarChart
-                data={getLastDays(data, 7)}
-                mainValue="members_success"
-                secondaryValue="members_fail"
-              />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper elevation={0} className={classes.paper}>
-              <h3 className={classes.paperTitle}>
-                Canvis de titular darrers 7 dies
-              </h3>
-              <AnalyticsBarChart
-                data={getLastDays(data, 7)}
-                mainValue="holderchanges_success"
-                secondaryValue="holderchanges_fail"
-              />
-            </Paper>
-          </Grid>
+        <div suppressHydrationWarning={true}>
+          {process.browser && (
+            <Grid container spacing={3} style={{ marginTop: '8px' }}>
+              <Grid item xs={12} sm={6}>
+                <Paper elevation={0} className={classes.paper}>
+                  <h3 className={classes.paperTitle}>
+                    Contractacions darrers 7 dies
+                  </h3>
+                  <AnalyticsBarChart
+                    data={getLastDays(data, 7)}
+                    mainValue="contracts_success"
+                    secondaryValue="contracts_fail"
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Paper elevation={0} className={classes.paper}>
+                  <h3 className={classes.paperTitle}>
+                    Altes de socia darrers 7 dies
+                  </h3>
+                  <AnalyticsBarChart
+                    data={getLastDays(data, 7)}
+                    mainValue="members_success"
+                    secondaryValue="members_fail"
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Paper elevation={0} className={classes.paper}>
+                  <h3 className={classes.paperTitle}>
+                    Canvis de titular darrers 7 dies
+                  </h3>
+                  <AnalyticsBarChart
+                    data={getLastDays(data, 7)}
+                    mainValue="holderchanges_success"
+                    secondaryValue="holderchanges_fail"
+                  />
+                </Paper>
+              </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <Paper elevation={0} className={classes.paper}>
-              <h3 className={classes.paperTitle}>
-                Modificacions contractuals darrers 7 dies
-              </h3>
-              <AnalyticsBarChart
-                data={getLastDays(data, 7)}
-                mainValue="modification_success"
-                secondaryValue="modification_fail"
-              />
-            </Paper>
-          </Grid>
+              <Grid item xs={12} sm={6}>
+                <Paper elevation={0} className={classes.paper}>
+                  <h3 className={classes.paperTitle}>
+                    Modificacions contractuals darrers 7 dies
+                  </h3>
+                  <AnalyticsBarChart
+                    data={getLastDays(data, 7)}
+                    mainValue="modification_success"
+                    secondaryValue="modification_fail"
+                  />
+                </Paper>
+              </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <Paper elevation={0} className={classes.paper}>
-              <h3 className={classes.paperTitle}>
-                Acceptació/Rebuig D1 darrers 7 dies
-              </h3>
-              <AnalyticsBarChart
-                data={getLastDays(data, 7)}
-                mainValue="d1_success"
-                secondaryValue="d1_fail"
-              />
-            </Paper>
-          </Grid>
-        </Grid>
+              <Grid item xs={12} sm={6}>
+                <Paper elevation={0} className={classes.paper}>
+                  <h3 className={classes.paperTitle}>
+                    Acceptació/Rebuig D1 darrers 7 dies
+                  </h3>
+                  <AnalyticsBarChart
+                    data={getLastDays(data, 7)}
+                    mainValue="d1_success"
+                    secondaryValue="d1_fail"
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+          )}
+        </div>
       </Container>
     </>
   )
