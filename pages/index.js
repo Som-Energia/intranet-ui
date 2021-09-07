@@ -10,7 +10,8 @@ import { Container, Typography, Paper, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const menuItems = [
-  { title: "Reserva d'espais", path: '/resources', icon: 'absencies' }
+  { title: "Reserva d'espais", path: '/resources', icon: 'absencies' },
+  { title: 'Webforms analytics', path: '/analytics', icon: 'analytics' }
 ]
 
 export default function Home() {
