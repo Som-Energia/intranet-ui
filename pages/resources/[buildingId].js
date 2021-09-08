@@ -12,7 +12,7 @@ import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined'
 import Breadcrumbs from 'components/layout/Breadcrumbs'
 import Workspace from 'components/resources/Workspace'
 
-import { resources, getResources, getEvents } from 'lib/resources'
+import { resources, getResources } from 'lib/resources'
 require('typeface-montserrat')
 
 export default function ResourcePage({

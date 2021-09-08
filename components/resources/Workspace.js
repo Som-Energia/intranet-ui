@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react'
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 
-import clsx from 'clsx'
-import useSWR from 'swr'
-
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 
@@ -49,6 +44,7 @@ const Workspace = ({ resources, events, token, buildingId }) => {
           date.add(1, 'day').toISOString()
         )
       }
+      console.log(events)
       setEventsMap(events)
       setIsLoading(false)
     }

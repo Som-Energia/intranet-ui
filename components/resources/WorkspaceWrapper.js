@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useSession } from 'next-auth/client'
 
+import * as dayjs from 'dayjs'
+import 'dayjs/locale/ca'
+
 import { makeStyles } from '@material-ui/core/styles'
-import { resources } from '@/lib/resources'
+import { resources, insertEvent } from '@/lib/resources'
 import { slugify } from '@/lib/utils'
 
 import Button from '@material-ui/core/Button'
@@ -43,6 +46,13 @@ const WorkspaceWrapper = (props) => {
     console.log(selectedResource)
     console.log(event)
     console.log(token)
+    insertEvent(
+      token,
+      selectedResource?.resourceEmail,
+      dayjs(event?.startDate).toISOString(),
+      dayjs(event?.endDate).toISOString(),
+      event?.description
+    ).then(response => console.log(response))
     closeDialogFb()
   }
 
