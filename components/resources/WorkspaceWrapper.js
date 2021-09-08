@@ -49,10 +49,15 @@ const WorkspaceWrapper = (props) => {
     insertEvent(
       token,
       selectedResource?.resourceEmail,
-      dayjs(event?.startDate).toISOString(),
-      dayjs(event?.endDate).toISOString(),
+      dayjs(event?.startDate).hour(0).minute(0).second(0).toISOString(),
+      dayjs(event?.endDate)
+        .add(1, 'day')
+        .hour(0)
+        .minute(0)
+        .second(0)
+        .toISOString(),
       event?.description
-    ).then(response => console.log(response))
+    ).then((response) => console.log(response))
     closeDialogFb()
   }
 
