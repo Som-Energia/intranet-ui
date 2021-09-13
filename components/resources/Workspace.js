@@ -37,16 +37,27 @@ const Workspace = ({ resources, events, token, buildingId }) => {
       setIsLoading(true)
       const events = {}
       for (const item of Object.values(resourcesMap)) {
-        events[item.resourceName] = await getEvents(
+        events[item.resourceName] = getEvents(
           token,
           item?.resourceEmail,
           date.toISOString(),
           date.add(1, 'day').toISOString()
         )
       }
-      console.log(events)
-      setEventsMap(events)
-      setIsLoading(false)
+
+      Promise.all(Object.values(events))
+        .then((values) => {
+          let index = 0
+          for (const item of Object.values(resourcesMap)) {
+            events[item.resourceName] = values[index]
+            index++
+          }
+          setEventsMap(events)
+          setIsLoading(false)
+        })
+        .catch((reason) => {
+          console.log(reason)
+        })
     }
     getAsyncEvents()
   }, [date])
