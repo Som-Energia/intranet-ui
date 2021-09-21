@@ -22,7 +22,10 @@ const TableResource = (props) => {
         isLoading && 'loading'
       )}>
       <NameWrapper>
-        {name}
+        <ComputerWrapper>
+          <ComputerIcon />
+          {name}
+        </ComputerWrapper>
         {summary && <Summary>{summary}</Summary>}
       </NameWrapper>
     </Table>
@@ -38,8 +41,8 @@ const Table = styled.div`
   align-items: center;
   font-size: 1rem;
   font-weight: 500;
-  background: #edeff1;
-  color: #4d5761;
+  background: #b9db4254;
+  color: #546714;
   border: 3px solid transparent;
 
   &:hover {
@@ -51,7 +54,7 @@ const Table = styled.div`
     color: #546714;
     background: #b9db42;
     &:hover {
-      border: 3px solid #546714;
+      border: 2px solid #546714;
     }
   }
 
@@ -107,9 +110,46 @@ const Summary = styled.div`
 `
 
 const NameWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
   padding: 8px 16px;
   border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 400;
 `
+
+const ComputerWrapper = styled.div`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const ComputerIcon = () => (
+  <div
+    style={{
+      marginRight: '4px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+    <svg
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      style={{ width: '18px', height: '18px' }}
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
+        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+    </svg>
+  </div>
+)
 
 export default TableResource

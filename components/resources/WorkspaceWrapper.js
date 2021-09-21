@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { resources, insertEvent } from '@/lib/resources'
 import { slugify } from '@/lib/utils'
 
+import { useSnackbar } from 'notistack'
+
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -35,6 +37,7 @@ const WorkspaceWrapper = (props) => {
   const classes = useStyles()
   const [session, loading] = useSession()
   const [building, setBuilding] = useState()
+  const { enqueueSnackbar } = useSnackbar()
 
   const [event, setEvent] = useState({
     startDate: new Date(),
@@ -43,16 +46,34 @@ const WorkspaceWrapper = (props) => {
   })
 
   const handleSubmit = () => {
-    console.log(selectedResource)
-    console.log(event)
-    console.log(token)
     insertEvent(
       token,
       selectedResource?.resourceEmail,
       dayjs(event?.startDate).hour(0).minute(0).second(0).toISOString(),
       dayjs(event?.endDate).hour(23).minute(59).second(59).toISOString(),
       event?.description
-    ).then((response) => console.log(response))
+    )
+      .then((response) => {
+        console.log('response')
+        console.log(response)
+        enqueueSnackbar('Reserva finalitzada correctament!', {
+          variant: 'success'
+        })
+        return response
+      })
+      .catch((error) => {
+        console.log('error!')
+        console.log(error.response)
+        if (error?.response?.data?.error?.message) {
+          enqueueSnackbar(error.response.data.error.message, {
+            variant: 'error'
+          })
+        } else {
+          enqueueSnackbar('Sembla que hi ha problemes...', {
+            variant: 'error'
+          })
+        }
+      })
     closeDialogFb()
   }
 
@@ -149,6 +170,7 @@ const WorkspaceWrapper = (props) => {
         <DialogActions>
           <Button
             onClick={closeDialogFb}
+            style={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
             color="secondary"
             variant="contained"
             disableElevation>
@@ -156,6 +178,7 @@ const WorkspaceWrapper = (props) => {
           </Button>
           <Button
             onClick={handleSubmit}
+            style={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
             color="primary"
             variant="contained"
             disableElevation>

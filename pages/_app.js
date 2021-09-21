@@ -4,6 +4,7 @@ import Head from 'next/head'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 import { Provider } from 'next-auth/client'
+import { SnackbarProvider } from 'notistack'
 
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -44,13 +45,15 @@ export default function MyApp(props) {
               clientMaxAge: 300,
               keepAlive: 5 * 60
             }}>
-            <div className={classes.root}>
-              <Header />
-              <main className={classes.main}>
-                <Component {...pageProps} />
-              </main>
-              <Footer />
-            </div>
+            <SnackbarProvider maxSnack={3}>
+              <div className={classes.root}>
+                <Header />
+                <main className={classes.main}>
+                  <Component {...pageProps} />
+                </main>
+                <Footer />
+              </div>
+            </SnackbarProvider>
           </Provider>
         </MuiPickersUtilsProvider>
       </ThemeProvider>

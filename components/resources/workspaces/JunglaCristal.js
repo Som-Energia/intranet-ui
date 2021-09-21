@@ -165,13 +165,13 @@ const MeetingRooms = styled.div`
   width: 40%;
   padding-left: 60px;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 10px;
 `
 
 const MeetingRoom = styled.div`
   border-radius: 5px;
-  background-color: #edeff1;
+  background-color: #edeff199;
   color: #72808f;
   padding: 24px;
   display: flex;
@@ -179,7 +179,7 @@ const MeetingRoom = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
 `
 
