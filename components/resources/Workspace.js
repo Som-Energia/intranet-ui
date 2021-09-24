@@ -13,7 +13,7 @@ import DayMonthHeader from 'components/resources/DayMonthHeader'
 
 import JunglaCristal from 'components/resources/workspaces/JunglaCristal'
 import Balneari from 'components/resources/workspaces/Balneari'
-import Casademont from 'components/resources/workspaces/Casademont'
+import Txernobil from 'components/resources/workspaces/Txernobil'
 
 const Workspace = ({ resources, events, token, buildingId }) => {
   const classes = useStyles()
@@ -92,8 +92,8 @@ const Workspace = ({ resources, events, token, buildingId }) => {
               />
             )}
 
-            {buildingId === 'CASADEMONT' && (
-              <Casademont
+            {buildingId === 'TXERNOBIL' && (
+              <Txernobil
                 resources={resourcesMap}
                 events={eventsMap}
                 isLoading={isLoading}
@@ -101,9 +101,7 @@ const Workspace = ({ resources, events, token, buildingId }) => {
               />
             )}
 
-            {!['MONTURIOL', 'GIROEMPREN', 'CASADEMONT'].includes(
-              buildingId
-            ) && (
+            {!['MONTURIOL', 'GIROEMPREN', 'TXERNOBIL'].includes(buildingId) && (
               <h3 className={classes.emptyContent}>Espai pendent de mapejar</h3>
             )}
           </Paper>
