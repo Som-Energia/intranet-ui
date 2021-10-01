@@ -5,7 +5,7 @@ import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
 import TableResource from '@/components/resources/TableResource'
 
 const Txernobil = (props) => {
-  const { resources, events, isLoading, token } = props
+  const { resources, events, isLoading, token, date, reloadResources } = props
   const [selectedResource, setSelectedResource] = useState(false)
 
   const openDialog = (resource) => {
@@ -20,6 +20,8 @@ const Txernobil = (props) => {
     <WorkspaceWrapper
       selectedResource={selectedResource}
       closeDialogFb={closeDialog}
+      reloadResources={reloadResources}
+      date={date}
       token={token}>
       <Wrapper>
         <Space>
@@ -388,161 +390,6 @@ const Txernobil = (props) => {
             </TableBlockRight>
             <TableBlockRight>
               <TableResource
-                name="TXERNO_T43"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T44"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T45"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T46"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-            </TableBlockRight>
-            <TableBlockRight>
-              <TableResource
-                name="TXERNO_T43"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T44"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T45"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T46"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-            </TableBlockRight>
-            <TableBlockRight>
-              <TableResource
-                name="TXERNO_T43"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T44"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T45"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T46"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-            </TableBlockRight>
-            <TableBlockRight>
-              <TableResource
-                name="TXERNO_T43"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T44"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T45"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T46"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-            </TableBlockRight>
-            <TableBlockRight>
-              <TableResource
-                name="TXERNO_T43"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T44"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T45"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-              <TableResource
-                name="TXERNO_T46"
-                resources={resources}
-                events={events}
-                isLoading={isLoading}
-                onClick={openDialog}
-              />
-            </TableBlockRight>
-          </TableZone>
-        </Space>
-        <ExtraSpace>
-          <div></div>
-          <TableZoneExtra>
-            <TableBlockRight>
-              <TableResource
                 name="TXERNO_T47"
                 resources={resources}
                 events={events}
@@ -571,7 +418,6 @@ const Txernobil = (props) => {
                 onClick={openDialog}
               />
             </TableBlockRight>
-
             <TableBlockRight>
               <TableResource
                 name="TXERNO_T51"
@@ -596,6 +442,162 @@ const Txernobil = (props) => {
               />
               <TableResource
                 name="TXERNO_T54"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+            </TableBlockRight>
+            <TableBlockRight>
+              <TableResource
+                name="TXERNO_T55"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T56"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T57"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T58"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+            </TableBlockRight>
+            <TableBlockRight>
+              <TableResource
+                name="TXERNO_T59"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T60"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T61"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T62"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+            </TableBlockRight>
+            <TableBlockRight>
+              <TableResource
+                name="TXERNO_T63"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T64"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T65"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T66"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+            </TableBlockRight>
+          </TableZone>
+        </Space>
+        <ExtraSpace>
+          <div></div>
+          <TableZoneExtra>
+            <TableBlockRight>
+              <TableResource
+                name="TXERNO_T67"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T68"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T69"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T70"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+            </TableBlockRight>
+
+            <TableBlockRight>
+              <TableResource
+                name="TXERNO_T71"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T72"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T73"
+                resources={resources}
+                events={events}
+                isLoading={isLoading}
+                onClick={openDialog}
+              />
+              <TableResource
+                name="TXERNO_T74"
                 resources={resources}
                 events={events}
                 isLoading={isLoading}

@@ -5,7 +5,7 @@ import TableResource from '@/components/resources/TableResource'
 import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
 
 const Balneari = (props) => {
-  const { resources, events, isLoading, token } = props
+  const { resources, events, isLoading, token, reloadResources, date } = props
   const [selectedResource, setSelectedResource] = useState(false)
 
   const openDialog = (resource) => {
@@ -19,7 +19,9 @@ const Balneari = (props) => {
   return (
     <WorkspaceWrapper
       selectedResource={selectedResource}
+      reloadResources={reloadResources}
       closeDialogFb={closeDialog}
+      date={date}
       token={token}>
       <MeetingRooms>
         <MeetingRoom>BALNEARI_SALA</MeetingRoom>
@@ -231,9 +233,9 @@ const TableZone = styled.div`
 `
 
 const TableRow = styled.div`
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr 1fr;
-  column-gap: 256px;
+  column-gap: 100px;
 `
 
 const MidTableRow = styled(TableRow)`
@@ -251,7 +253,7 @@ const TableBlock = styled.div`
 `
 
 const MeetingRooms = styled.div`
-  width: 25%;
+  width: 20%;
   padding-top: 16px;
   padding-right: 16px;
   display: flex;

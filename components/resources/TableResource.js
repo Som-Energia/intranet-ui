@@ -107,6 +107,9 @@ const Summary = styled.div`
   font-size: 1rem;
   padding-top: 6px;
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const NameWrapper = styled.div`

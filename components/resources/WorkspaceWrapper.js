@@ -31,7 +31,9 @@ const WorkspaceWrapper = (props) => {
   const {
     children,
     selectedResource = false,
-    closeDialogFb = {},
+    closeDialogFb = () => {},
+    reloadResources,
+    date,
     token
   } = props
   const classes = useStyles()
@@ -40,10 +42,14 @@ const WorkspaceWrapper = (props) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const [event, setEvent] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: date,
+    endDate: date,
     description: session?.user?.name
   })
+
+  useEffect(() => {
+    setEvent({ ...event, startDate: date, endDate: date })
+  }, [date])
 
   const handleSubmit = () => {
     insertEvent(
@@ -54,8 +60,8 @@ const WorkspaceWrapper = (props) => {
       event?.description
     )
       .then((response) => {
-        console.log('response')
         console.log(response)
+        reloadResources()
         enqueueSnackbar('Reserva finalitzada correctament!', {
           variant: 'success'
         })
@@ -169,7 +175,9 @@ const WorkspaceWrapper = (props) => {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={closeDialogFb}
+            onClick={() => {
+              closeDialogFb()
+            }}
             style={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
             color="secondary"
             variant="contained"

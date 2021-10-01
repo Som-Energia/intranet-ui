@@ -5,7 +5,7 @@ import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
 import TableResource from '@/components/resources/TableResource'
 
 const JunglaCristal = (props) => {
-  const { resources, events, isLoading, token } = props
+  const { resources, events, isLoading, token, reloadResources, date } = props
   const [selectedResource, setSelectedResource] = useState(false)
 
   const openDialog = (resource) => {
@@ -19,7 +19,9 @@ const JunglaCristal = (props) => {
   return (
     <WorkspaceWrapper
       selectedResource={selectedResource}
+      reloadResources={reloadResources}
       closeDialogFb={closeDialog}
+      date={date}
       token={token}>
       <TableZone>
         <TableBlock>

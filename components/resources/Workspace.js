@@ -32,33 +32,39 @@ const Workspace = ({ resources, events, token, buildingId }) => {
     setDate(date.subtract(1, 'day'))
   }
 
-  useEffect(() => {
-    const getAsyncEvents = async () => {
-      setIsLoading(true)
-      const events = {}
-      for (const item of Object.values(resourcesMap)) {
-        events[item.resourceName] = getEvents(
-          token,
-          item?.resourceEmail,
-          date.toISOString(),
-          date.add(1, 'day').toISOString()
-        )
-      }
+  const reloadResources = async () => {
+    await getAsyncEvents()
+  }
 
-      Promise.all(Object.values(events))
-        .then((values) => {
-          let index = 0
-          for (const item of Object.values(resourcesMap)) {
-            events[item.resourceName] = values[index]
-            index++
-          }
-          setEventsMap(events)
-          setIsLoading(false)
-        })
-        .catch((reason) => {
-          console.log(reason)
-        })
+  const getAsyncEvents = async () => {
+    console.log('async get events')
+    setIsLoading(true)
+    const events = {}
+    for (const item of Object.values(resourcesMap)) {
+      events[item.resourceName] = getEvents(
+        token,
+        item?.resourceEmail,
+        date.toISOString(),
+        date.add(1, 'day').toISOString()
+      )
     }
+
+    Promise.all(Object.values(events))
+      .then((values) => {
+        let index = 0
+        for (const item of Object.values(resourcesMap)) {
+          events[item.resourceName] = values[index]
+          index++
+        }
+        setEventsMap(events)
+        setIsLoading(false)
+      })
+      .catch((reason) => {
+        console.log(reason)
+      })
+  }
+
+  useEffect(() => {
     getAsyncEvents()
   }, [date])
 
@@ -80,6 +86,8 @@ const Workspace = ({ resources, events, token, buildingId }) => {
                 events={eventsMap}
                 isLoading={isLoading}
                 token={token}
+                reloadResources={reloadResources}
+                date={date}
               />
             )}
 
@@ -89,6 +97,8 @@ const Workspace = ({ resources, events, token, buildingId }) => {
                 events={eventsMap}
                 isLoading={isLoading}
                 token={token}
+                reloadResources={reloadResources}
+                date={date}
               />
             )}
 
@@ -98,6 +108,8 @@ const Workspace = ({ resources, events, token, buildingId }) => {
                 events={eventsMap}
                 isLoading={isLoading}
                 token={token}
+                reloadResources={reloadResources}
+                date={date}
               />
             )}
 
