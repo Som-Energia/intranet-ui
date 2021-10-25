@@ -115,12 +115,12 @@ export default function WebformsAnalytics() {
               <Grid item xs={12} sm={6}>
                 <Paper elevation={0} className={classes.paper}>
                   <h3 className={classes.paperTitle}>
-                    Acceptació/Rebuig D1 darrers 7 dies
+                    Aportacions darrers 7 dies
                   </h3>
                   <AnalyticsBarChart
                     data={getLastDays(data, 7)}
-                    mainValue="d1_success"
-                    secondaryValue="d1_fail"
+                    mainValue="apos_success"
+                    secondaryValue="apos_fail"
                   />
                 </Paper>
               </Grid>
