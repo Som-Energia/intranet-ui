@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Breadcrumbs from '@/components/layout/Breadcrumbs'
+import Breadcrumbs from '@components/layout/Breadcrumbs'
 import { signIn, useSession, getSession } from 'next-auth/client'
 
-import { Container, Typography, Paper, Grid } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Container, Typography, Paper, Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
-import { getRemoteData, getLastDays } from '@/lib/analytics'
-import { isIT } from '@/lib/utils'
+import { getRemoteData, getLastDays } from '@lib/analytics'
+import { isIT } from '@lib/utils'
 
-import AnalyticsBarChart from '@/components/analytics/BarChart'
+import AnalyticsBarChart from '@components/analytics/BarChart'
 
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'

@@ -1,31 +1,31 @@
-import { DialogTitle } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { useSession } from 'next-auth/client'
 
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { resources, insertEvent } from '@/lib/resources'
-import { slugify } from '@/lib/utils'
+import { useTheme } from '@mui/styles'
+import { resources, insertEvent } from '@lib/resources'
+import { slugify } from '@lib/utils'
 
 import { useSnackbar } from 'notistack'
 
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import IconButton from '@material-ui/core/IconButton'
+import Box from '@mui/material/Box'
+import DialogTitle from '@mui/material/DialogTitle'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
 
-import { DatePicker } from '@material-ui/pickers'
+import DatePicker from '@mui/lab/DatePicker'
 
-import ApartmentOutlinedIcon from '@material-ui/icons/ApartmentOutlined'
-import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined'
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday'
-import EventAvailableOutlinedIcon from '@material-ui/icons/EventAvailableOutlined'
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined'
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined'
 
 const WorkspaceWrapper = (props) => {
   const {
@@ -36,7 +36,8 @@ const WorkspaceWrapper = (props) => {
     date,
     token
   } = props
-  const classes = useStyles()
+
+  const theme = useTheme()
   const [session, loading] = useSession()
   const [building, setBuilding] = useState()
   const { enqueueSnackbar } = useSnackbar()
@@ -46,6 +47,8 @@ const WorkspaceWrapper = (props) => {
     endDate: date,
     description: session?.user?.name
   })
+
+  console.log(event)
 
   useEffect(() => {
     setEvent({ ...event, startDate: date, endDate: date })
@@ -93,31 +96,37 @@ const WorkspaceWrapper = (props) => {
   }, [selectedResource])
 
   return (
-    <Workspace>
+    <Box sx={{ display: 'flex' }}>
       {children}
       <Dialog open={!!selectedResource} onClose={closeDialogFb} maxWidth="md">
         <DialogTitle>
-          <Title>
+          <Box variant="span" sx={{ display: 'flex', alignItems: 'center' }}>
             <EventAvailableOutlinedIcon /> &nbsp;{'Reserva '}
             {selectedResource?.resourceName}
-          </Title>
+          </Box>
         </DialogTitle>
         <DialogContent dividers={true}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Item>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '1rem',
+                  marginBottom: '8px'
+                }}>
                 <ApartmentOutlinedIcon
-                  className={classes.placeIcon}
+                  sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
                   fontSize="small"
                 />
                 &nbsp;{building?.place}
                 &nbsp;&nbsp;
                 <PlaceOutlinedIcon
-                  className={classes.placeIcon}
+                  sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
                   fontSize="small"
                 />
                 &nbsp;{building?.name}
-              </Item>
+              </Box>
             </Grid>
 
             <Grid item xs={12}>
@@ -130,45 +139,29 @@ const WorkspaceWrapper = (props) => {
             </Grid>
             <Grid item xs={6}>
               <DatePicker
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <IconButton size="small" edge="start">
-                      <CalendarTodayIcon fontSize="small" />
-                    </IconButton>
-                  )
-                }}
-                autoOk
-                disableToolbar
                 label="Data d'inici"
-                value={event.startDate}
-                format="dd/MM/yyyy"
+                value={event?.startDate}
+                inputFormat="dd/MM/yyyy"
                 variant="inline"
-                inputVariant="outlined"
-                disablePast
+                minDate={new Date()}
                 onChange={(date) => setEvent({ ...event, startDate: date })}
+                renderInput={(params) => (
+                  <TextField variant="outlined" fullWidth {...params} />
+                )}
               />
             </Grid>
 
             <Grid item xs={6}>
               <DatePicker
-                fullWidth
-                autoOk
-                InputProps={{
-                  startAdornment: (
-                    <IconButton size="small" edge="start">
-                      <CalendarTodayIcon fontSize="small" />
-                    </IconButton>
-                  )
-                }}
-                inputVariant="outlined"
-                disableToolbar
                 label="Data de fi"
-                value={event.endDate}
-                format="dd/MM/yyyy"
+                value={event?.endDate}
+                inputFormat="dd/MM/yyyy"
                 variant="inline"
                 onChange={(date) => setEvent({ ...event, endDate: date })}
-                minDate={event.startDate}
+                minDate={dayjs(event.startDate).toDate()}
+                renderInput={(params) => (
+                  <TextField variant="outlined" fullWidth {...params} />
+                )}
               />
             </Grid>
           </Grid>
@@ -178,7 +171,7 @@ const WorkspaceWrapper = (props) => {
             onClick={() => {
               closeDialogFb()
             }}
-            style={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
+            sx={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
             color="secondary"
             variant="contained"
             disableElevation>
@@ -186,7 +179,7 @@ const WorkspaceWrapper = (props) => {
           </Button>
           <Button
             onClick={handleSubmit}
-            style={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
+            sx={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
             color="primary"
             variant="contained"
             disableElevation>
@@ -194,33 +187,8 @@ const WorkspaceWrapper = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Workspace>
+    </Box>
   )
 }
 
 export default WorkspaceWrapper
-
-const Workspace = styled.div`
-  display: flex;
-`
-
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  margin-bottom: 8px;
-`
-
-const Title = styled.span`
-  display: flex;
-  align-items: center;
-`
-
-const useStyles = makeStyles((theme) => ({
-  placeIcon: {
-    color: 'rgba(0, 0, 0, 0.54)'
-  },
-  noBottomSpace: {
-    paddingBottom: '0 !important'
-  }
-}))

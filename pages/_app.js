@@ -1,34 +1,40 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
-import CssBaseline from '@material-ui/core/CssBaseline'
 
+import Box from '@mui/material/Box'
+import CssBaseline from '@mui/material/CssBaseline'
+
+import { CacheProvider } from '@emotion/react'
 import { Provider } from 'next-auth/client'
 import { SnackbarProvider } from 'notistack'
 
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { ThemeProvider } from '@mui/material/styles'
 
-import theme from '@/styles/theme'
-import DateFnsUtils from '@date-io/date-fns'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
+import theme from '@styles/theme'
+import createEmotionCache from '@styles/createEmotionCache'
 
-export default function MyApp(props) {
-  const { Component, pageProps } = props
-  const classes = useStyles()
+import Header from '@components/layout/Header'
+import Footer from '@components/layout/Footer'
 
+const clientSideEmotionCache = createEmotionCache()
+export default function App(props) {
+  const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
+
+  /*
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles)
     }
-  }, [])
+  }, []) */
 
   return (
-    <>
+    <CacheProvider value={emotionCache}>
       <Head>
         <title>Intranet | Som Energia</title>
         <meta
@@ -37,7 +43,7 @@ export default function MyApp(props) {
         />
       </Head>
       <ThemeProvider theme={theme}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline />
           <Provider
             session={pageProps.session}
@@ -46,41 +52,37 @@ export default function MyApp(props) {
               keepAlive: 5 * 60
             }}>
             <SnackbarProvider maxSnack={3}>
-              <div className={classes.root}>
+              <Box
+                component="div"
+                sx={{
+                  flexGrow: 1,
+                  backgroundColor: '#f2f2f2',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'between',
+                  minHeight: '100vh'
+                }}>
                 <Header />
-                <main className={classes.main}>
+                <Box
+                  component="main"
+                  sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
                   <Component {...pageProps} />
-                </main>
+                </Box>
                 <Footer />
-              </div>
+              </Box>
             </SnackbarProvider>
           </Provider>
-        </MuiPickersUtilsProvider>
+        </LocalizationProvider>
       </ThemeProvider>
-    </>
+    </CacheProvider>
   )
 }
 
-MyApp.propTypes = {
+App.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: '#f2f2f2',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'between',
-    minHeight: '100vh'
-  },
-  main: {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  title: {
-    flexGrow: 1
-  }
-}))

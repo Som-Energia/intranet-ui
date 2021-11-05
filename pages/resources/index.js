@@ -1,18 +1,17 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
-import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { signIn, useSession, getSession } from 'next-auth/client'
 
-import { Container, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Container, Typography, Box } from '@mui/material'
+import { useTheme } from '@mui/styles'
 
 import WorkspaceList from 'components/resources/WorkspaceList'
+import Breadcrumbs from '@components/layout/Breadcrumbs'
 
 require('typeface-montserrat')
 
 export default function ResourcesPage() {
-  const classes = useStyles()
-
+  const theme = useTheme()
   const [session, loading] = useSession()
 
   useEffect(() => {
@@ -31,34 +30,29 @@ export default function ResourcesPage() {
         <title>Reserva d&apos;espais | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className={classes.container}>
-        <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
+      <Container sx={{ padding: theme.spacing(4) }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: 'Montserrat',
+              fontSize: '1.5rem',
+              fontWeight: 500
+            }}>
             Reserva d&apos;espais
           </Typography>
           <Breadcrumbs />
-        </div>
+        </Box>
         {session && <WorkspaceList />}
       </Container>
     </>
   )
 }
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(4)
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  title: {
-    fontFamily: 'Montserrat',
-    fontSize: '1.5rem',
-    fontWeight: 500
-  }
-}))
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)

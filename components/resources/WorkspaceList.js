@@ -1,7 +1,7 @@
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 
-import WorkspaceItem from '@/components/resources/WorkspaceItem'
-import { resources } from '@/lib/resources'
+import WorkspaceItem from '@components/resources/WorkspaceItem'
+import { resources } from '@lib/resources'
 
 const WorkspaceList = () => {
   return (

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import TableResource from '@/components/resources/TableResource'
-import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
+import TableResource, { MeetingRoom } from '@components/resources/TableResource'
+import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 
 const Balneari = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props
@@ -24,7 +24,7 @@ const Balneari = (props) => {
       date={date}
       token={token}>
       <MeetingRooms>
-        <MeetingRoom>BALNEARI_SALA</MeetingRoom>
+        <MeetingRoom name="BALNEARI_SALA" sx={{ height: '350px' }} />
       </MeetingRooms>
 
       <TableZone>
@@ -258,20 +258,4 @@ const MeetingRooms = styled.div`
   padding-right: 16px;
   display: flex;
   align-items: center;
-`
-
-const MeetingRoom = styled.div`
-  width: 100%;
-  border-radius: 5px;
-  background-color: #edeff1;
-  color: #4d5761;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  height: 350px;
 `

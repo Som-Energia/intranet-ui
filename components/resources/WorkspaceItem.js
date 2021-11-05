@@ -1,70 +1,63 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { useTheme } from '@mui/styles'
 
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
-import MuiLink from '@material-ui/core/Link'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
+import MuiLink from '@mui/material/Link'
 
-import ApartmentOutlinedIcon from '@material-ui/icons/ApartmentOutlined'
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined'
 
 const WorkspaceItem = (props) => {
   const { id, name, place } = props
-  const classes = useStyles()
+  const theme = useTheme()
 
   return (
     <>
-      <Card className={classes.root} elevation={0}>
-        <div className={classes.details}>
-          <CardContent className={classes.content}>
-            <Typography variant="subtitle1" color="textSecondary">
-              <ApartmentOutlinedIcon
-                className={classes.placeIcon}
-                fontSize="small"
-              />
-              &nbsp;{place}
-            </Typography>
-            <Link href={`/resources/${id}`} passHref>
-              <MuiLink color="inherit">
+      <Card sx={{ display: 'flex' }} elevation={0}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <Link href={`/resources/${id}`} passHref>
+            <MuiLink sx={{ textDecoration: 'none' }} color="inherit">
+              <CardContent
+                sx={{
+                  flex: '1 0 auto',
+                  '&:hover': {
+                    color: '#fff',
+                    backgroundColor: `${theme.palette.primary.main}`
+                  }
+                }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    textDecoration: 'none',
+                    marginBottom: '4px'
+                  }}>
+                  <ApartmentOutlinedIcon
+                    sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+                    fontSize="small"
+                  />
+                  &nbsp;{place}
+                </Typography>
                 <Typography
                   component="h5"
                   variant="h5"
-                  className={classes.title}>
+                  sx={{
+                    minHeight: '64px'
+                  }}>
                   {name}
                 </Typography>
-              </MuiLink>
-            </Link>
-          </CardContent>
-        </div>
+              </CardContent>
+            </MuiLink>
+          </Link>
+        </Box>
       </Card>
     </>
   )
 }
 
 export default WorkspaceItem
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex'
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%'
-  },
-  content: {
-    flex: '1 0 auto'
-  },
-  active: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  title: {
-    minHeight: '64px'
-  },
-  placeIcon: {
-    color: 'rgba(0, 0, 0, 0.54)'
-  }
-}))

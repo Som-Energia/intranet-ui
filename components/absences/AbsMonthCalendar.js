@@ -3,9 +3,9 @@ import * as dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import clsx from 'clsx'
 
-import Tooltip from '@material-ui/core/Tooltip'
+import Tooltip from '@mui/material/Tooltip'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 
 dayjs.extend(isoWeek)
 

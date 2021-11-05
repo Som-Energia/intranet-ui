@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
-import TableResource from '@/components/resources/TableResource'
+import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
+import TableResource from '@components/resources/TableResource'
 
 const JunglaCristal = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props

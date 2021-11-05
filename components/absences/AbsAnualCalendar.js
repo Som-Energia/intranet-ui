@@ -1,7 +1,7 @@
 import React from 'react'
 import * as dayjs from 'dayjs'
 
-import Grid from '@material-ui/core/Grid'
+import Grid from '@mui/material/Grid'
 
 import AbsMonthCalendar from './AbsMonthCalendar'
 

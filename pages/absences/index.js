@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
-import Breadcrumbs from '@/components/layout/Breadcrumbs'
+import Breadcrumbs from '@components/layout/Breadcrumbs'
 import { signIn, useSession } from 'next-auth/client'
 
-import { Container, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Container, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
-import Absences from '@/components/absences/Absences'
+import Absences from '@components/absences/Absences'
 
 require('typeface-montserrat')
 

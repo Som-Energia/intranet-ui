@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
-import TableResource from '@/components/resources/TableResource'
+import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
+import TableResource from '@components/resources/TableResource'
+import { MeetingRoom } from '../TableResource'
 
 const Txernobil = (props) => {
   const { resources, events, isLoading, token, date, reloadResources } = props
@@ -604,6 +605,15 @@ const Txernobil = (props) => {
                 onClick={openDialog}
               />
             </TableBlockRight>
+            <MeetingRoom
+              sx={{
+                gridColumnStart: 1,
+                gridColumnEnd: 3,
+                height: '260px',
+                gridRowEnd: 5
+              }}
+              name="SALA_POLIVALENT"
+            />
           </TableZoneExtra>
           <div></div>
         </ExtraSpace>
@@ -618,6 +628,7 @@ const Llegenda = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  font-weight: 500;
 `
 
 const Wrapper = styled.div`
@@ -646,8 +657,8 @@ const TableZone = styled.div`
 `
 
 const TableZoneCenter = styled(TableZone)`
-  border-left: 1px solid rgba(0, 0, 0, 0.54);
-  border-right: 1px solid rgba(0, 0, 0, 0.54);
+  border-left: 1px solid rgba(0, 0, 0, 0.14);
+  border-right: 1px solid rgba(0, 0, 0, 0.14);
 `
 
 const TableZoneExtra = styled(TableZoneCenter)`
@@ -656,7 +667,7 @@ const TableZoneExtra = styled(TableZoneCenter)`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   padding: 16px 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.54);
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
 `
 
 const TableBlock = styled.div`

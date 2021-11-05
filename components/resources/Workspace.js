@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 
-import { getEvents } from '@/lib/resources'
+import { getEvents } from '@lib/resources'
 
 import DayMonthHeader from 'components/resources/DayMonthHeader'
 

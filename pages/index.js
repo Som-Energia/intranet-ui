@@ -4,10 +4,10 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useSession, getSession, signIn } from 'next-auth/client'
 
-import { welcomeMessage } from '@/lib/utils'
+import { welcomeMessage } from '@lib/utils'
 
-import { Container, Typography, Paper, Grid } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Container, Typography, Paper, Grid } from '@mui/material'
+import { useTheme } from '@mui/styles'
 
 const menuItems = [
   { title: "Reserva d'espais", path: '/resources', icon: 'absencies' },
@@ -15,7 +15,7 @@ const menuItems = [
 ]
 
 export default function Home() {
-  const classes = useStyles()
+  const theme = useTheme()
   const router = useRouter()
 
   const [session, loading] = useSession()
@@ -30,25 +30,50 @@ export default function Home() {
         <title>Intranet | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className={classes.container}>
+      <Container sx={{ padding: theme.spacing(4) }}>
         {session && (
-          <Typography variant="h5" className={classes.title}>
+          <Typography variant="h5" sx={{ fontWeight: 500 }}>
             {`${welcomeMessage()} ${session.user?.name}`},
           </Typography>
         )}
-        <Typography variant="h5" className={classes.subtitle}>
+        <Typography
+          variant="h5"
+          sx={{ marginTop: theme.spacing(1), fontSize: '1.25rem' }}>
           Ets a l&apos;espai virtual de l&apos;ET
         </Typography>
-        <Grid className={classes.mainGrid} container spacing={5}>
+        <Grid container spacing={5} sx={{ marginTop: theme.spacing(1) }}>
           {menuItems.map(({ title, path, icon }) => (
-            <Grid item key={path} className={classes.itemGrid}>
+            <Grid item key={path} sx={{ minWidth: '180px' }}>
               <Paper
-                className={classes.itemIcon}
+                sx={{
+                  cursor: 'pointer',
+                  padding: theme.spacing(2),
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  height: '160px',
+                  minWidth: '160px',
+                  borderRadius: '36px',
+                  '&:hover': {
+                    backgroundColor: theme.palette.primary.main
+                  },
+                  '&:hover img': {
+                    filter: 'invert(1)'
+                  }
+                }}
                 elevation={0}
                 onClick={() => router.push(path)}>
                 <Image src={`/icons/${icon}.svg`} width={70} height={70} />
               </Paper>
-              <Typography variant="h6" className={classes.itemTitle}>
+              <Typography
+                variant="h6"
+                sx={{
+                  textAlign: 'center',
+                  marginTop: theme.spacing(2),
+                  fontWeight: 500,
+                  fontSize: '1rem',
+                  height: '60px'
+                }}>
                 {title}
               </Typography>
             </Grid>
@@ -58,45 +83,6 @@ export default function Home() {
     </>
   )
 }
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(4)
-  },
-  title: {
-    fontWeight: 500
-  },
-  subtitle: {
-    marginTop: theme.spacing(1),
-    fontSize: '1.25rem'
-  },
-  mainGrid: {
-    marginTop: theme.spacing(1)
-  },
-  itemGrid: {
-    minWidth: '180px'
-  },
-  itemIcon: {
-    cursor: 'pointer',
-    padding: theme.spacing(2),
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
-    height: '160px',
-    minWidth: '160px',
-    borderRadius: '36px',
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main
-    }
-  },
-  itemTitle: {
-    textAlign: 'center',
-    marginTop: theme.spacing(2),
-    fontWeight: 500,
-    fontSize: '1rem',
-    height: '60px'
-  }
-}))
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)

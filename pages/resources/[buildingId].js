@@ -4,10 +4,10 @@ import { getToken } from 'next-auth/jwt'
 import Head from 'next/head'
 import { signIn, useSession, getSession } from 'next-auth/client'
 
-import { Container, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Container, Typography } from '@mui/material'
+import { useTheme } from '@mui/styles'
 
-import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined'
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 
 import Breadcrumbs from 'components/layout/Breadcrumbs'
 import Workspace from 'components/resources/Workspace'
@@ -15,14 +15,11 @@ import Workspace from 'components/resources/Workspace'
 import { resources, getResources } from 'lib/resources'
 require('typeface-montserrat')
 
-export default function ResourcePage({
-  resourcesMap,
-  eventsMap,
-  buildingId,
-  token
-}) {
-  const classes = useStyles()
+export default function ResourcePage(props) {
+  const theme = useTheme()
   const [session, loading] = useSession()
+
+  const { resourcesMap, eventsMap, buildingId, token } = props
 
   useEffect(() => {
     if (!loading && !session) signIn()
@@ -40,15 +37,28 @@ export default function ResourcePage({
         <title>Reserva d&apos;espais | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className={classes.container}>
-        <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
+      <Container sx={{ padding: theme.spacing(4) }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: 'Montserrat',
+              fontSize: '1.5rem',
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center'
+            }}>
             <PlaceOutlinedIcon />
             &nbsp;
             {resources.find((resource) => resource.id === buildingId)?.name}
           </Typography>
           <Breadcrumbs />
-        </div>
+        </Box>
         
         {session && (
           <Workspace
@@ -89,21 +99,3 @@ export async function getServerSideProps(context) {
     props: { resourcesMap, eventsMap, token: token.accessToken, buildingId } // will be passed to the page component as props
   }
 }
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(4)
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  title: {
-    fontFamily: 'Montserrat',
-    fontSize: '1.5rem',
-    fontWeight: 500,
-    display: 'flex',
-    alignItems: 'center'
-  }
-}))

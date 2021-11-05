@@ -7,24 +7,24 @@ import { useRouter } from 'next/router'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import Container from '@material-ui/core/Container'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Grid from '@material-ui/core/Grid'
-import Link from '@material-ui/core/Link'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormHelperText from '@mui/material/FormHelperText'
+import Grid from '@mui/material/Grid'
+import Link from '@mui/material/Link'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
 
 import GoogleIcon from 'components/layout/icons/GoogleIcon'
 
-import { makeStyles } from '@material-ui/core'
+import { useTheme } from '@mui/styles'
 
 export default function SignIn({ providers }) {
-  const classes = useStyles()
+  const theme = useTheme()
   const router = useRouter()
 
   const login = () => {}
@@ -43,34 +43,60 @@ export default function SignIn({ providers }) {
   }
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexGrow: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
+      }}>
       <Container component="main" maxWidth="xs">
-        <div className={classes.paperWrapper}>
-          <div className={classes.paper}>
-            <div className={classes.logoContainer}>
+        <div>
+          <Box
+            sx={{
+              backgroundColor: '#fff',
+              padding: theme.spacing(4),
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+            <Box
+              sx={{
+                marginBottom: theme.spacing(1)
+              }}>
               <Image src="/cuca.png" layout="fixed" width={100} height={60} />
-            </div>
+            </Box>
             <Typography component="h1" variant="h5">
               Inicia sessió per continuar
             </Typography>
-            <div className={classes.providersWrapper}>
-              <Divider />
+            <Box
+              sx={{
+                marginTop: '16px',
+                width: '100%'
+              }}>
+              <Divider sx={{ marginBottom: theme.spacing(3) }} />
               {Object.values(providers).map((provider) => (
                 <Button
                   key={provider.name}
                   fullWidth
                   variant="contained"
+                  sx={{ color: '#fff' }}
                   disableElevation
                   startIcon={<GoogleIcon />}
                   onClick={() => signIn(provider.id)}>
                   Entrar amb {provider.name}
                 </Button>
               ))}
-            </div>
-          </div>
+            </Box>
+          </Box>
         </div>
       </Container>
-    </div>
+    </Box>
   )
 }
 
@@ -79,50 +105,3 @@ SignIn.getInitialProps = async (context) => {
     providers: await providers(context)
   }
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexGrow: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative'
-  },
-  paper: {
-    backgroundColor: '#fff',
-    padding: theme.spacing(4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1)
-  },
-  links: {
-    fontWeight: 500
-  },
-  submit: {
-    color: '#fff',
-    fontSize: '1rem',
-    margin: theme.spacing(2, 0, 1)
-  },
-  logoContainer: {
-    marginBottom: theme.spacing(1)
-  },
-  providersWrapper: {
-    marginTop: '16px',
-    width: '100%',
-    '& hr': {
-      marginBottom: theme.spacing(3)
-    }
-  }
-}))

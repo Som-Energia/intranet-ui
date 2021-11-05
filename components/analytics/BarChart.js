@@ -19,7 +19,7 @@ const AnalyticsBarChart = (props) => {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={300} margin={{ left: 0 }}>
       <BarChart width={500} height={300} data={data}>
         <CartesianGrid
           stroke="#616161"

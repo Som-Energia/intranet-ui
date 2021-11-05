@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import WorkspaceWrapper from '@/components/resources/WorkspaceWrapper'
-import TableResource from '@/components/resources/TableResource'
+import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
+import TableResource, { MeetingRoom } from '@components/resources/TableResource'
 
 const JunglaCristal = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props
@@ -149,8 +149,8 @@ const JunglaCristal = (props) => {
         </TableBlock>
       </TableZone>
       <MeetingRooms>
-        <MeetingRoom>JUNGLA_MAGATZEM</MeetingRoom>
-        <MeetingRoom>JUNGLA_SALA_TV</MeetingRoom>
+        <MeetingRoom name="JUNGLA_MAGATZEM" />
+        <MeetingRoom name="JUNGLA_SALA_TV" />
       </MeetingRooms>
     </WorkspaceWrapper>
   )
@@ -167,22 +167,8 @@ const MeetingRooms = styled.div`
   width: 40%;
   padding-left: 60px;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
   gap: 10px;
-`
-
-const MeetingRoom = styled.div`
-  border-radius: 5px;
-  background-color: #edeff199;
-  color: #72808f;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 400;
-  cursor: pointer;
 `
 
 const TableBlock = styled.div`

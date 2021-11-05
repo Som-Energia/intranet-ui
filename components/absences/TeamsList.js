@@ -1,14 +1,14 @@
 import React from 'react'
 
-import Avatar from '@material-ui/core/Avatar'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import Grid from '@material-ui/core/Grid'
-import Fade from '@material-ui/core/Fade'
+import Avatar from '@mui/material/Avatar'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import Grid from '@mui/material/Grid'
+import Fade from '@mui/material/Fade'
 
 import EditMenu from '../EditMenu'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,38 +28,43 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const TeamsList = (props) => {
-  const { teams = [], active = true, onAdd = () => {}, onEdit = () => {}, onDelete = () => {}, customize } = props
+  const {
+    teams = [],
+    active = true,
+    onAdd = () => {},
+    onEdit = () => {},
+    onDelete = () => {},
+    customize
+  } = props
   const classes = useStyles()
 
   return (
     <>
-      {
-        teams.map(team => (
-          <Grid key={team.id} className={classes.listItem} item xs={12} sm={4}>
-            <Fade in={true}>
-              <Card className={classes.card} elevation={0}>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="member" className={classes.avatar}>
-                      { team.name.charAt(0).toUpperCase() }
-                    </Avatar>
-                  }
-                  action={
-                    <EditMenu
-                      onAdd={ () => onAdd(team) }
-                      onEdit={ () => onEdit(team) }
-                      onDelete={ () => onDelete(team) }
-                      customize={customize}
-                    />
-                  }
-                  title={ `${team.name}` }
-                  subheader={''}
-                />
-              </Card>
-            </Fade>
-          </Grid>
-        ))
-      }
+      {teams.map((team) => (
+        <Grid key={team.id} className={classes.listItem} item xs={12} sm={4}>
+          <Fade in={true}>
+            <Card className={classes.card} elevation={0}>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="member" className={classes.avatar}>
+                    {team.name.charAt(0).toUpperCase()}
+                  </Avatar>
+                }
+                action={
+                  <EditMenu
+                    onAdd={() => onAdd(team)}
+                    onEdit={() => onEdit(team)}
+                    onDelete={() => onDelete(team)}
+                    customize={customize}
+                  />
+                }
+                title={`${team.name}`}
+                subheader={''}
+              />
+            </Card>
+          </Fade>
+        </Grid>
+      ))}
     </>
   )
 }

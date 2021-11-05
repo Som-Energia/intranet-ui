@@ -1,13 +1,13 @@
 import React from 'react'
 import * as dayjs from 'dayjs'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
-import { absenceTypeName, absenceTypeEmoji } from '@/lib/absences'
+import { absenceTypeName, absenceTypeEmoji } from '@lib/absences'
 
-import EditMenu from '@/components/layout/EditMenu'
+import EditMenu from '@components/layout/EditMenu'
 
 const useStyles = makeStyles((theme) => ({
   item: {

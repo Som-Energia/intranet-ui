@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from 'react'
 
-import * as dayjs from 'dayjs'
 import useSWR from 'swr'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-import { fetchWithToken } from '@/lib/utils'
+import { fetchWithToken } from '@lib/utils'
 
-import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
-import DayJsUtils from '@date-io/dayjs'
+import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 
-import Box from '@material-ui/core/Box'
-import Checkbox from '@material-ui/core/Checkbox'
-import Fab from '@material-ui/core/Fab'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Grid from '@material-ui/core/Grid'
-import MenuItem from '@material-ui/core/MenuItem'
-import TextField from '@material-ui/core/TextField'
-import Fade from '@material-ui/core/Fade'
+import Box from '@mui/material/Box'
+import Checkbox from '@mui/material/Checkbox'
+import Fab from '@mui/material/Fab'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import IconButton from '@mui/material/IconButton'
+import Grid from '@mui/material/Grid'
+import MenuItem from '@mui/material/MenuItem'
+import TextField from '@mui/material/TextField'
+import Fade from '@mui/material/Fade'
 
-import IconButton from '@material-ui/core/IconButton'
+import DatePicker from '@mui/lab/DatePicker'
 
-import TodayOutlinedIcon from '@material-ui/icons/TodayOutlined'
-import SaveIcon from '@material-ui/icons/Save'
+import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined'
+import SaveIcon from '@mui/icons-material/Save'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { useTheme } from '@mui/styles'
 
 const AbsenceForm = (props) => {
-  const classes = useStyles()
   const { absenceId, workerId, onSucces, onError } = props
   const token = '1'
+  const theme = useTheme()
 
   const [editable, setEditable] = useState(true)
 
@@ -73,206 +72,190 @@ const AbsenceForm = (props) => {
   const lastHalfHelper = 'Darrera tarda inclosa'
 
   return (
-    <MuiPickersUtilsProvider utils={DayJsUtils} locale={'ca'}>
-      <Formik
-        enableReinitialize={true}
-        initialValues={{ ...initialAbsence }}
-        validateOnMount={true}
-        validationSchema={Yup.object().shape({
-          absence_type: Yup.number()
-            .required("No has introduit un tipus d'absència")
-            .test('minOneHalfDay', 'Mínim un mig dia', function () {
-              return !(
-                this.parent.start_time === this.parent.end_time &&
-                !this.parent.end_afternoon &&
-                !this.parent.start_morning
-              )
-            }),
-          start_time: Yup.date().required("No has introduit una data d'inici"),
-          end_time: Yup.date()
-            .required('No has introduit una data de fi')
-            .when(
-              'start_time',
-              (start_time, schema) =>
-                start_time &&
-                schema.min(
-                  start_time,
-                  "La data no pot ser anterior a la d'inici"
-                )
+    <Formik
+      enableReinitialize={true}
+      initialValues={{ ...initialAbsence }}
+      validateOnMount={true}
+      validationSchema={Yup.object().shape({
+        absence_type: Yup.number()
+          .required("No has introduit un tipus d'absència")
+          .test('minOneHalfDay', 'Mínim un mig dia', function () {
+            return !(
+              this.parent.start_time === this.parent.end_time &&
+              !this.parent.end_afternoon &&
+              !this.parent.start_morning
             )
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          async function postForm() {
-            await postAbsence(values)
-            setFormResponse(true)
-          }
-          postForm()
-        }}>
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isValid,
-          isSubmitting,
-          setFieldValue
-        }) => (
-          <form className={classes.form} onSubmit={handleSubmit} noValidate>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  select
-                  fullWidth
-                  label="Tipus d'absència"
-                  name="absence_type"
-                  variant="outlined"
-                  margin="normal"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.absence_type || ''}
-                  error={errors.absence_type && touched.absence_type}
-                  helperText={touched.absence_type && errors.absence_type}
-                  disabled={loadingTypes}>
-                  {types?.results &&
-                    types?.results.map((type) => (
-                      <MenuItem key={type.id} value={type.id}>
-                        {type.name}
-                      </MenuItem>
-                    ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <DatePicker
-                  required
-                  fullWidth
-                  variant="inline"
-                  autoOk
-                  disabled={values.absence_type === ''}
-                  disablePast="true"
-                  inputVariant="outlined"
-                  onChange={(event) =>
-                    setFieldValue(
-                      'start_time',
-                      dayjs(event).format('YYYY-MM-DDT09:00:00')
-                    )
-                  }
-                  onBlur={handleBlur}
-                  format="DD/MM/YYYY"
-                  InputProps={{
-                    startAdornment: (
-                      <IconButton>
-                        <TodayOutlinedIcon />
-                      </IconButton>
-                    )
-                  }}
-                  disableToolbar
-                  label="Data inicial"
-                  name="values.start_time"
-                  value={values.start_time || ''}
-                  error={!!errors.start_time}
-                  helperText={errors.start_time || firstDateHelper}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <DatePicker
-                  required
-                  fullWidth
-                  variant="inline"
-                  autoOk
-                  disabled={values.absence_type === ''}
-                  disablePast="true"
-                  inputVariant="outlined"
-                  onChange={(event) =>
-                    setFieldValue(
-                      'end_time',
-                      dayjs(event).format('YYYY-MM-DDT17:00:00')
-                    )
-                  }
-                  onBlur={handleBlur}
-                  format="DD/MM/YYYY"
-                  InputProps={{
-                    startAdornment: (
-                      <IconButton>
-                        <TodayOutlinedIcon />
-                      </IconButton>
-                    )
-                  }}
-                  disableToolbar
-                  label="Data final"
-                  name="end_time"
-                  value={values.end_time || ''}
-                  error={!!errors.end_time}
-                  helperText={errors.end_time || lastDateHelper}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={values.start_morning}
-                      onChange={(event) =>
-                        setFieldValue('start_morning', !values.start_morning)
-                      }
-                      onBlur={handleBlur}
-                      name="start_morning"
-                      color="primary"
-                    />
-                  }
-                  label={firstHalfHelper}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={values.end_afternoon}
-                      onChange={(event) =>
-                        setFieldValue('end_afternoon', !values.end_afternoon)
-                      }
-                      onBlur={handleBlur}
-                      name="end_afternoon"
-                      color="primary"
-                    />
-                  }
-                  label={lastHalfHelper}
-                />
-              </Grid>
+          }),
+        start_time: Yup.date().required("No has introduit una data d'inici"),
+        end_time: Yup.date()
+          .required('No has introduit una data de fi')
+          .when(
+            'start_time',
+            (start_time, schema) =>
+              start_time &&
+              schema.min(start_time, "La data no pot ser anterior a la d'inici")
+          )
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        async function postForm() {
+          await postAbsence(values)
+          setFormResponse(true)
+        }
+        postForm()
+      }}>
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        isValid,
+        isSubmitting,
+        setFieldValue
+      }) => (
+        <form onSubmit={handleSubmit} noValidate>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                select
+                fullWidth
+                label="Tipus d'absència"
+                name="absence_type"
+                variant="outlined"
+                margin="normal"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.absence_type || ''}
+                error={errors.absence_type && touched.absence_type}
+                helperText={touched.absence_type && errors.absence_type}
+                disabled={loadingTypes}>
+                {types?.results &&
+                  types?.results.map((type) => (
+                    <MenuItem key={type.id} value={type.id}>
+                      {type.name}
+                    </MenuItem>
+                  ))}
+              </TextField>
             </Grid>
-            <Box mb={3}>
-              <Fade in={editable} disableStrictModeCompat={true}>
-                <Fab
-                  color="primary"
-                  aria-label="save"
-                  className={classes.fab}
-                  disabled={!isValid || loading}
-                  onClick={handleSubmit}>
-                  <SaveIcon />
-                </Fab>
-              </Fade>
-            </Box>
-          </form>
-        )}
-      </Formik>
-    </MuiPickersUtilsProvider>
+            <Grid item xs={12}>
+              <DatePicker
+                required
+                fullWidth
+                variant="inline"
+                autoOk
+                disabled={values.absence_type === ''}
+                disablePast="true"
+                inputVariant="outlined"
+                onChange={(event) =>
+                  setFieldValue(
+                    'start_time',
+                    dayjs(event).format('YYYY-MM-DDT09:00:00')
+                  )
+                }
+                onBlur={handleBlur}
+                format="DD/MM/YYYY"
+                InputProps={{
+                  startAdornment: (
+                    <IconButton>
+                      <TodayOutlinedIcon />
+                    </IconButton>
+                  )
+                }}
+                disableToolbar
+                label="Data inicial"
+                name="values.start_time"
+                value={values.start_time || ''}
+                error={!!errors.start_time}
+                helperText={errors.start_time || firstDateHelper}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <DatePicker
+                required
+                fullWidth
+                variant="inline"
+                autoOk
+                disabled={values.absence_type === ''}
+                disablePast="true"
+                inputVariant="outlined"
+                onChange={(event) =>
+                  setFieldValue(
+                    'end_time',
+                    dayjs(event).format('YYYY-MM-DDT17:00:00')
+                  )
+                }
+                onBlur={handleBlur}
+                format="DD/MM/YYYY"
+                InputProps={{
+                  startAdornment: (
+                    <IconButton>
+                      <TodayOutlinedIcon />
+                    </IconButton>
+                  )
+                }}
+                disableToolbar
+                label="Data final"
+                name="end_time"
+                value={values.end_time || ''}
+                error={!!errors.end_time}
+                helperText={errors.end_time || lastDateHelper}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={values.start_morning}
+                    onChange={(event) =>
+                      setFieldValue('start_morning', !values.start_morning)
+                    }
+                    onBlur={handleBlur}
+                    name="start_morning"
+                    color="primary"
+                  />
+                }
+                label={firstHalfHelper}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={values.end_afternoon}
+                    onChange={(event) =>
+                      setFieldValue('end_afternoon', !values.end_afternoon)
+                    }
+                    onBlur={handleBlur}
+                    name="end_afternoon"
+                    color="primary"
+                  />
+                }
+                label={lastHalfHelper}
+              />
+            </Grid>
+          </Grid>
+          <Box mb={3}>
+            <Fade in={editable} disableStrictModeCompat={true}>
+              <Fab
+                color="primary"
+                aria-label="save"
+                sx={{
+                  position: 'absolute',
+                  bottom: theme.spacing(2),
+                  right: theme.spacing(2)
+                }}
+                disabled={!isValid || loading}
+                onClick={handleSubmit}>
+                <SaveIcon />
+              </Fab>
+            </Fade>
+          </Box>
+        </form>
+      )}
+    </Formik>
   )
 }
 
 export default AbsenceForm
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(2),
-    padding: theme.spacing(1)
-  },
-  button: {
-    marginRight: theme.spacing(1)
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2)
-  }
-}))

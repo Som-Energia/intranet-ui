@@ -3,26 +3,26 @@ import * as dayjs from 'dayjs'
 import clsx from 'clsx'
 import useSWR from 'swr'
 
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Fab from '@material-ui/core/Fab'
-import Grid from '@material-ui/core/Grid'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Fab from '@mui/material/Fab'
+import Grid from '@mui/material/Grid'
 import Skeleton from '@material-ui/lab/Skeleton'
-import Fade from '@material-ui/core/Fade'
+import Fade from '@mui/material/Fade'
 
-import { makeStyles } from '@material-ui/core/styles'
-import AddIcon from '@material-ui/icons/Add'
+import { makeStyles } from '@mui/styles'
+import AddIcon from '@mui/icons-material/Add'
 
-import { fetchWithToken } from '@/lib/utils'
-import { countHolidays, countAbsencesType } from '@/lib/absences'
+import { fetchWithToken } from '@lib/utils'
+import { countHolidays, countAbsencesType } from '@lib/absences'
 
-import SnackbarResponse from '@/components/layout/SnackbarResponse'
-import ModalForm from '@/components/layout/ModalForm'
+import SnackbarResponse from '@components/layout/SnackbarResponse'
+import ModalForm from '@components/layout/ModalForm'
 
-import AbsAnualCalendar from '@/components/absences/AbsAnualCalendar'
-import YearMonthHeader from '@/components/absences/YearMonthHeader'
-import AbsencePeriod from '@/components/absences/AbsencePeriod'
-import AbsenceForm from '@/components/absences/AbsenceForm'
+import AbsAnualCalendar from '@components/absences/AbsAnualCalendar'
+import YearMonthHeader from '@components/absences/YearMonthHeader'
+import AbsencePeriod from '@components/absences/AbsencePeriod'
+import AbsenceForm from '@components/absences/AbsenceForm'
 
 const Absences = () => {
   const classes = useStyles()
@@ -72,7 +72,11 @@ const Absences = () => {
   const userId = 1
   const token = null
 
-  const { data, isValidating: loading, error } = useSWR(
+  const {
+    data,
+    isValidating: loading,
+    error
+  } = useSWR(
     [
       `${process.env.NEXT_PUBLIC_API_URL}/absencies/absences?worker=${userId}&start_period=${year}-01-01&end_period=${year}-12-31`,
       token

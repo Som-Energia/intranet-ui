@@ -2,13 +2,13 @@ import { useState } from 'react'
 
 import { signIn, signOut, useSession } from 'next-auth/client'
 
-import Avatar from '@material-ui/core/Avatar'
-import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import { makeStyles } from '@material-ui/core/styles'
+import Avatar from '@mui/material/Avatar'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import { makeStyles } from '@mui/styles'
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 export default function UserMenu() {
   const classes = useStyles()
