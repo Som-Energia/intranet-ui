@@ -7,7 +7,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Fab from '@mui/material/Fab'
 import Grid from '@mui/material/Grid'
-import Skeleton from '@material-ui/lab/Skeleton'
+import Skeleton from '@mui/material/Skeleton'
 import Fade from '@mui/material/Fade'
 
 import { makeStyles } from '@mui/styles'
