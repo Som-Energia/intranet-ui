@@ -3,12 +3,16 @@ import Head from 'next/head'
 import Breadcrumbs from '@components/layout/Breadcrumbs'
 import { signIn, useSession, getSession } from 'next-auth/client'
 
+import { useTheme } from '@mui/styles'
+
 import { Box, Container, Typography, Paper, Grid } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
 
 import { getRemoteData, getLastDays } from '@lib/analytics'
 import { isIT } from '@lib/utils'
 
+import BarChartIcon from '@mui/icons-material/BarChart'
 import AnalyticsBarChart from '@components/analytics/BarChart'
 
 import * as dayjs from 'dayjs'
@@ -16,13 +20,23 @@ import 'dayjs/locale/ca'
 
 require('typeface-montserrat')
 
+const tabs = [
+  { label: 'Setmanal', value: 7 },
+  { label: 'Quinzenal', value: 15 },
+  { label: 'Mensual', value: 30 },
+  { label: 'Trimestral', value: 90 },
+  { label: 'Anual', value: 365 }
+]
+
 export default function WebformsAnalytics() {
-  const classes = useStyles()
   dayjs.locale('ca')
+  const theme = useTheme()
 
   const [session, loading] = useSession()
   const [clientSide, setClientSide] = useState(false)
   const [data, setData] = useState([])
+  const [selectedTab, setSelectedTab] = useState(0)
+  const [numDays, setNumDays] = useState(7)
 
   useEffect(() => {
     if (!loading && !session) signIn()
@@ -46,13 +60,19 @@ export default function WebformsAnalytics() {
     }
   }, [session])
 
+  const handleChange = (event, newValue) => {
+    console.log(newValue)
+    setSelectedTab(newValue)
+    setNumDays(tabs[newValue].value)
+  }
+
   return (
     <>
       <Head>
-        <title>Analytics | Som Energia</title>
+        <title>Webforms Analytics | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className={classes.container}>
+      <Container sx={{ padding: theme.spacing(4) }}>
         <Box
           sx={{
             display: 'flex',
@@ -64,13 +84,32 @@ export default function WebformsAnalytics() {
             sx={{
               fontFamily: 'Montserrat',
               fontSize: '1.5rem',
-              fontWeight: 500
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center'
             }}>
+            <BarChartIcon fontSize="large" sx={{ marginRight: '4px' }} />{' '}
             Webforms Analytics
           </Typography>
           <Breadcrumbs />
         </Box>
         <div suppressHydrationWarning={true}>
+          <Box
+            sx={{
+              paddingTop: theme.spacing(2),
+              borderBottom: 1,
+              borderColor: 'divider'
+            }}>
+            <Tabs
+              value={selectedTab}
+              onChange={handleChange}
+              aria-label="basic tabs example">
+              {tabs.length > 0 &&
+                tabs.map(({ label, value }) => (
+                  <Tab key={value} label={label} />
+                ))}
+            </Tabs>
+          </Box>
           {process.browser && (
             <Grid container spacing={3} sx={{ marginTop: '0px' }}>
               <Grid item xs={12} sm={6}>
@@ -84,10 +123,10 @@ export default function WebformsAnalytics() {
                       margin: 0,
                       marginBottom: '32px'
                     }}>
-                    Contractacions darrers 7 dies
+                    Contractacions darrers {numDays} dies
                   </Box>
                   <AnalyticsBarChart
-                    data={getLastDays(data, 7)}
+                    data={getLastDays(data, numDays)}
                     mainValue="contracts_success"
                     secondaryValue="contracts_fail"
                   />
@@ -104,10 +143,10 @@ export default function WebformsAnalytics() {
                       margin: 0,
                       marginBottom: '32px'
                     }}>
-                    Altes de socia darrers 7 dies
+                    Altes de socia darrers {numDays} dies
                   </Box>
                   <AnalyticsBarChart
-                    data={getLastDays(data, 7)}
+                    data={getLastDays(data, numDays)}
                     mainValue="members_success"
                     secondaryValue="members_fail"
                   />
@@ -124,10 +163,10 @@ export default function WebformsAnalytics() {
                       margin: 0,
                       marginBottom: '32px'
                     }}>
-                    Canvis de titular darrers 7 dies
+                    Canvis de titular darrers {numDays} dies
                   </Box>
                   <AnalyticsBarChart
-                    data={getLastDays(data, 7)}
+                    data={getLastDays(data, numDays)}
                     mainValue="holderchanges_success"
                     secondaryValue="holderchanges_fail"
                   />
@@ -145,10 +184,10 @@ export default function WebformsAnalytics() {
                       margin: 0,
                       marginBottom: '32px'
                     }}>
-                    Modificacions contractuals darrers 7 dies
+                    Modificacions contractuals darrers {numDays} dies
                   </Box>
                   <AnalyticsBarChart
-                    data={getLastDays(data, 7)}
+                    data={getLastDays(data, numDays)}
                     mainValue="modification_success"
                     secondaryValue="modification_fail"
                   />
@@ -166,10 +205,10 @@ export default function WebformsAnalytics() {
                       margin: 0,
                       marginBottom: '32px'
                     }}>
-                    Aportacions darrers 7 dies
+                    Aportacions darrers {numDays} dies
                   </Box>
                   <AnalyticsBarChart
-                    data={getLastDays(data, 7)}
+                    data={getLastDays(data, numDays)}
                     mainValue="apos_success"
                     secondaryValue="apos_fail"
                   />
@@ -182,14 +221,6 @@ export default function WebformsAnalytics() {
     </>
   )
 }
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(4)
-  },
-  paperTitle: {},
-  paper: {}
-}))
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
