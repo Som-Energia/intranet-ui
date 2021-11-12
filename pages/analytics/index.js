@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Breadcrumbs from '@components/layout/Breadcrumbs'
 import { signIn, useSession, getSession } from 'next-auth/client'
 
-import { Container, Typography, Paper, Grid } from '@mui/material'
+import { Box, Container, Typography, Paper, Grid } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
 import { getRemoteData, getLastDays } from '@lib/analytics'
@@ -53,20 +53,39 @@ export default function WebformsAnalytics() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container className={classes.container}>
-        <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: 'Montserrat',
+              fontSize: '1.5rem',
+              fontWeight: 500
+            }}>
             Webforms Analytics
           </Typography>
           <Breadcrumbs />
-        </div>
+        </Box>
         <div suppressHydrationWarning={true}>
           {process.browser && (
-            <Grid container spacing={3} style={{ marginTop: '8px' }}>
+            <Grid container spacing={3} sx={{ marginTop: '0px' }}>
               <Grid item xs={12} sm={6}>
-                <Paper elevation={0} className={classes.paper}>
-                  <h3 className={classes.paperTitle}>
+                <Paper elevation={0} sx={{ padding: '24px 24px', margin: '0' }}>
+                  <Box
+                    variant="h3"
+                    sx={{
+                      fontFamily: 'montserrat',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      margin: 0,
+                      marginBottom: '32px'
+                    }}>
                     Contractacions darrers 7 dies
-                  </h3>
+                  </Box>
                   <AnalyticsBarChart
                     data={getLastDays(data, 7)}
                     mainValue="contracts_success"
@@ -75,10 +94,18 @@ export default function WebformsAnalytics() {
                 </Paper>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Paper elevation={0} className={classes.paper}>
-                  <h3 className={classes.paperTitle}>
+                <Paper elevation={0} sx={{ padding: '24px 24px', margin: '0' }}>
+                  <Box
+                    variant="h3"
+                    sx={{
+                      fontFamily: 'montserrat',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      margin: 0,
+                      marginBottom: '32px'
+                    }}>
                     Altes de socia darrers 7 dies
-                  </h3>
+                  </Box>
                   <AnalyticsBarChart
                     data={getLastDays(data, 7)}
                     mainValue="members_success"
@@ -87,10 +114,18 @@ export default function WebformsAnalytics() {
                 </Paper>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Paper elevation={0} className={classes.paper}>
-                  <h3 className={classes.paperTitle}>
+                <Paper elevation={0} sx={{ padding: '24px 24px', margin: '0' }}>
+                  <Box
+                    variant="h3"
+                    sx={{
+                      fontFamily: 'montserrat',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      margin: 0,
+                      marginBottom: '32px'
+                    }}>
                     Canvis de titular darrers 7 dies
-                  </h3>
+                  </Box>
                   <AnalyticsBarChart
                     data={getLastDays(data, 7)}
                     mainValue="holderchanges_success"
@@ -100,10 +135,18 @@ export default function WebformsAnalytics() {
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <Paper elevation={0} className={classes.paper}>
-                  <h3 className={classes.paperTitle}>
+                <Paper elevation={0} sx={{ padding: '24px 24px', margin: '0' }}>
+                  <Box
+                    variant="h3"
+                    sx={{
+                      fontFamily: 'montserrat',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      margin: 0,
+                      marginBottom: '32px'
+                    }}>
                     Modificacions contractuals darrers 7 dies
-                  </h3>
+                  </Box>
                   <AnalyticsBarChart
                     data={getLastDays(data, 7)}
                     mainValue="modification_success"
@@ -113,10 +156,18 @@ export default function WebformsAnalytics() {
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <Paper elevation={0} className={classes.paper}>
-                  <h3 className={classes.paperTitle}>
+                <Paper elevation={0} sx={{ padding: '24px 24px', margin: '0' }}>
+                  <Box
+                    variant="h3"
+                    sx={{
+                      fontFamily: 'montserrat',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      margin: 0,
+                      marginBottom: '32px'
+                    }}>
                     Aportacions darrers 7 dies
-                  </h3>
+                  </Box>
                   <AnalyticsBarChart
                     data={getLastDays(data, 7)}
                     mainValue="apos_success"
@@ -136,27 +187,8 @@ const useStyles = makeStyles((theme) => ({
   container: {
     padding: theme.spacing(4)
   },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  title: {
-    fontFamily: 'Montserrat',
-    fontSize: '1.5rem',
-    fontWeight: 500
-  },
-  paperTitle: {
-    fontFamily: 'montserrat',
-    fontSize: '18px',
-    fontWeight: 600,
-    margin: 0,
-    marginBottom: '32px'
-  },
-  paper: {
-    padding: '24px 24px',
-    margin: '0'
-  }
+  paperTitle: {},
+  paper: {}
 }))
 
 export async function getServerSideProps(context) {
@@ -166,10 +198,12 @@ export async function getServerSideProps(context) {
     context.res.setHeader('Location', '/auth/signin')
   }
 
+  /*
   if (session?.user && !isIT(session?.user)) {
     context.res.statusCode = 302
     context.res.setHeader('Location', '/')
   }
+  */
 
   return { props: {} }
 }

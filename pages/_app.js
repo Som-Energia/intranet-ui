@@ -2,8 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 
-import Box from '@mui/material/Box'
-import CssBaseline from '@mui/material/CssBaseline'
+import ProgressBar from '@badrap/bar-of-progress'
+import Router from 'next/router'
+
+import { Box, CssBaseline } from '@mui/material'
 
 import { CacheProvider } from '@emotion/react'
 import { Provider } from 'next-auth/client'
@@ -20,18 +22,20 @@ import createEmotionCache from '@styles/createEmotionCache'
 import Header from '@components/layout/Header'
 import Footer from '@components/layout/Footer'
 
+const progress = new ProgressBar({
+  size: 2,
+  color: theme.palette.primary.main,
+  className: 'progress-bar',
+  delay: 100
+})
+
+Router.events.on('routeChangeStart', progress.start)
+Router.events.on('routeChangeComplete', progress.finish)
+Router.events.on('routeChangeError', progress.finish)
+
 const clientSideEmotionCache = createEmotionCache()
 export default function App(props) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
-
-  /*
-  useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side')
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles)
-    }
-  }, []) */
 
   return (
     <CacheProvider value={emotionCache}>
