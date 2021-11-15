@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 import TableResource from '@components/resources/TableResource'
 
-const JunglaCristal = (props) => {
+const Casademont = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props
   const [selectedResource, setSelectedResource] = useState(false)
 
@@ -205,7 +205,7 @@ const JunglaCristal = (props) => {
   )
 }
 
-export default JunglaCristal
+export default Casademont
 
 const TableZone = styled.div``
 

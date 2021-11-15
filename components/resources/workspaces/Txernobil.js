@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import { styled } from '@mui/material/styles'
 
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 import TableResource from '@components/resources/TableResource'
@@ -624,33 +624,33 @@ const Txernobil = (props) => {
 
 export default Txernobil
 
-const Llegenda = styled.div`
+const Llegenda = styled('div')`
   position: absolute;
   top: 0;
   left: 0;
   font-weight: 500;
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled('div')`
   display: flex;
   flex-direction: column;
   width: 100%;
 `
 
-const Space = styled.div`
+const Space = styled('div')`
   position: relative;
   display: grid;
   grid-template-columns: 0.6fr 2.15fr 1.25fr;
   gap: 10px;
 `
 
-const ExtraSpace = styled.div`
+const ExtraSpace = styled('div')`
   display: grid;
   grid-template-columns: 0.6fr 2.15fr 1.25fr;
   gap: 10px;
 `
 
-const TableZone = styled.div`
+const TableZone = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -670,7 +670,7 @@ const TableZoneExtra = styled(TableZoneCenter)`
   border-top: 1px solid rgba(0, 0, 0, 0.14);
 `
 
-const TableBlock = styled.div`
+const TableBlock = styled('div')`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
@@ -683,7 +683,7 @@ const TableBlockRight = styled(TableBlock)`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   margin-bottom: 32px;
-  padding-left: 16px;
+  padding-left: 8px;
 `
 
 const TableBlockCenter = styled(TableBlock)`
@@ -691,6 +691,6 @@ const TableBlockCenter = styled(TableBlock)`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   padding: 0;
-  padding-left: 16px;
-  padding-right: 32px;
+  padding-left: 8px;
+  padding-right: 8px;
 `

@@ -25,8 +25,7 @@ const WorkspaceItem = (props) => {
                 sx={{
                   flex: '1 0 auto',
                   '&:hover': {
-                    color: '#fff',
-                    backgroundColor: `${theme.palette.primary.main}`
+                    textDecoration: 'underline'
                   }
                 }}>
                 <Typography
@@ -38,10 +37,10 @@ const WorkspaceItem = (props) => {
                     marginBottom: '4px'
                   }}>
                   <ApartmentOutlinedIcon
-                    sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+                    sx={{ color: 'rgba(0, 0, 0, 0.54)', marginRight: '4px' }}
                     fontSize="small"
                   />
-                  &nbsp;{place}
+                  {place}
                 </Typography>
                 <Typography
                   component="h5"

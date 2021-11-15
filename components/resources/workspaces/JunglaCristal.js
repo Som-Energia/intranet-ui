@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import { styled } from '@mui/material/styles'
 
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 import TableResource, { MeetingRoom } from '@components/resources/TableResource'
+import { Box } from '@mui/system'
 
 const JunglaCristal = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props
@@ -23,7 +24,7 @@ const JunglaCristal = (props) => {
       closeDialogFb={closeDialog}
       date={date}
       token={token}>
-      <TableZone>
+      <Box sx={{ width: '60%', paddingRight: '96px' }}>
         <TableBlock>
           <TableResource
             name="JUNGLA_IT_1"
@@ -147,31 +148,25 @@ const JunglaCristal = (props) => {
             onClick={openDialog}
           />
         </TableBlock>
-      </TableZone>
-      <MeetingRooms>
+      </Box>
+      <Box
+        sx={{
+          width: '40%',
+          paddingLeft: '60px',
+          display: 'grid',
+          gridTemplateRows: '1fr 1fr 1fr 1fr',
+          gap: '10px'
+        }}>
         <MeetingRoom name="JUNGLA_MAGATZEM" />
         <MeetingRoom name="JUNGLA_SALA_TV" />
-      </MeetingRooms>
+      </Box>
     </WorkspaceWrapper>
   )
 }
 
 export default JunglaCristal
 
-const TableZone = styled.div`
-  width: 60%;
-  padding-right: 96px;
-`
-
-const MeetingRooms = styled.div`
-  width: 40%;
-  padding-left: 60px;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 10px;
-`
-
-const TableBlock = styled.div`
+const TableBlock = styled('div')`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;

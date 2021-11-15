@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import { styled } from '@mui/material/styles'
 
 import TableResource, { MeetingRoom } from '@components/resources/TableResource'
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 
 const Balneari = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props
+
   const [selectedResource, setSelectedResource] = useState(false)
 
   const openDialog = (resource) => {
@@ -226,13 +227,13 @@ const Balneari = (props) => {
 
 export default Balneari
 
-const TableZone = styled.div`
+const TableZone = styled('div')`
   display: flex;
   flex-direction: column;
   width: 100%;
 `
 
-const TableRow = styled.div`
+const TableRow = styled('div')`
   display: flex;
   grid-template-columns: 1fr 1fr;
   column-gap: 100px;
@@ -243,7 +244,7 @@ const MidTableRow = styled(TableRow)`
   padding-left: 256px;
 `
 
-const TableBlock = styled.div`
+const TableBlock = styled('div')`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -252,7 +253,7 @@ const TableBlock = styled.div`
   margin-bottom: 64px;
 `
 
-const MeetingRooms = styled.div`
+const MeetingRooms = styled('div')`
   width: 20%;
   padding-top: 16px;
   padding-right: 16px;

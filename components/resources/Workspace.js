@@ -5,7 +5,7 @@ import 'dayjs/locale/ca'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
-import { makeStyles } from '@mui/styles'
+import { useTheme } from '@mui/styles'
 
 import { getEvents } from '@lib/resources'
 
@@ -16,7 +16,7 @@ import Balneari from 'components/resources/workspaces/Balneari'
 import Txernobil from 'components/resources/workspaces/Txernobil'
 
 const Workspace = ({ resources, events, token, buildingId }) => {
-  const classes = useStyles()
+  const theme = useTheme()
   dayjs.locale('ca')
 
   const [date, setDate] = useState(dayjs())
@@ -79,7 +79,9 @@ const Workspace = ({ resources, events, token, buildingId }) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Paper className={classes.paper} elevation={0}>
+          <Paper
+            elevation={0}
+            sx={{ marginTop: theme.spacing(1), padding: theme.spacing(4) }}>
             {buildingId === 'MONTURIOL' && (
               <JunglaCristal
                 resources={resourcesMap}
@@ -114,7 +116,14 @@ const Workspace = ({ resources, events, token, buildingId }) => {
             )}
 
             {!['MONTURIOL', 'GIROEMPREN', 'TXERNOBIL'].includes(buildingId) && (
-              <h3 className={classes.emptyContent}>Espai pendent de mapejar</h3>
+              <h3
+                sx={{
+                  fontSize: '16px',
+                  textTransform: 'uppercase',
+                  margin: '24px 0'
+                }}>
+                Espai pendent de mapejar
+              </h3>
             )}
           </Paper>
         </Grid>
@@ -124,54 +133,3 @@ const Workspace = ({ resources, events, token, buildingId }) => {
 }
 
 export default Workspace
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    padding: theme.spacing(4)
-  },
-  noMarginTop: {
-    marginTop: 0
-  },
-  contentItem: {
-    padding: '16px 0 16px 16px',
-    '&:last-child': {
-      paddingBottom: '16px'
-    }
-  },
-  yearContainer: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    marginTop: '16px',
-    '& h1': {
-      fontSize: '36px'
-    }
-  },
-  resum: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  resumItem: {
-    textAlign: 'center',
-    flexGrow: 1
-  },
-  super: {
-    fontSize: '30px'
-  },
-  superDesc: {
-    fontSize: '14px',
-    letterSpacing: '1px',
-    textTransform: 'uppercase'
-  },
-  emptyContent: {
-    fontSize: '16px',
-    textTransform: 'uppercase',
-    margin: '24px 0'
-  },
-  fab: {
-    position: 'fixed',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2)
-  }
-}))
