@@ -15,6 +15,7 @@ import { ThemeProvider } from '@mui/material/styles'
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import caLocale from 'date-fns/locale/ca'
 
 import theme from '@styles/theme'
 import createEmotionCache from '@styles/createEmotionCache'
@@ -47,7 +48,7 @@ export default function App(props) {
         />
       </Head>
       <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={caLocale}>
           <CssBaseline />
           <Provider
             session={pageProps.session}
