@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 
+import { useRouter } from 'next/router'
+
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
@@ -15,21 +17,43 @@ import JunglaCristal from 'components/resources/workspaces/JunglaCristal'
 import Balneari from 'components/resources/workspaces/Balneari'
 import Txernobil from 'components/resources/workspaces/Txernobil'
 
-const Workspace = ({ resources, events, token, buildingId }) => {
+const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
   const theme = useTheme()
+  const router = useRouter()
   dayjs.locale('ca')
 
-  const [date, setDate] = useState(dayjs())
+  const [date, setDate] = useState(
+    dayjs(initialDate || undefined)
+      .hour(0)
+      .minute(0)
+      .second(0)
+  )
   const [resourcesMap, setResourcesMap] = useState(resources)
   const [eventsMap, setEventsMap] = useState(events)
   const [isLoading, setIsLoading] = useState(false)
 
   const nextDay = () => {
     setDate(date.add(1, 'day'))
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, date: dayjs(date).format('DD-MM-YYYY') }
+    })
   }
 
   const prevDay = () => {
     setDate(date.subtract(1, 'day'))
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, date: dayjs(date).format('DD-MM-YYYY') }
+    })
+  }
+
+  const handleDate = (date) => {
+    setDate(date)
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, date: dayjs(date).format('DD-MM-YYYY') }
+    })
   }
 
   const reloadResources = async () => {
@@ -37,7 +61,6 @@ const Workspace = ({ resources, events, token, buildingId }) => {
   }
 
   const getAsyncEvents = async () => {
-    console.log('async get events')
     setIsLoading(true)
     const events = {}
     for (const item of Object.values(resourcesMap)) {
@@ -73,9 +96,10 @@ const Workspace = ({ resources, events, token, buildingId }) => {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <DayMonthHeader
-            date={date.format('dddd, DD/MM/YYYY')}
+            date={date}
             handlePrev={prevDay}
             handleNext={nextDay}
+            handlePicker={handleDate}
           />
         </Grid>
         <Grid item xs={12}>

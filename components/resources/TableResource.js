@@ -1,65 +1,71 @@
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { useTheme, styled } from '@mui/styles'
+import { styled } from '@mui/styles'
 import Box from '@mui/material/Box'
+import { Skeleton } from '@mui/material'
 
 const TableResource = (props) => {
   const { name, resources, events, isLoading, onClick = () => {} } = props
 
   const [connected, setConnected] = useState(false)
+  const error = events?.[name] instanceof Error
   const summary = events?.[name]?.items?.[0]?.summary || false
-  const theme = useTheme()
 
   useEffect(() => {
-    setConnected(typeof resources?.[name] !== 'undefined')
+    setConnected(resources?.[name])
   }, [resources])
 
   return (
     <Table
       id={name}
-      onClick={() => !summary && onClick(resources?.[name])}
+      onClick={() => !summary && !error && onClick(resources?.[name])}
       className={clsx(
+        isLoading && 'loading',
         !connected && 'no-connected',
-        !summary && 'free',
-        isLoading && 'loading'
+        !error && !summary && 'free',
+        error && 'error'
       )}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          textAlign: 'center',
-          padding: '8px 16px',
-          borderRadius: '30px',
-          fontSize: '0.9rem',
-          fontWeight: 400
-        }}>
+      {isLoading ? (
+        <Skeleton height={40} variant="rectangular" />
+      ) : (
         <Box
           sx={{
-            width: '24px',
-            height: '24px',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            flexDirection: 'column',
+            textAlign: 'center',
+            padding: '8px 16px',
+            borderRadius: '30px',
+            fontSize: '0.9rem',
+            fontWeight: 400
           }}>
-          {name && <ComputerIcon />}
-          {name}
-        </Box>
-        {summary && (
           <Box
             sx={{
-              fontSize: '1rem',
-              paddingTop: '6px',
-              fontWeight: 400,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              width: '24px',
+              height: '24px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-            {summary}
+            {name && <ComputerIcon />}
+            {name}
           </Box>
-        )}
-      </Box>
+          {summary && (
+            <Box
+              sx={{
+                fontSize: '1rem',
+                paddingTop: '6px',
+                fontWeight: 400,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+              {summary}
+            </Box>
+          )}
+        </Box>
+      )}
     </Table>
   )
 }
@@ -73,11 +79,23 @@ const Table = styled('div')(({ theme }) => ({
   alignItems: 'center',
   fontSize: '1rem',
   fontWeight: 500,
-  background: '#96b63366',
   color: '#546714',
+  background: '#96b63366',
   border: '3px solid transparent',
   '&:hover': {
     border: '3px solid transparent'
+  },
+  '&.loading': {
+    display: 'inline-block',
+    position: 'relative',
+    overflow: 'hidden',
+    color: '#f2f2f2',
+    background: '#f2f2f2 !important',
+    border: '3px solid transparent',
+
+    '&:hover': {
+      border: '3px solid transparent'
+    }
   },
   '&.free': {
     cursor: 'pointer',
@@ -88,41 +106,15 @@ const Table = styled('div')(({ theme }) => ({
       background: '#546714'
     }
   },
+  '&.error': {
+    color: theme.palette.error.dark,
+    background: '#ff9db0'
+  },
   '&.no-connected': {
     cursor: 'default',
     background: '#f2f2f2 !important',
     '&:hover': {
       border: '3px solid transparent'
-    }
-  },
-  '&.loading': {
-    display: 'inline-block',
-    position: 'relative',
-    overflow: 'hidden',
-    color: '#f2f2f2',
-    backgroundColor: '##f2f2f2 !important',
-    border: '3px solid transparent',
-
-    '&:hover': {
-      border: '3px solid transparent'
-    },
-
-    '&::after': {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      transform: 'translateX(-100%)',
-      backgroundImage:
-        'linear-gradient(90deg, #edeff1 0px, #d3d3d4 60px, #edeff1 120px)',
-      animation: 'shimmer 2s infinite',
-      content: ''
-    },
-    '& @keyframes shimmer': {
-      '100%': {
-        transform: 'translateX(100%)'
-      }
     }
   }
 }))

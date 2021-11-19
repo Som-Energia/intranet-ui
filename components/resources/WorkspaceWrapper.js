@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
 
 import * as dayjs from 'dayjs'
+import isoWeek from 'dayjs/plugin/isoWeek'
 import 'dayjs/locale/ca'
 
 import { useTheme } from '@mui/styles'
@@ -18,14 +19,16 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
-import IconButton from '@mui/material/IconButton'
+import MenuItem from '@mui/material/MenuItem'
 
 import DatePicker from '@mui/lab/DatePicker'
 
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined'
+import { Select } from '@mui/material'
+
+dayjs.extend(isoWeek)
 
 const WorkspaceWrapper = (props) => {
   const {
@@ -45,22 +48,30 @@ const WorkspaceWrapper = (props) => {
   const [event, setEvent] = useState({
     startDate: date,
     endDate: date,
-    description: session?.user?.name
+    description: session?.user?.name,
+    period: 0
   })
-
-  console.log(event)
 
   useEffect(() => {
     setEvent({ ...event, startDate: date, endDate: date })
   }, [date])
 
   const handleSubmit = () => {
+    const startDate = dayjs(event?.startDate)
+    startDate.hour(0).minute(0).second(0)
+    const endDate = dayjs(event?.endDate).add(1, 'd')
+    endDate.hour(0).minute(0).second(0)
+
+    console.log(startDate.toISOString())
+    console.log(endDate.toISOString())
+
     insertEvent(
       token,
       selectedResource?.resourceEmail,
-      dayjs(event?.startDate).hour(0).minute(0).second(0).toISOString(),
-      dayjs(event?.endDate).hour(23).minute(59).second(59).toISOString(),
-      event?.description
+      startDate.toISOString(),
+      endDate.toISOString(),
+      event?.description,
+      event?.period
     )
       .then((response) => {
         console.log(response)
@@ -71,12 +82,17 @@ const WorkspaceWrapper = (props) => {
         return response
       })
       .catch((error) => {
+        console.log(error)
         console.log('error!')
+        console.log(error.message)
         console.log(error.response)
-        if (error?.response?.data?.error?.message) {
-          enqueueSnackbar(error.response.data.error.message, {
-            variant: 'error'
-          })
+        if (error?.response?.data?.error?.message || error?.message) {
+          enqueueSnackbar(
+            error?.response?.data?.error.message || error.message,
+            {
+              variant: 'error'
+            }
+          )
         } else {
           enqueueSnackbar('Sembla que hi ha problemes...', {
             variant: 'error'
@@ -135,35 +151,57 @@ const WorkspaceWrapper = (props) => {
                 label="Descripció"
                 variant="outlined"
                 value={event.description}
+                onChange={(inputEvent) =>
+                  setEvent({ ...event, description: inputEvent.target.value })
+                }
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item sm={6} xs={12}>
               <DatePicker
                 label="Data d'inici"
                 value={event?.startDate}
                 inputFormat="dd/MM/yyyy"
                 variant="inline"
                 minDate={new Date()}
-                onChange={(date) => setEvent({ ...event, startDate: date })}
+                onChange={(date) =>
+                  setEvent({ ...event, startDate: date, period: 0 })
+                }
                 renderInput={(params) => (
                   <TextField variant="outlined" fullWidth {...params} />
                 )}
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item sm={6} xs={12}>
               <DatePicker
                 label="Data de fi"
                 value={event?.endDate}
                 inputFormat="dd/MM/yyyy"
                 variant="inline"
-                onChange={(date) => setEvent({ ...event, endDate: date })}
+                onChange={(date) =>
+                  setEvent({ ...event, endDate: date, period: 0 })
+                }
                 minDate={dayjs(event.startDate).toDate()}
                 renderInput={(params) => (
                   <TextField variant="outlined" fullWidth {...params} />
                 )}
               />
             </Grid>
+            {dayjs(event.endDate).diff(event.startDate, 'd') >= 6 && (
+              <Grid item xs={12}>
+                <Select
+                  fullWidth
+                  value={event?.period}
+                  onChange={(inputEvent) => {
+                    setEvent({ ...event, period: inputEvent.target.value })
+                  }}>
+                  <MenuItem value={0}>Tots els dies</MenuItem>
+                  <MenuItem value={dayjs(event.startDate).isoWeekday()}>
+                    Tots els {dayjs(event.startDate).format('dddd')}
+                  </MenuItem>
+                </Select>
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>

@@ -19,7 +19,7 @@ export default function ResourcePage(props) {
   const theme = useTheme()
   const [session, loading] = useSession()
 
-  const { resourcesMap, eventsMap, buildingId, token } = props
+  const { resourcesMap, eventsMap, buildingId, token, date } = props
 
   useEffect(() => {
     if (!loading && !session) signIn()
@@ -66,6 +66,7 @@ export default function ResourcePage(props) {
             events={eventsMap}
             buildingId={buildingId}
             token={token}
+            initialDate={date}
           />
         )}
       </Container>
@@ -81,7 +82,7 @@ export async function getServerSideProps(context) {
     return { props: {} }
   }
 
-  const { buildingId } = context.query
+  const { buildingId, date = false } = context.query
   const secret = process.env.SECRET
   const req = context.req
   const token = await getToken({ req, secret })
@@ -96,6 +97,12 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: { resourcesMap, eventsMap, token: token.accessToken, buildingId } // will be passed to the page component as props
+    props: {
+      resourcesMap,
+      eventsMap,
+      token: token.accessToken,
+      buildingId,
+      date
+    } // will be passed to the page component as props
   }
 }
