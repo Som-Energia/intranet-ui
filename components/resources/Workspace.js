@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import { useRouter } from 'next/router'
 
@@ -17,42 +18,42 @@ import JunglaCristal from 'components/resources/workspaces/JunglaCristal'
 import Balneari from 'components/resources/workspaces/Balneari'
 import Txernobil from 'components/resources/workspaces/Txernobil'
 
+dayjs.extend(customParseFormat)
+dayjs.locale('ca')
+
 const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
   const theme = useTheme()
   const router = useRouter()
-  dayjs.locale('ca')
+  const newDate = initialDate ? dayjs(initialDate, 'DD-MM-YYYY', 'ca') : dayjs()
 
-  const [date, setDate] = useState(
-    dayjs(initialDate || undefined)
-      .hour(0)
-      .minute(0)
-      .second(0)
-  )
+  const [refDate, setDate] = useState(newDate.hour(0).minute(0).second(0))
   const [resourcesMap] = useState(resources)
   const [eventsMap, setEventsMap] = useState(events)
   const [isLoading, setIsLoading] = useState(false)
 
   const nextDay = () => {
-    setDate(date.add(1, 'day'))
+    const newDate = refDate.add(1, 'day')
+    setDate(newDate)
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, date: dayjs(date).format('DD-MM-YYYY') }
+      query: { ...router.query, date: dayjs(newDate).format('DD-MM-YYYY') }
     })
   }
 
   const prevDay = () => {
-    setDate(date.subtract(1, 'day'))
+    const newDate = refDate.subtract(1, 'day')
+    setDate(newDate)
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, date: dayjs(date).format('DD-MM-YYYY') }
+      query: { ...router.query, date: dayjs(newDate).format('DD-MM-YYYY') }
     })
   }
 
-  const handleDate = (date) => {
-    setDate(date)
+  const handleDate = (newDate) => {
+    setDate(newDate)
     router.push({
       pathname: router.pathname,
-      query: { ...router.query, date: dayjs(date).format('DD-MM-YYYY') }
+      query: { ...router.query, date: dayjs(newDate).format('DD-MM-YYYY') }
     })
   }
 
@@ -67,8 +68,8 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
       events[item.resourceName] = getEvents(
         token,
         item?.resourceEmail,
-        date.toISOString(),
-        date.add(1, 'day').toISOString()
+        refDate.toISOString(),
+        refDate.add(1, 'day').toISOString()
       )
     }
 
@@ -89,14 +90,14 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
 
   useEffect(() => {
     getAsyncEvents()
-  }, [date])
+  }, [refDate])
 
   return (
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <DayMonthHeader
-            date={date}
+            date={refDate}
             handlePrev={prevDay}
             handleNext={nextDay}
             handlePicker={handleDate}
@@ -113,7 +114,7 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
                 isLoading={isLoading}
                 token={token}
                 reloadResources={reloadResources}
-                date={date}
+                date={refDate}
               />
             )}
 
@@ -124,7 +125,7 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
                 isLoading={isLoading}
                 token={token}
                 reloadResources={reloadResources}
-                date={date}
+                date={refDate}
               />
             )}
 
@@ -135,7 +136,7 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
                 isLoading={isLoading}
                 token={token}
                 reloadResources={reloadResources}
-                date={date}
+                date={refDate}
               />
             )}
 

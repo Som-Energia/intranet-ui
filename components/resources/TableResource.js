@@ -38,7 +38,8 @@ const TableResource = (props) => {
             padding: '8px 16px',
             borderRadius: '30px',
             fontSize: '0.9rem',
-            fontWeight: 400
+            fontWeight: 400,
+            width: '100%'
           }}>
           <Box
             sx={{
@@ -51,19 +52,19 @@ const TableResource = (props) => {
             {name && <ComputerIcon />}
             {name}
           </Box>
-          {summary && (
-            <Box
-              sx={{
-                fontSize: '1rem',
-                paddingTop: '6px',
-                fontWeight: 400,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}>
-              {summary}
-            </Box>
-          )}
+
+          <Box
+            sx={{
+              fontSize: '1rem',
+              paddingTop: '6px',
+              fontWeight: 400,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              minHeight: '1.75rem'
+            }}>
+            {summary}
+          </Box>
         </Box>
       )}
     </Table>
@@ -71,6 +72,7 @@ const TableResource = (props) => {
 }
 
 const Table = styled('div')(({ theme }) => ({
+  width: '100%',
   padding: '16px 8px',
   borderRadius: '5px',
   display: 'flex',
