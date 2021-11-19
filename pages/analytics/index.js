@@ -61,7 +61,6 @@ export default function WebformsAnalytics() {
   }, [session])
 
   const handleChange = (event, newValue) => {
-    console.log(newValue)
     setSelectedTab(newValue)
     setNumDays(tabs[newValue].value)
   }

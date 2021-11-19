@@ -28,7 +28,7 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
       .minute(0)
       .second(0)
   )
-  const [resourcesMap, setResourcesMap] = useState(resources)
+  const [resourcesMap] = useState(resources)
   const [eventsMap, setEventsMap] = useState(events)
   const [isLoading, setIsLoading] = useState(false)
 

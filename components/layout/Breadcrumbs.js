@@ -23,7 +23,6 @@ const Breadcrumbs = () => {
 
   useEffect(() => {
     if (router) {
-      console.log(router)
       const path = router.asPath.replace(/\?.*/g, '')
       const linkPath = path.split('/')
       linkPath.shift()

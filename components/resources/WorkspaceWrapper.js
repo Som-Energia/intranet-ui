@@ -62,9 +62,6 @@ const WorkspaceWrapper = (props) => {
     const endDate = dayjs(event?.endDate).add(1, 'd')
     endDate.hour(0).minute(0).second(0)
 
-    console.log(startDate.toISOString())
-    console.log(endDate.toISOString())
-
     insertEvent(
       token,
       selectedResource?.resourceEmail,
@@ -74,7 +71,6 @@ const WorkspaceWrapper = (props) => {
       event?.period
     )
       .then((response) => {
-        console.log(response)
         reloadResources()
         enqueueSnackbar('Reserva finalitzada correctament!', {
           variant: 'success'
@@ -83,9 +79,6 @@ const WorkspaceWrapper = (props) => {
       })
       .catch((error) => {
         console.log(error)
-        console.log('error!')
-        console.log(error.message)
-        console.log(error.response)
         if (error?.response?.data?.error?.message || error?.message) {
           enqueueSnackbar(
             error?.response?.data?.error.message || error.message,
