@@ -5,21 +5,18 @@ import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 import TableResource, { MeetingRoom } from '@components/resources/TableResource'
 import { Box } from '@mui/system'
 
+import useResourceDialog from './ResourceDialog'
+
 const JunglaCristal = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props
-  const [selectedResource, setSelectedResource] = useState(false)
 
-  const openDialog = (resource) => {
-    setSelectedResource(resource)
-  }
-
-  const closeDialog = () => {
-    setSelectedResource(false)
-  }
+  const [selectedResource, selectedEvent, openDialog, closeDialog] =
+    useResourceDialog()
 
   return (
     <WorkspaceWrapper
       selectedResource={selectedResource}
+      selectedEvent={selectedEvent}
       reloadResources={reloadResources}
       closeDialogFb={closeDialog}
       date={date}

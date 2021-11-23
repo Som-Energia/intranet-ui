@@ -3,27 +3,40 @@ import clsx from 'clsx'
 import { styled } from '@mui/styles'
 import Box from '@mui/material/Box'
 import { Skeleton } from '@mui/material'
+import { useSession } from 'next-auth/client'
+
+import { isOwner } from '@lib/resources'
 
 const TableResource = (props) => {
   const { name, resources, events, isLoading, onClick = () => {} } = props
 
+  const [session] = useSession()
   const [connected, setConnected] = useState(false)
   const error = events?.[name] instanceof Error
   const summary = events?.[name]?.items?.[0]?.summary || false
+  const owner = isOwner(events?.[name], session?.user)
 
   useEffect(() => {
     setConnected(resources?.[name])
   }, [resources])
 
+  const handleClick = () => {
+    console.log(events?.[name])
+    if ((!summary && !error) || owner) {
+      onClick(resources?.[name], owner ? events?.[name]?.items?.[0] : false)
+    }
+  }
+
   return (
     <Table
       id={name}
-      onClick={() => !summary && !error && onClick(resources?.[name])}
+      onClick={handleClick}
       className={clsx(
         isLoading && 'loading',
         !connected && 'no-connected',
         !error && !summary && 'free',
-        error && 'error'
+        error && 'error',
+        owner && 'is-owner'
       )}>
       {isLoading ? (
         <Skeleton height={40} variant="rectangular" />
@@ -117,6 +130,11 @@ const Table = styled('div')(({ theme }) => ({
     background: '#f2f2f2 !important',
     '&:hover': {
       border: '3px solid transparent'
+    }
+  },
+  '&.is-owner': {
+    '&:hover': {
+      cursor: 'pointer'
     }
   }
 }))

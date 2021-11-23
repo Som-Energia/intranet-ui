@@ -6,7 +6,7 @@ import isoWeek from 'dayjs/plugin/isoWeek'
 import 'dayjs/locale/ca'
 
 import { useTheme } from '@mui/styles'
-import { resources, insertEvent } from '@lib/resources'
+import { resources, insertEvent, deleteEvent } from '@lib/resources'
 import { slugify } from '@lib/utils'
 
 import { useSnackbar } from 'notistack'
@@ -34,6 +34,7 @@ const WorkspaceWrapper = (props) => {
   const {
     children,
     selectedResource = false,
+    selectedEvent = false,
     closeDialogFb = () => {},
     reloadResources,
     date,
@@ -73,6 +74,33 @@ const WorkspaceWrapper = (props) => {
       .then((response) => {
         reloadResources()
         enqueueSnackbar('Reserva finalitzada correctament!', {
+          variant: 'success'
+        })
+        return response
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error?.response?.data?.error?.message || error?.message) {
+          enqueueSnackbar(
+            error?.response?.data?.error.message || error.message,
+            {
+              variant: 'error'
+            }
+          )
+        } else {
+          enqueueSnackbar('Sembla que hi ha problemes...', {
+            variant: 'error'
+          })
+        }
+      })
+    closeDialogFb()
+  }
+
+  const handleDelete = () => {
+    deleteEvent(token, selectedResource?.resourceEmail, selectedEvent?.id)
+      .then((response) => {
+        reloadResources()
+        enqueueSnackbar('Reserva esborrada correctament!', {
           variant: 'success'
         })
         return response
@@ -141,6 +169,7 @@ const WorkspaceWrapper = (props) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                disabled={selectedEvent}
                 label="Descripció"
                 variant="outlined"
                 value={event.description}
@@ -153,6 +182,7 @@ const WorkspaceWrapper = (props) => {
               <DatePicker
                 label="Data d'inici"
                 value={event?.startDate}
+                disabled={selectedEvent}
                 inputFormat="dd/MM/yyyy"
                 variant="inline"
                 minDate={new Date()}
@@ -169,6 +199,7 @@ const WorkspaceWrapper = (props) => {
               <DatePicker
                 label="Data de fi"
                 value={event?.endDate}
+                disabled={selectedEvent}
                 inputFormat="dd/MM/yyyy"
                 variant="inline"
                 onChange={(date) =>
@@ -184,6 +215,7 @@ const WorkspaceWrapper = (props) => {
               <Grid item xs={12}>
                 <Select
                   fullWidth
+                  disabled={selectedEvent}
                   value={event?.period}
                   onChange={(inputEvent) => {
                     setEvent({ ...event, period: inputEvent.target.value })
@@ -208,14 +240,25 @@ const WorkspaceWrapper = (props) => {
             disableElevation>
             Cancel·la
           </Button>
-          <Button
-            onClick={handleSubmit}
-            sx={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
-            color="primary"
-            variant="contained"
-            disableElevation>
-            Accepta
-          </Button>
+          {!!selectedEvent ? (
+            <Button
+              onClick={handleDelete}
+              sx={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
+              color="error"
+              variant="contained"
+              disableElevation>
+              Esborra
+            </Button>
+          ) : (
+            <Button
+              onClick={handleSubmit}
+              sx={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
+              color="primary"
+              variant="contained"
+              disableElevation>
+              Accepta
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </Box>

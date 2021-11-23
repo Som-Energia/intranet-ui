@@ -6,7 +6,7 @@ import { useSession, getSession, signIn } from 'next-auth/client'
 
 import { welcomeMessage } from '@lib/utils'
 
-import { Box, Container, Typography, Paper, Grid } from '@mui/material'
+import { Container, Typography, Paper, Grid } from '@mui/material'
 import { useTheme } from '@mui/styles'
 
 const menuItems = [
@@ -39,7 +39,7 @@ export default function Home() {
         <Typography
           variant="h5"
           sx={{ marginTop: theme.spacing(1), fontSize: '1.25rem' }}>
-          Ets a l&apos;espai virtual de l&apos;ET
+          Ets a la intranet de l&apos;ET de Som Energia
         </Typography>
         <Grid container spacing={5} sx={{ marginTop: theme.spacing(1) }}>
           {menuItems.map(({ title, path, icon }) => (
