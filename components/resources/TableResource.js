@@ -34,7 +34,7 @@ const TableResource = (props) => {
       className={clsx(
         isLoading && 'loading',
         !connected && 'no-connected',
-        !error && !summary && 'free',
+        connected && !error && !summary && 'free',
         error && 'error',
         owner && 'is-owner'
       )}>
