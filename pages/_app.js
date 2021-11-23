@@ -56,7 +56,7 @@ export default function App(props) {
               clientMaxAge: 300,
               keepAlive: 5 * 60
             }}>
-            <SnackbarProvider maxSnack={3}>
+            <SnackbarProvider maxSnack={1}>
               <Box
                 component="div"
                 sx={{

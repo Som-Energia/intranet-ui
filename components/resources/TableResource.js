@@ -21,7 +21,6 @@ const TableResource = (props) => {
   }, [resources])
 
   const handleClick = () => {
-    console.log(events?.[name])
     if ((!summary && !error) || owner) {
       onClick(resources?.[name], owner ? events?.[name]?.items?.[0] : false)
     }

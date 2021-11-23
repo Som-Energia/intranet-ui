@@ -5,7 +5,6 @@ const useResourceDialog = () => {
   const [selectedEvent, setSelectedEvent] = useState(false)
 
   const openDialog = (resource, event = false) => {
-    console.log(event)
     setSelectedResource(resource)
     event && setSelectedEvent(event)
   }

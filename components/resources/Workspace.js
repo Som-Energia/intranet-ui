@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper'
 import { useTheme } from '@mui/styles'
 
 import { getEvents } from '@lib/resources'
+import { useSnackbar } from 'notistack'
 
 import DayMonthHeader from 'components/resources/DayMonthHeader'
 
@@ -24,6 +25,7 @@ dayjs.locale('ca')
 const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
   const theme = useTheme()
   const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
   const newDate = initialDate ? dayjs(initialDate, 'DD-MM-YYYY', 'ca') : dayjs()
 
   const [refDate, setDate] = useState(newDate.hour(0).minute(0).second(0))
@@ -76,14 +78,29 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
     Promise.all(Object.values(events))
       .then((values) => {
         let index = 0
+        let errors = 0
         for (const item of Object.values(resourcesMap)) {
           events[item.resourceName] = values[index]
+          if (values[index] instanceof Error) {
+            errors++
+          }
           index++
+        }
+        if (errors) {
+          enqueueSnackbar(
+            'Has superat el límit de peticions per minut! Espera uns segons...',
+            {
+              variant: 'error',
+              autoHideDuration: 30000
+            }
+          )
+          errors = 0
         }
         setEventsMap(events)
         setIsLoading(false)
       })
       .catch((reason) => {
+        console.log('promise all')
         console.log(reason)
       })
   }
