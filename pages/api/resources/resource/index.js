@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/client'
-import prisma from '../../../lib/prisma'
+import prisma from '@lib/prisma'
 
 // GET /api/workspace
 export default async function handle(req, res) {
