@@ -1,15 +1,13 @@
 import { Grid } from '@mui/material'
-
 import WorkspaceItem from '@components/resources/WorkspaceItem'
-import { resources } from '@lib/resources'
 
-const WorkspaceList = () => {
+const WorkspaceList = ({ workspaces }) => {
   return (
     <>
       <Grid container spacing={3}>
-        {resources.map((resource, index) => (
-          <Grid key={index} item xs={6} sm={3}>
-            <WorkspaceItem {...resource} />
+        {workspaces.map((workspace, index) => (
+          <Grid key={index} item xs={12} sm={3}>
+            <WorkspaceItem {...workspace} />
           </Grid>
         ))}
       </Grid>

@@ -1,8 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { useTheme } from '@mui/styles'
-
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -11,15 +9,16 @@ import MuiLink from '@mui/material/Link'
 
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined'
 
+import { slugify } from '@lib/utils'
+
 const WorkspaceItem = (props) => {
   const { id, name, place } = props
-  const theme = useTheme()
 
   return (
     <>
       <Card sx={{ display: 'flex' }} elevation={0}>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <Link href={`/resources/${id}`} passHref>
+          <Link href={`/resources/${id}-${slugify(name)}`} passHref>
             <MuiLink sx={{ textDecoration: 'none' }} color="inherit">
               <CardContent
                 sx={{

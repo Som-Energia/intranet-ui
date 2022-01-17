@@ -71,13 +71,26 @@ export default function WebformsAnalytics() {
         <title>Webforms Analytics | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container sx={{ padding: theme.spacing(4) }}>
+      <Container
+        sx={{
+          padding: theme.spacing(2),
+          '@media (min-width: 780px)': {
+            padding: theme.spacing(4)
+          }
+        }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            '@media (max-width: 780px)': {
+              flexDirection: 'column-reverse',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start'
+            }
           }}>
+          {' '}
           <Typography
             variant="h3"
             sx={{

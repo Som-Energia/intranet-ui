@@ -46,6 +46,8 @@ const WorkspaceWrapper = (props) => {
   const [building, setBuilding] = useState()
   const { enqueueSnackbar } = useSnackbar()
 
+  const maxDate = dayjs().endOf('year').toDate()
+
   const [event, setEvent] = useState({
     startDate: date,
     endDate: date,
@@ -58,14 +60,12 @@ const WorkspaceWrapper = (props) => {
   }, [date])
 
   const handleSubmit = () => {
-    const startDate = dayjs(event?.startDate)
-    startDate.hour(0).minute(0).second(0)
+    const startDate = dayjs(event?.startDate).startOf('day')
     const endDate = dayjs(event?.endDate).add(1, 'd')
-    endDate.hour(0).minute(0).second(0)
+    endDate.startOf('day')
 
     insertEvent(
-      token,
-      selectedResource?.resourceEmail,
+      selectedResource?.id,
       startDate.toISOString(),
       endDate.toISOString(),
       event?.description,
@@ -139,7 +139,7 @@ const WorkspaceWrapper = (props) => {
         <DialogTitle>
           <Box variant="span" sx={{ display: 'flex', alignItems: 'center' }}>
             <EventAvailableOutlinedIcon /> &nbsp;{'Reserva '}
-            {selectedResource?.resourceName}
+            {selectedResource?.name}
           </Box>
         </DialogTitle>
         <DialogContent dividers={true}>
@@ -169,7 +169,7 @@ const WorkspaceWrapper = (props) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                disabled={selectedEvent}
+                disabled={!!selectedEvent}
                 label="Descripció"
                 variant="outlined"
                 value={event.description}
@@ -182,10 +182,11 @@ const WorkspaceWrapper = (props) => {
               <DatePicker
                 label="Data d'inici"
                 value={event?.startDate}
-                disabled={selectedEvent}
+                disabled={!!selectedEvent}
                 inputFormat="dd/MM/yyyy"
                 variant="inline"
                 minDate={new Date()}
+                maxDate={maxDate}
                 onChange={(date) =>
                   setEvent({ ...event, startDate: date, period: 0 })
                 }
@@ -199,13 +200,14 @@ const WorkspaceWrapper = (props) => {
               <DatePicker
                 label="Data de fi"
                 value={event?.endDate}
-                disabled={selectedEvent}
+                disabled={!!selectedEvent}
                 inputFormat="dd/MM/yyyy"
                 variant="inline"
                 onChange={(date) =>
                   setEvent({ ...event, endDate: date, period: 0 })
                 }
                 minDate={dayjs(event.startDate).toDate()}
+                maxDate={maxDate}
                 renderInput={(params) => (
                   <TextField variant="outlined" fullWidth {...params} />
                 )}
@@ -215,7 +217,7 @@ const WorkspaceWrapper = (props) => {
               <Grid item xs={12}>
                 <Select
                   fullWidth
-                  disabled={selectedEvent}
+                  disabled={!!selectedEvent}
                   value={event?.period}
                   onChange={(inputEvent) => {
                     setEvent({ ...event, period: inputEvent.target.value })

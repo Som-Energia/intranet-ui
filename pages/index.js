@@ -32,7 +32,7 @@ export default function Home() {
       </Head>
       <Container sx={{ padding: theme.spacing(4) }}>
         {session && (
-          <Typography variant="h5" sx={{ fontWeight: 500 }}>
+          <Typography variant="h3" sx={{ fontSize: '1.5rem', fontWeight: 500 }}>
             {`${welcomeMessage()} ${session.user?.name}`},
           </Typography>
         )}
@@ -43,7 +43,7 @@ export default function Home() {
         </Typography>
         <Grid container spacing={5} sx={{ marginTop: theme.spacing(1) }}>
           {menuItems.map(({ title, path, icon }) => (
-            <Grid item key={path} sx={{ minWidth: '180px' }}>
+            <Grid item key={path} xs={6} md={2}>
               <Paper
                 sx={{
                   cursor: 'pointer',

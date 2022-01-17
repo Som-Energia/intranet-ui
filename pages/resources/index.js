@@ -7,12 +7,14 @@ import { useTheme } from '@mui/styles'
 
 import WorkspaceList from 'components/resources/WorkspaceList'
 import Breadcrumbs from '@components/layout/Breadcrumbs'
+import { getWorkspaces } from '@lib/resources'
 
 require('typeface-montserrat')
 
-export default function ResourcesPage() {
+export default function ResourcesPage(props) {
   const theme = useTheme()
   const [session, loading] = useSession()
+  const { workspaces } = props
 
   useEffect(() => {
     if (!loading && !session) signIn()
@@ -30,12 +32,24 @@ export default function ResourcesPage() {
         <title>Reserva d&apos;espais | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container sx={{ padding: theme.spacing(4) }}>
+      <Container
+        sx={{
+          padding: theme.spacing(2),
+          '@media (min-width: 780px)': {
+            padding: theme.spacing(4)
+          }
+        }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            '@media (max-width: 780px)': {
+              flexDirection: 'column-reverse',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start'
+            }
           }}>
           <Typography
             variant="h3"
@@ -48,7 +62,9 @@ export default function ResourcesPage() {
           </Typography>
           <Breadcrumbs />
         </Box>
-        {session && <WorkspaceList />}
+        <Box sx={{ paddingTop: '24px' }}>
+          {session && <WorkspaceList workspaces={workspaces} />}
+        </Box>
       </Container>
     </>
   )
@@ -60,5 +76,7 @@ export async function getServerSideProps(context) {
     context.res.statusCode = 302
     context.res.setHeader('Location', '/auth/signin')
   }
-  return { props: {} }
+
+  const workspaces = await getWorkspaces()
+  return { props: { workspaces } }
 }

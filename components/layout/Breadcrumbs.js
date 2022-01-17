@@ -43,7 +43,12 @@ const Breadcrumbs = () => {
   }
 
   return (
-    <MuiBreadcrumbs aria-label="breadcrumbs">
+    <MuiBreadcrumbs
+      aria-label="breadcrumbs"
+      sx={{
+        whiteSpace: 'nowrap',
+        '.MuiBreadcrumbs-ol': { flexWrap: 'nowrap' }
+      }}>
       <Link href="/">
         <MuiLink color="inherit">
           <IconButton edge="end" size="small">

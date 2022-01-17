@@ -12,14 +12,14 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import Breadcrumbs from 'components/layout/Breadcrumbs'
 import Workspace from 'components/resources/Workspace'
 
-import { resources, getResources } from 'lib/resources'
+import { getResources } from 'lib/resources'
 require('typeface-montserrat')
 
 export default function ResourcePage(props) {
   const theme = useTheme()
   const [session, loading] = useSession()
 
-  const { resourcesMap, eventsMap, buildingId, token, date } = props
+  const { resourcesMap, eventsMap, workspaceId, token, date, workspace } = props
 
   useEffect(() => {
     if (!loading && !session) signIn()
@@ -37,12 +37,24 @@ export default function ResourcePage(props) {
         <title>Reserva d&apos;espais | Som Energia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container sx={{ padding: theme.spacing(4) }}>
+      <Container
+        sx={{
+          padding: theme.spacing(2),
+          '@media (min-width: 780px)': {
+            padding: theme.spacing(4)
+          }
+        }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            '@media (max-width: 780px)': {
+              flexDirection: 'column-reverse',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start'
+            }
           }}>
           <Typography
             variant="h3"
@@ -51,24 +63,27 @@ export default function ResourcePage(props) {
               fontSize: '1.5rem',
               fontWeight: 500,
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
+              whiteSpace: 'nowrap'
             }}>
             <PlaceOutlinedIcon />
             &nbsp;
-            {resources.find((resource) => resource.id === buildingId)?.name}
+            {workspace?.name}
           </Typography>
           <Breadcrumbs />
         </Box>
-        
-        {session && (
-          <Workspace
-            resources={resourcesMap}
-            events={eventsMap}
-            buildingId={buildingId}
-            token={token}
-            initialDate={date}
-          />
-        )}
+        <Box sx={{ paddingTop: '24px' }}>
+          {session && (
+            <Workspace
+              resources={resourcesMap}
+              events={eventsMap}
+              workspaceId={workspaceId}
+              token={token}
+              initialDate={date}
+              {...workspace}
+            />
+          )}
+        </Box>
       </Container>
     </>
   )
@@ -82,18 +97,19 @@ export async function getServerSideProps(context) {
     return { props: {} }
   }
 
-  const { buildingId, date = false } = context.query
+  const { workspaceId, date = false } = context.query
   const secret = process.env.SECRET
   const req = context.req
   const token = await getToken({ req, secret })
 
-  const resources = (await getResources(token.accessToken, buildingId)) || []
+  const numWorkspaceId = workspaceId.replace(/-.*/, '')
+  const workspace = (await getResources(numWorkspaceId)) || []
 
   const eventsMap = {}
   const resourcesMap = {}
-  const items = resources?.items || []
-  for (const item of items) {
-    resourcesMap[item.resourceName] = { ...item }
+  const resources = workspace?.resources || []
+  for (const resource of resources) {
+    resourcesMap[resource.name] = { ...resource }
   }
 
   return {
@@ -101,7 +117,8 @@ export async function getServerSideProps(context) {
       resourcesMap,
       eventsMap,
       token: token.accessToken,
-      buildingId,
+      workspace,
+      workspaceId: numWorkspaceId,
       date
     } // will be passed to the page component as props
   }

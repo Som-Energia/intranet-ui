@@ -5,6 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import { useRouter } from 'next/router'
 
+import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
@@ -22,13 +23,22 @@ import Txernobil from 'components/resources/workspaces/Txernobil'
 dayjs.extend(customParseFormat)
 dayjs.locale('ca')
 
-const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
+const Workspace = ({
+  resources,
+  events,
+  token,
+  buildingId,
+  initialDate,
+  name
+}) => {
   const theme = useTheme()
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
-  const newDate = initialDate ? dayjs(initialDate, 'DD-MM-YYYY', 'ca') : dayjs()
+  const newDate = initialDate
+    ? dayjs(initialDate, 'DD-MM-YYYY', 'ca').startOf('day')
+    : dayjs().startOf('day')
 
-  const [refDate, setDate] = useState(newDate.hour(0).minute(0).second(0))
+  const [refDate, setDate] = useState(newDate.startOf('day'))
   const [resourcesMap] = useState(resources)
   const [eventsMap, setEventsMap] = useState(events)
   const [isLoading, setIsLoading] = useState(false)
@@ -67,9 +77,8 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
     setIsLoading(true)
     const events = {}
     for (const item of Object.values(resourcesMap)) {
-      events[item.resourceName] = getEvents(
-        token,
-        item?.resourceEmail,
+      events[item.name] = getEvents(
+        item?.id,
         refDate.toISOString(),
         refDate.add(1, 'day').toISOString()
       )
@@ -80,7 +89,7 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
         let index = 0
         let errors = 0
         for (const item of Object.values(resourcesMap)) {
-          events[item.resourceName] = values[index]
+          events[item.name] = values[index]
           if (values[index] instanceof Error) {
             errors++
           }
@@ -100,7 +109,6 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
         setIsLoading(false)
       })
       .catch((reason) => {
-        console.log('promise all')
         console.log(reason)
       })
   }
@@ -123,50 +131,59 @@ const Workspace = ({ resources, events, token, buildingId, initialDate }) => {
         <Grid item xs={12}>
           <Paper
             elevation={0}
-            sx={{ marginTop: theme.spacing(1), padding: theme.spacing(4) }}>
-            {buildingId === 'MONTURIOL' && (
-              <JunglaCristal
-                resources={resourcesMap}
-                events={eventsMap}
-                isLoading={isLoading}
-                token={token}
-                reloadResources={reloadResources}
-                date={refDate}
-              />
-            )}
+            sx={{
+              marginTop: theme.spacing(1),
+              padding: theme.spacing(4),
+              width: 'auto',
+              overflowX: 'scroll'
+            }}>
+            <Box sx={{ minWidth: '850px' }}>
+              {buildingId === 'MONTURIOL' && (
+                <JunglaCristal
+                  resources={resourcesMap}
+                  events={eventsMap}
+                  isLoading={isLoading}
+                  token={token}
+                  reloadResources={reloadResources}
+                  date={refDate}
+                />
+              )}
 
-            {buildingId === 'GIROEMPREN' && (
-              <Balneari
-                resources={resourcesMap}
-                events={eventsMap}
-                isLoading={isLoading}
-                token={token}
-                reloadResources={reloadResources}
-                date={refDate}
-              />
-            )}
+              {buildingId === 'GIROEMPREN' && (
+                <Balneari
+                  resources={resourcesMap}
+                  events={eventsMap}
+                  isLoading={isLoading}
+                  token={token}
+                  reloadResources={reloadResources}
+                  date={refDate}
+                />
+              )}
 
-            {buildingId === 'TXERNOBIL' && (
-              <Txernobil
-                resources={resourcesMap}
-                events={eventsMap}
-                isLoading={isLoading}
-                token={token}
-                reloadResources={reloadResources}
-                date={refDate}
-              />
-            )}
+              {buildingId === 'TXERNOBIL' && (
+                <Txernobil
+                  resources={resourcesMap}
+                  events={eventsMap}
+                  isLoading={isLoading}
+                  token={token}
+                  reloadResources={reloadResources}
+                  date={refDate}
+                />
+              )}
 
-            {!['MONTURIOL', 'GIROEMPREN', 'TXERNOBIL'].includes(buildingId) && (
-              <h3
-                sx={{
-                  fontSize: '16px',
-                  textTransform: 'uppercase',
-                  margin: '24px 0'
-                }}>
-                Espai pendent de mapejar
-              </h3>
-            )}
+              {!['MONTURIOL', 'GIROEMPREN', 'TXERNOBIL'].includes(
+                buildingId
+              ) && (
+                <h3
+                  sx={{
+                    fontSize: '16px',
+                    textTransform: 'uppercase',
+                    margin: '24px 0'
+                  }}>
+                  Espai pendent de mapejar
+                </h3>
+              )}
+            </Box>
           </Paper>
         </Grid>
       </Grid>

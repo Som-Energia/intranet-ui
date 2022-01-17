@@ -8,7 +8,7 @@ import Router from 'next/router'
 import { Box, CssBaseline } from '@mui/material'
 
 import { CacheProvider } from '@emotion/react'
-import { Provider } from 'next-auth/client'
+import { Provider, useSession } from 'next-auth/client'
 import { SnackbarProvider } from 'notistack'
 
 import { ThemeProvider } from '@mui/material/styles'
@@ -37,6 +37,7 @@ Router.events.on('routeChangeError', progress.finish)
 const clientSideEmotionCache = createEmotionCache()
 export default function App(props) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
+  const [session, loading] = useSession()
 
   return (
     <CacheProvider value={emotionCache}>

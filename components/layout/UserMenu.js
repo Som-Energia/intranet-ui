@@ -3,12 +3,19 @@ import { useState } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 
 import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
+import ListItemText from '@mui/material/ListItemText'
+import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+
 import { makeStyles } from '@mui/styles'
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 export default function UserMenu() {
   const classes = useStyles()
@@ -36,8 +43,16 @@ export default function UserMenu() {
         </IconButton>
       )}
       {session && (
-        <div className={classes.userProfile}>
-          <span>{session?.user?.name}</span>
+        <Box className={classes.userProfile}>
+          <Box
+            component="span"
+            sx={{
+              '@media (max-width: 780px)': {
+                display: 'none'
+              }
+            }}>
+            {session?.user?.name}
+          </Box>
           <IconButton
             onClick={handleClick}
             aria-controls="userMenu"
@@ -50,9 +65,21 @@ export default function UserMenu() {
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}>
-            <MenuItem onClick={() => signOut()}>Logout</MenuItem>
+            <MenuItem sx={{ fontSize: '0.85rem' }} disabled>
+              <ListItemIcon>
+                <PersonOutlineIcon />
+              </ListItemIcon>
+              {session?.user?.email}
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={() => signOut()}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText>Tanca sessió</ListItemText>
+            </MenuItem>
           </Menu>
-        </div>
+        </Box>
       )}
     </>
   )

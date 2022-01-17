@@ -9,20 +9,23 @@ import { isOwner } from '@lib/resources'
 
 const TableResource = (props) => {
   const { name, resources, events, isLoading, onClick = () => {} } = props
-
   const [session] = useSession()
   const [connected, setConnected] = useState(false)
+
   const error = events?.[name] instanceof Error
-  const summary = events?.[name]?.items?.[0]?.summary || false
+  const summary = events?.[name]?.events?.[0]?.summary || false
   const owner = isOwner(events?.[name], session?.user)
 
   useEffect(() => {
-    setConnected(resources?.[name])
+    setConnected(resources.find((item) => name === item.name))
   }, [resources])
 
   const handleClick = () => {
     if ((!summary && !error) || owner) {
-      onClick(resources?.[name], owner ? events?.[name]?.items?.[0] : false)
+      onClick(
+        resources.find((item) => item.name === name),
+        owner ? events?.[name]?.events?.[0] : false
+      )
     }
   }
 
@@ -38,7 +41,7 @@ const TableResource = (props) => {
         owner && 'is-owner'
       )}>
       {isLoading ? (
-        <Skeleton height={40} variant="rectangular" />
+        <Skeleton height={70} variant="rectangular" />
       ) : (
         <Box
           sx={{
@@ -93,11 +96,11 @@ const Table = styled('div')(({ theme }) => ({
   alignItems: 'center',
   fontSize: '1rem',
   fontWeight: 500,
-  color: '#546714',
-  background: '#96b63366',
-  border: '3px solid transparent',
+  color: '#fff',
+  background: '#96b633b3',
+  border: '2px solid transparent',
   '&:hover': {
-    border: '3px solid transparent'
+    border: '2px solid transparent'
   },
   '&.loading': {
     display: 'inline-block',
@@ -105,19 +108,19 @@ const Table = styled('div')(({ theme }) => ({
     overflow: 'hidden',
     color: '#f2f2f2',
     background: '#f2f2f2 !important',
-    border: '3px solid transparent',
+    border: '2px solid transparent',
 
     '&:hover': {
-      border: '3px solid transparent'
+      border: '2px solid transparent'
     }
   },
   '&.free': {
     cursor: 'pointer',
-    color: '#546714',
-    background: theme.palette.primary.main,
+    color: '#00000090',
+    background: '#96b633b3',
     '&:hover': {
-      color: '#ffffff',
-      background: '#546714'
+      background: '#96b633b3',
+      borderColor: '#00000070'
     }
   },
   '&.error': {
@@ -126,14 +129,18 @@ const Table = styled('div')(({ theme }) => ({
   },
   '&.no-connected': {
     cursor: 'default',
+    color: '#72808f',
     background: '#f2f2f2 !important',
     '&:hover': {
-      border: '3px solid transparent'
+      border: '2px solid transparent'
     }
   },
   '&.is-owner': {
+    color: '#674214',
+    background: '#f7d08875',
     '&:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
+      borderColor: '#674214'
     }
   }
 }))

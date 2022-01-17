@@ -19,6 +19,7 @@
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.6",
     "@mui/styles": "^5.0.2",
+    "@prisma/client": "^3.5.0",
     "axios": "^0.21.1",
     "date-fns": "^2.21.3",
     "dayjs": "^1.10.4",
@@ -42,6 +43,7 @@
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-react": "^7.22.0",
     "prettier-config-standard": "^4.0.0",
+    "prisma": "3.5.0",
     "standard": "16.0.3"
   },
   "prettier": "prettier-config-standard"

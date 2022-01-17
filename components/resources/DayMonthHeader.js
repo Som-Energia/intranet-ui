@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 
@@ -12,6 +13,8 @@ import { Typography } from '@mui/material'
 
 const DayMonthHeader = (props) => {
   const { date, handlePrev, handleNext, handlePicker } = props
+  const [open, setOpen] = useState(false)
+
   return (
     <Paper
       sx={{
@@ -26,12 +29,15 @@ const DayMonthHeader = (props) => {
       </IconButton>
       <Box sx={{ display: 'flex' }}>
         <DatePicker
-          label="Custom input"
+          open={open}
           value={date}
           minDate={new Date()}
-          onChange={(newValue) =>
-            handlePicker(dayjs(newValue).hour(0).minute(0).second(0))
-          }
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          onChange={(newValue) => {
+            handlePicker(dayjs(newValue).startOf('day'))
+            setOpen(false)
+          }}
           renderInput={({ inputRef, inputProps, InputProps }) => (
             <>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -39,7 +45,16 @@ const DayMonthHeader = (props) => {
               </Box>
               <Typography
                 variant="h5"
-                sx={{ fontSize: '1.5rem', fontWeight: 400, margin: '16px' }}
+                onClick={() => setOpen(true)}
+                sx={{
+                  fontSize: '1.2rem',
+                  fontWeight: 400,
+                  margin: '16px',
+                  cursor: 'pointer',
+                  '@media (min-width: 780px)': {
+                    fontSize: '1.5rem'
+                  }
+                }}
                 ref={inputRef}>
                 {date.format('dddd, DD/MM/YYYY')}
               </Typography>

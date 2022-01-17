@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import { styled } from '@mui/material/styles'
 
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 import TableResource, { MeetingRoom } from '@components/resources/TableResource'
 import { Box } from '@mui/system'
 
-import useResourceDialog from './ResourceDialog'
+import useResourceDialog from '@components/resources/ResourceDialog'
 
 const JunglaCristal = (props) => {
   const { resources, events, isLoading, token, reloadResources, date } = props
