@@ -6,7 +6,16 @@ import TableResource from '@components/resources/TableResource'
 import { MeetingRoom } from '../TableResource'
 
 const Txernobil = (props) => {
-  const { resources, events, isLoading, token, date, reloadResources } = props
+  const {
+    resources,
+    events,
+    isLoading,
+    token,
+    date,
+    reloadResources,
+    name,
+    place
+  } = props
   const [selectedResource, setSelectedResource] = useState(false)
 
   const openDialog = (resource) => {
@@ -23,7 +32,9 @@ const Txernobil = (props) => {
       closeDialogFb={closeDialog}
       reloadResources={reloadResources}
       date={date}
-      token={token}>
+      token={token}
+      name={name}
+      place={place}>
       <Wrapper>
         <Space>
           <Llegenda>Entrada principal</Llegenda>

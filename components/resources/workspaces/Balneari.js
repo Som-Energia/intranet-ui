@@ -5,7 +5,16 @@ import TableResource, { MeetingRoom } from '@components/resources/TableResource'
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 
 const Balneari = (props) => {
-  const { resources, events, isLoading, token, reloadResources, date } = props
+  const {
+    resources,
+    events,
+    isLoading,
+    token,
+    reloadResources,
+    date,
+    name,
+    place
+  } = props
 
   const [selectedResource, setSelectedResource] = useState(false)
 
@@ -23,7 +32,9 @@ const Balneari = (props) => {
       reloadResources={reloadResources}
       closeDialogFb={closeDialog}
       date={date}
-      token={token}>
+      token={token}
+      name={name}
+      place={place}>
       <MeetingRooms>
         <MeetingRoom name="BALNEARI_SALA" sx={{ height: '350px' }} />
       </MeetingRooms>

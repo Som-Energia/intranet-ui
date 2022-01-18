@@ -38,12 +38,13 @@ const WorkspaceWrapper = (props) => {
     closeDialogFb = () => {},
     reloadResources,
     date,
-    token
+    token,
+    name,
+    place
   } = props
 
-  const theme = useTheme()
-  const [session, loading] = useSession()
-  const [building, setBuilding] = useState()
+  // const theme = useTheme()
+  const [session] = useSession()
   const { enqueueSnackbar } = useSnackbar()
 
   const maxDate = dayjs().endOf('year').toDate()
@@ -76,6 +77,7 @@ const WorkspaceWrapper = (props) => {
         enqueueSnackbar('Reserva finalitzada correctament!', {
           variant: 'success'
         })
+        closeDialogFb()
         return response
       })
       .catch((error) => {
@@ -92,8 +94,8 @@ const WorkspaceWrapper = (props) => {
             variant: 'error'
           })
         }
+        closeDialogFb()
       })
-    closeDialogFb()
   }
 
   const handleDelete = () => {
@@ -103,6 +105,7 @@ const WorkspaceWrapper = (props) => {
         enqueueSnackbar('Reserva esborrada correctament!', {
           variant: 'success'
         })
+        closeDialogFb()
         return response
       })
       .catch((error) => {
@@ -119,18 +122,9 @@ const WorkspaceWrapper = (props) => {
             variant: 'error'
           })
         }
+        closeDialogFb()
       })
-    closeDialogFb()
   }
-
-  useEffect(() => {
-    const filteredResource = resources.find(
-      (resource) =>
-        resource.buildingId ===
-        slugify(selectedResource.buildingId).toUpperCase()
-    )
-    setBuilding(filteredResource)
-  }, [selectedResource])
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -156,13 +150,13 @@ const WorkspaceWrapper = (props) => {
                   sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
                   fontSize="small"
                 />
-                &nbsp;{building?.place}
+                &nbsp;{place}
                 &nbsp;&nbsp;
                 <PlaceOutlinedIcon
                   sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
                   fontSize="small"
                 />
-                &nbsp;{building?.name}
+                &nbsp;{name}
               </Box>
             </Grid>
 

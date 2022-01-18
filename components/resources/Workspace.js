@@ -29,7 +29,8 @@ const Workspace = ({
   token,
   buildingId,
   initialDate,
-  name
+  name,
+  place
 }) => {
   const theme = useTheme()
   const router = useRouter()
@@ -140,6 +141,8 @@ const Workspace = ({
             <Box sx={{ minWidth: '850px' }}>
               {buildingId === 'MONTURIOL' && (
                 <JunglaCristal
+                  name={name}
+                  place={place}
                   resources={resourcesMap}
                   events={eventsMap}
                   isLoading={isLoading}
@@ -151,6 +154,8 @@ const Workspace = ({
 
               {buildingId === 'GIROEMPREN' && (
                 <Balneari
+                  name={name}
+                  place={place}
                   resources={resourcesMap}
                   events={eventsMap}
                   isLoading={isLoading}
@@ -162,6 +167,8 @@ const Workspace = ({
 
               {buildingId === 'TXERNOBIL' && (
                 <Txernobil
+                  name={name}
+                  place={place}
                   resources={resourcesMap}
                   events={eventsMap}
                   isLoading={isLoading}
