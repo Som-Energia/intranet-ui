@@ -5,9 +5,11 @@ import * as dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import 'dayjs/locale/ca'
 
-import { useTheme } from '@mui/styles'
-import { resources, insertEvent, deleteEvent } from '@lib/resources'
-import { slugify } from '@lib/utils'
+import DeleteIcon from '@mui/icons-material/Delete'
+import SendIcon from '@mui/icons-material/Send'
+import CircularProgress from '@mui/material/CircularProgress'
+
+import { insertEvent, deleteEvent } from '@lib/resources'
 
 import { useSnackbar } from 'notistack'
 
@@ -56,11 +58,18 @@ const WorkspaceWrapper = (props) => {
     period: 0
   })
 
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(false)
+  }, [selectedResource])
+
   useEffect(() => {
     setEvent({ ...event, startDate: date, endDate: date })
   }, [date])
 
   const handleSubmit = () => {
+    setLoading(true)
     const startDate = dayjs(event?.startDate).startOf('day')
     const endDate = dayjs(event?.endDate).add(1, 'd')
     endDate.startOf('day')
@@ -94,18 +103,21 @@ const WorkspaceWrapper = (props) => {
             variant: 'error'
           })
         }
+      })
+      .finally(() => {
+        setLoading(false)
         closeDialogFb()
       })
   }
 
   const handleDelete = () => {
+    setLoading(true)
     deleteEvent(token, selectedResource?.resourceEmail, selectedEvent?.id)
       .then((response) => {
         reloadResources()
         enqueueSnackbar('Reserva esborrada correctament!', {
           variant: 'success'
         })
-        closeDialogFb()
         return response
       })
       .catch((error) => {
@@ -122,6 +134,9 @@ const WorkspaceWrapper = (props) => {
             variant: 'error'
           })
         }
+      })
+      .finally(() => {
+        setLoading(false)
         closeDialogFb()
       })
   }
@@ -242,6 +257,13 @@ const WorkspaceWrapper = (props) => {
               sx={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
               color="error"
               variant="contained"
+              startIcon={
+                loading ? (
+                  <CircularProgress size={16} thickness={6} color="inherit" />
+                ) : (
+                  <DeleteIcon />
+                )
+              }
               disableElevation>
               Esborra
             </Button>
@@ -251,6 +273,13 @@ const WorkspaceWrapper = (props) => {
               sx={{ marginTop: '4px', marginBottom: '4px', color: '#fff' }}
               color="primary"
               variant="contained"
+              startIcon={
+                loading ? (
+                  <CircularProgress size={16} thickness={6} color="inherit" />
+                ) : (
+                  <SendIcon />
+                )
+              }
               disableElevation>
               Accepta
             </Button>
