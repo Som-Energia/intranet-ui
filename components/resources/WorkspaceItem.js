@@ -18,7 +18,7 @@ const WorkspaceItem = (props) => {
     <>
       <Card sx={{ display: 'flex' }} elevation={0}>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <Link href={`/resources/${id}-${slugify(name)}`} passHref>
+          <Link href={`/workspaces/${id}-${slugify(name)}`} passHref>
             <MuiLink sx={{ textDecoration: 'none' }} color="inherit">
               <CardContent
                 sx={{

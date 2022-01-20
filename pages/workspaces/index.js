@@ -11,7 +11,7 @@ import { getWorkspaces } from '@lib/resources'
 
 require('typeface-montserrat')
 
-export default function ResourcesPage(props) {
+export default function WorkspacesPage(props) {
   const theme = useTheme()
   const [session, loading] = useSession()
   const { workspaces } = props

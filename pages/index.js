@@ -10,7 +10,7 @@ import { Container, Typography, Paper, Grid } from '@mui/material'
 import { useTheme } from '@mui/styles'
 
 const menuItems = [
-  { title: "Reserva d'espais", path: '/resources', icon: 'absencies' },
+  { title: "Reserva d'espais", path: '/workspaces', icon: 'absencies' },
   { title: 'Webforms analytics', path: '/analytics', icon: 'analytics' }
 ]
 
