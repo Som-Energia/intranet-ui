@@ -1,8 +1,9 @@
-import { useState } from 'react'
 import { styled } from '@mui/material/styles'
 
 import TableResource, { MeetingRoom } from '@components/resources/TableResource'
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
+
+import useResourceDialog from '@components/resources/ResourceDialog'
 
 const Balneari = (props) => {
   const {
@@ -16,19 +17,13 @@ const Balneari = (props) => {
     place
   } = props
 
-  const [selectedResource, setSelectedResource] = useState(false)
-
-  const openDialog = (resource) => {
-    setSelectedResource(resource)
-  }
-
-  const closeDialog = () => {
-    setSelectedResource(false)
-  }
+  const [selectedResource, selectedEvent, openDialog, closeDialog] =
+    useResourceDialog()
 
   return (
     <WorkspaceWrapper
       selectedResource={selectedResource}
+      selectedEvent={selectedEvent}
       reloadResources={reloadResources}
       closeDialogFb={closeDialog}
       date={date}
