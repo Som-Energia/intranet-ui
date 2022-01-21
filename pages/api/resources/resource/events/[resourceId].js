@@ -5,6 +5,19 @@ import { getSession } from 'next-auth/client'
 export default async function handle(req, res) {
   const session = await getSession({ req })
   const { method, query, body } = req
+
+  if (method === 'DELETE') {
+    const resource = await prisma.event.deleteMany({
+      where: {
+        id: Number(query.eventId),
+        resourceId: Number(query.resourceId),
+        userId: session?.user?.email
+      }
+    })
+    res.json(resource)
+    res.end()
+  }
+
   if (method === 'POST') {
     const resource = await prisma.event.create({
       data: {

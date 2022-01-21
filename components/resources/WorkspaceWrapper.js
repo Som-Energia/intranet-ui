@@ -40,7 +40,6 @@ const WorkspaceWrapper = (props) => {
     closeDialogFb = () => {},
     reloadResources,
     date,
-    token,
     name,
     place
   } = props
@@ -112,7 +111,7 @@ const WorkspaceWrapper = (props) => {
 
   const handleDelete = () => {
     setLoading(true)
-    deleteEvent(token, selectedResource?.resourceEmail, selectedEvent?.id)
+    deleteEvent(selectedResource?.id, selectedEvent?.id)
       .then((response) => {
         reloadResources()
         enqueueSnackbar('Reserva esborrada correctament!', {
