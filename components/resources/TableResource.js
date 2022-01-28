@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
+
 import { styled } from '@mui/styles'
 import Box from '@mui/material/Box'
-import { Skeleton } from '@mui/material'
-import { useSession } from 'next-auth/client'
+import Skeleton from '@mui/material/Skeleton'
 
+import { useSession } from 'next-auth/client'
 import { isOwner } from '@lib/resources'
 
 const TableResource = (props) => {
-  const { name, resources, events, isLoading, onClick = () => {} } = props
-  const [session] = useSession()
-  const [connected, setConnected] = useState(false)
+  const { name, resources, isLoading, onClick = () => {} } = props
 
-  const error = events?.[name] instanceof Error
-  const summary = events?.[name]?.events?.[0]?.summary || false
-  const owner = isOwner(events?.[name], session?.user)
+  const [session] = useSession()
+  const [resource, setResource] = useState(false)
+  const error = false
+  // const error = events?.[name] instanceof Error
+
+  const summary = resource?.events?.[0]?.summary || false
+  const owner = isOwner(resource?.events?.[0], session?.user)
 
   useEffect(() => {
-    setConnected(resources.find((item) => name === item.name))
+    if (resources) {
+      const data = resources.find((resource) => name === resource.name)
+      setResource(data)
+    }
   }, [resources])
 
   const handleClick = () => {
     if ((!summary && !error) || owner) {
       onClick(
         resources.find((item) => item.name === name),
-        owner ? events?.[name]?.events?.[0] : false
+        owner ? resource?.events?.[0] : false
       )
     }
   }
@@ -35,8 +41,8 @@ const TableResource = (props) => {
       onClick={handleClick}
       className={clsx(
         isLoading && 'loading',
-        !connected && 'no-connected',
-        connected && !error && !summary && 'free',
+        !resource && 'no-connected',
+        resource && !error && !summary && 'free',
         error && 'error',
         owner && 'is-owner'
       )}>

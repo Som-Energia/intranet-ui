@@ -19,7 +19,7 @@ export default function ResourcePage(props) {
   const theme = useTheme()
   const [session, loading] = useSession()
 
-  const { eventsMap, workspaceId, token, date, workspace } = props
+  const { token, workspaceId, date, workspace } = props
 
   useEffect(() => {
     if (!loading && !session) signIn()
@@ -76,9 +76,7 @@ export default function ResourcePage(props) {
           {session && (
             <Workspace
               {...workspace}
-              events={eventsMap}
               workspaceId={workspaceId}
-              token={token}
               initialDate={date}
             />
           )}
@@ -104,11 +102,8 @@ export async function getServerSideProps(context) {
   const numWorkspaceId = workspaceId.replace(/-.*/, '')
   const workspace = (await getResources(numWorkspaceId)) || []
 
-  const eventsMap = {}
-
   return {
     props: {
-      eventsMap,
       token: token.accessToken,
       workspace,
       workspaceId: numWorkspaceId,

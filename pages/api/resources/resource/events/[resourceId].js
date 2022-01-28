@@ -1,4 +1,5 @@
 import prisma from '@lib/prisma'
+import dayjs from 'dayjs'
 import { getSession } from 'next-auth/client'
 
 // GET /api/resource/resourceId
@@ -19,16 +20,25 @@ export default async function handle(req, res) {
   }
 
   if (method === 'POST') {
-    const resource = await prisma.event.create({
-      data: {
+    const { timeMin, timeMax, summary, period } = body
+    const events = []
+    let currentDate = dayjs(timeMin)
+    while (currentDate.isBefore(timeMax)) {
+      events.push({
+        startDate: currentDate.toISOString(),
+        endDate: currentDate.add(1, 'd').toISOString(),
+        summary: summary,
         resourceId: Number(query.resourceId),
-        startDate: new Date(body.timeMin),
-        endDate: new Date(body.timeMax),
-        summary: body?.summary,
         userId: session?.user?.email
-      }
+      })
+      currentDate = currentDate.add(1, !period ? 'd' : 'w')
+    }
+
+    console.log(events)
+    const result = await prisma.event.createMany({
+      data: events
     })
-    res.json(resource)
+    res.json(result)
     res.end()
   }
 

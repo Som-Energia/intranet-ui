@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import useSWR from 'swr'
 
 import { useRouter } from 'next/router'
 
@@ -10,12 +11,11 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 
 import { useTheme } from '@mui/styles'
+import { fetcher } from 'lib/utils'
 
-import { getEvents } from '@lib/resources'
 import { useSnackbar } from 'notistack'
 
 import DayMonthHeader from 'components/resources/DayMonthHeader'
-
 import JunglaCristal from 'components/resources/workspaces/JunglaCristal'
 import Balneari from 'components/resources/workspaces/Balneari'
 import Txernobil from 'components/resources/workspaces/Txernobil'
@@ -23,26 +23,35 @@ import Txernobil from 'components/resources/workspaces/Txernobil'
 dayjs.extend(customParseFormat)
 dayjs.locale('ca')
 
-const Workspace = ({
-  resources,
-  events,
-  token,
-  buildingId,
-  initialDate,
-  name,
-  place
-}) => {
+const Workspace = (props) => {
+  const {
+    resources,
+    workspaceId,
+    token,
+    buildingId,
+    initialDate,
+    name,
+    place
+  } = props
+
   const theme = useTheme()
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
+
   const newDate = initialDate
     ? dayjs(initialDate, 'DD-MM-YYYY', 'ca').startOf('day')
     : dayjs().startOf('day')
 
-  const [refDate, setDate] = useState(newDate.startOf('day'))
-  const [resourcesMap] = useState(resources)
-  const [eventsMap, setEventsMap] = useState(events)
-  const [isLoading, setIsLoading] = useState(false)
+  const [refDate, setDate] = useState(newDate)
+
+  const { data, error, mutate } = useSWR(
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/resources/workspace/events/${workspaceId}?timeMax=${refDate
+      .add(1, 'day')
+      .toISOString()}&timeMin=${refDate.toISOString()}`,
+    fetcher
+  )
 
   const nextDay = () => {
     const newDate = refDate.add(1, 'day')
@@ -70,53 +79,14 @@ const Workspace = ({
     })
   }
 
-  const reloadResources = async () => {
-    await getAsyncEvents()
+  const workspaceProps = {
+    name: name,
+    place: place,
+    resources: data,
+    isLoading: !error && !data,
+    reloadResources: mutate,
+    date: refDate
   }
-
-  const getAsyncEvents = async () => {
-    setIsLoading(true)
-    const events = {}
-    for (const item of Object.values(resourcesMap)) {
-      events[item.name] = getEvents(
-        item?.id,
-        refDate.toISOString(),
-        refDate.add(1, 'day').toISOString()
-      )
-    }
-
-    Promise.all(Object.values(events))
-      .then((values) => {
-        let index = 0
-        let errors = 0
-        for (const item of Object.values(resourcesMap)) {
-          events[item.name] = values[index]
-          if (values[index] instanceof Error) {
-            errors++
-          }
-          index++
-        }
-        if (errors) {
-          enqueueSnackbar(
-            'Has superat el límit de peticions per minut! Espera uns segons...',
-            {
-              variant: 'error',
-              autoHideDuration: 30000
-            }
-          )
-          errors = 0
-        }
-        setEventsMap(events)
-        setIsLoading(false)
-      })
-      .catch((reason) => {
-        console.log(reason)
-      })
-  }
-
-  useEffect(() => {
-    getAsyncEvents()
-  }, [refDate])
 
   return (
     <>
@@ -140,43 +110,12 @@ const Workspace = ({
             }}>
             <Box sx={{ minWidth: '850px' }}>
               {buildingId === 'MONTURIOL' && (
-                <JunglaCristal
-                  name={name}
-                  place={place}
-                  resources={resourcesMap}
-                  events={eventsMap}
-                  isLoading={isLoading}
-                  token={token}
-                  reloadResources={reloadResources}
-                  date={refDate}
-                />
+                <JunglaCristal {...workspaceProps} />
               )}
 
-              {buildingId === 'GIROEMPREN' && (
-                <Balneari
-                  name={name}
-                  place={place}
-                  resources={resourcesMap}
-                  events={eventsMap}
-                  isLoading={isLoading}
-                  token={token}
-                  reloadResources={reloadResources}
-                  date={refDate}
-                />
-              )}
+              {buildingId === 'GIROEMPREN' && <Balneari {...workspaceProps} />}
 
-              {buildingId === 'TXERNOBIL' && (
-                <Txernobil
-                  name={name}
-                  place={place}
-                  resources={resourcesMap}
-                  events={eventsMap}
-                  isLoading={isLoading}
-                  token={token}
-                  reloadResources={reloadResources}
-                  date={refDate}
-                />
-              )}
+              {buildingId === 'TXERNOBIL' && <Txernobil {...workspaceProps} />}
 
               {!['MONTURIOL', 'GIROEMPREN', 'TXERNOBIL'].includes(
                 buildingId

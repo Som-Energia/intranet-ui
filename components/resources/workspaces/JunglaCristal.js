@@ -7,16 +7,8 @@ import { Box } from '@mui/system'
 import useResourceDialog from '@components/resources/ResourceDialog'
 
 const JunglaCristal = (props) => {
-  const {
-    resources,
-    events,
-    isLoading,
-    token,
-    reloadResources,
-    date,
-    name,
-    place
-  } = props
+  const { resources, events, isLoading, reloadResources, date, name, place } =
+    props
 
   const [selectedResource, selectedEvent, openDialog, closeDialog] =
     useResourceDialog()
@@ -28,7 +20,6 @@ const JunglaCristal = (props) => {
       reloadResources={reloadResources}
       closeDialogFb={closeDialog}
       date={date}
-      token={token}
       name={name}
       place={place}>
       <Box sx={{ width: '50%', paddingRight: '32px' }}>
