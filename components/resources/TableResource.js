@@ -102,8 +102,8 @@ const Table = styled('div')(({ theme }) => ({
   alignItems: 'center',
   fontSize: '1rem',
   fontWeight: 500,
-  color: '#fff',
-  background: '#96b633b3',
+  color: '#4c5762',
+  background: '#f2f2f2',
   border: '2px solid transparent',
   '&:hover': {
     border: '2px solid transparent'
