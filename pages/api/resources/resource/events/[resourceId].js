@@ -23,6 +23,18 @@ export default async function handle(req, res) {
     const { timeMin, timeMax, summary, period } = body
     const events = []
     let currentDate = dayjs(timeMin)
+
+    if (dayjs(timeMax).isBefore(timeMin, 'day')) {
+      res
+        .status(403)
+        .send({ error: 'timeMin is not greater than timeMax' })
+        .end()
+    }
+
+    if (dayjs().isAfter(currentDate, 'day')) {
+      res.status(403).send({ error: 'date is gone' }).end()
+    }
+
     while (currentDate.isBefore(timeMax)) {
       events.push({
         startDate: currentDate.toISOString(),
@@ -34,7 +46,6 @@ export default async function handle(req, res) {
       currentDate = currentDate.add(1, !period ? 'd' : 'w')
     }
 
-    console.log(events)
     const result = await prisma.event.createMany({
       data: events
     })
