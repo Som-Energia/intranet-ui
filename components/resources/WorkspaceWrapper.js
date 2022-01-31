@@ -90,18 +90,9 @@ const WorkspaceWrapper = (props) => {
       })
       .catch((error) => {
         console.log(error)
-        if (error?.response?.data?.error?.message || error?.message) {
-          enqueueSnackbar(
-            error?.response?.data?.error.message || error.message,
-            {
-              variant: 'error'
-            }
-          )
-        } else {
-          enqueueSnackbar('Sembla que hi ha problemes...', {
-            variant: 'error'
-          })
-        }
+        enqueueSnackbar("No s'ha pogut finalitzar la reserva...", {
+          variant: 'error'
+        })
       })
       .finally(() => {
         setLoading(false)
