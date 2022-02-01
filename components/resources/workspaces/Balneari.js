@@ -1,4 +1,5 @@
 import { styled } from '@mui/material/styles'
+import dayjs from 'dayjs'
 
 import TableResource, { MeetingRoom } from '@components/resources/TableResource'
 import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
@@ -20,6 +21,16 @@ const Balneari = (props) => {
   const [selectedResource, selectedEvent, openDialog, closeDialog] =
     useResourceDialog()
 
+  const isDayGone = dayjs().isAfter(date, 'day')
+
+  const tableProps = {
+    resources: resources,
+    events: events,
+    isLoading: isLoading,
+    onClick: openDialog,
+    disabled: isDayGone
+  }
+
   return (
     <WorkspaceWrapper
       selectedResource={selectedResource}
@@ -37,193 +48,49 @@ const Balneari = (props) => {
       <TableZone>
         <TableRow>
           <TableBlock>
-            <TableResource
-              name="BALNEARI_T1"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T2"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
+            <TableResource name="BALNEARI_T1" {...tableProps} />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="BALNEARI_T2" {...tableProps} />
           </TableBlock>
 
           <TableBlock>
-            <TableResource
-              name="BALNEARI_T3"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T4"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
+            <TableResource name="BALNEARI_T3" {...tableProps} />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="BALNEARI_T4" {...tableProps} />
           </TableBlock>
         </TableRow>
 
         <MidTableRow>
           <TableBlock>
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T5"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T7"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="BALNEARI_T5" {...tableProps} />
+            <TableResource name="BALNEARI_T7" {...tableProps} />
+            <TableResource name="" {...tableProps} />
           </TableBlock>
 
           <TableBlock>
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T6"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T8"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="BALNEARI_T6" {...tableProps} />
+            <TableResource name="BALNEARI_T8" {...tableProps} />
+            <TableResource name="" {...tableProps} />
           </TableBlock>
         </MidTableRow>
 
         <TableRow>
           <TableBlock>
-            <TableResource
-              name="BALNEARI_T9"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T11"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
+            <TableResource name="BALNEARI_T9" {...tableProps} />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="BALNEARI_T11" {...tableProps} />
           </TableBlock>
 
           <TableBlock>
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T10"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name="BALNEARI_T12"
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
-            <TableResource
-              name=""
-              resources={resources}
-              events={events}
-              isLoading={isLoading}
-              onClick={openDialog}
-            />
+            <TableResource name="" {...tableProps} />
+            <TableResource name="BALNEARI_T10" {...tableProps} />
+            <TableResource name="BALNEARI_T12" {...tableProps} />
+            <TableResource name="" {...tableProps} />
           </TableBlock>
         </TableRow>
       </TableZone>

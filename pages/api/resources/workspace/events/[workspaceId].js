@@ -21,11 +21,6 @@ export default async function handle(req, res) {
             endDate: {
               lte: new Date(timeMax)
             }
-          },
-          select: {
-            id: true,
-            summary: true,
-            userId: true
           }
         }
       }

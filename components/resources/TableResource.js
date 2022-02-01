@@ -7,32 +7,31 @@ import Skeleton from '@mui/material/Skeleton'
 
 import { useSession } from 'next-auth/client'
 import { isOwner } from '@lib/resources'
+import { isRRHH } from '@lib/utils'
 
 const TableResource = (props) => {
-  const { name, resources, isLoading, onClick = () => {} } = props
+  const { name, resources, isLoading, disabled, onClick = () => {} } = props
 
   const [session] = useSession()
   const [resource, setResource] = useState(false)
   const error = false
-  // const error = events?.[name] instanceof Error
 
   const summary = resource?.events?.[0]?.summary || false
   const owner = isOwner(resource?.events?.[0], session?.user)
+  const rrhh = isRRHH(session?.user)
 
   useEffect(() => {
     if (resources) {
       const data = resources.find((resource) => name === resource.name)
       setResource(data)
     }
-  }, [resources])
+  }, [resources, name])
 
   const handleClick = () => {
-    if ((!summary && !error) || owner) {
-      onClick(
-        resources.find((item) => item.name === name),
-        owner ? resource?.events?.[0] : false
-      )
+    if (disabled || error || (summary && !owner && !rrhh)) {
+      return false
     }
+    onClick(resource, owner || rrhh ? resource?.events?.[0] : false)
   }
 
   return (
@@ -42,9 +41,9 @@ const TableResource = (props) => {
       className={clsx(
         isLoading && 'loading',
         !resource && 'no-connected',
-        resource && !error && !summary && 'free',
+        resource && !error && !summary && !disabled && 'free',
         error && 'error',
-        owner && 'is-owner'
+        owner && !disabled && 'is-owner'
       )}>
       {isLoading ? (
         <Skeleton height={70} variant="rectangular" />

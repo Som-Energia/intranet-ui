@@ -1,8 +1,14 @@
 import prisma from '@lib/prisma'
+import { isRRHH } from '@lib/utils'
 import dayjs from 'dayjs'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { getSession } from 'next-auth/client'
 
-// GET /api/resource/resourceId
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
+
+// GET /api/resources/resource/events/resourceId
 export default async function handle(req, res) {
   const session = await getSession({ req })
   const { method, query, body } = req
@@ -20,9 +26,11 @@ export default async function handle(req, res) {
   }
 
   if (method === 'POST') {
-    const { timeMin, timeMax, summary, period } = body
+    const { timeMin, timeMax, summary, period, userId } = body
     const events = []
-    let currentDate = dayjs(timeMin)
+    let currentDate = !period
+      ? dayjs(timeMin)
+      : dayjs(timeMin).isoWeekday(period)
 
     if (dayjs(timeMax).isBefore(timeMin, 'day')) {
       res
@@ -32,16 +40,25 @@ export default async function handle(req, res) {
     }
 
     if (dayjs().isAfter(currentDate, 'day')) {
-      res.status(403).send({ error: 'date is gone' }).end()
+      res.status(403).send({ error: 'date is gone' })
+      res.end()
     }
 
-    while (currentDate.isBefore(timeMax)) {
+    if (dayjs(currentDate).isAfter(dayjs().endOf('year'), 'day')) {
+      res.status(403).send({ error: 'date is next year' })
+      res.end()
+    }
+
+    const userEmail =
+      userId && isRRHH(session?.user) ? userId : session?.user?.email
+
+    while (currentDate.isSameOrBefore(timeMax, 'day')) {
       events.push({
-        startDate: currentDate.toISOString(),
-        endDate: currentDate.add(1, 'd').toISOString(),
+        startDate: currentDate.utc().toISOString(),
+        endDate: currentDate.add(1, 'd').utc().toISOString(),
         summary: summary,
         resourceId: Number(query.resourceId),
-        userId: session?.user?.email
+        userId: userEmail
       })
       currentDate = currentDate.add(1, !period ? 'd' : 'w')
     }
@@ -49,6 +66,7 @@ export default async function handle(req, res) {
     const result = await prisma.event.createMany({
       data: events
     })
+
     res.json(result)
     res.end()
   }

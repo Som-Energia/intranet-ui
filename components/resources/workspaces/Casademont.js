@@ -4,6 +4,7 @@ import WorkspaceWrapper from '@components/resources/WorkspaceWrapper'
 import TableResource from '@components/resources/TableResource'
 
 import useResourceDialog from '@components/resources/ResourceDialog'
+import dayjs from 'dayjs'
 
 const Casademont = (props) => {
   const {
@@ -20,6 +21,16 @@ const Casademont = (props) => {
   const [selectedResource, selectedEvent, openDialog, closeDialog] =
     useResourceDialog()
 
+  const isDayGone = dayjs().isAfter(date, 'day')
+
+  const tableProps = {
+    resources: resources,
+    events: events,
+    isLoading: isLoading,
+    onClick: openDialog,
+    disabled: isDayGone
+  }
+
   return (
     <WorkspaceWrapper
       selectedResource={selectedResource}
@@ -32,34 +43,10 @@ const Casademont = (props) => {
       place={place}>
       <TableZone>
         <TableBlock>
-          <TableResource
-            name=""
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
-          <TableResource
-            name="UPPERCASADEMONT23_T1"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
-          <TableResource
-            name="UPPERCASADEMONT23_T3"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
-          <TableResource
-            name=""
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
+          <TableResource name="" {...tableProps} />
+          <TableResource name="UPPERCASADEMONT23_T1" {...tableProps} />
+          <TableResource name="UPPERCASADEMONT23_T3" {...tableProps} />
+          <TableResource name="" {...tableProps} />
         </TableBlock>
 
         <TableBlock>
@@ -69,20 +56,8 @@ const Casademont = (props) => {
             events={events}
             isLoading={isLoading}
           />
-          <TableResource
-            name="UPPERCASADEMONT23_T5"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
-          <TableResource
-            name="UPPERCASADEMONT23_T7"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
+          <TableResource name="UPPERCASADEMONT23_T5" {...tableProps} />
+          <TableResource name="UPPERCASADEMONT23_T7" {...tableProps} />
           <TableResource
             name=""
             resources={resources}
@@ -98,20 +73,8 @@ const Casademont = (props) => {
             events={events}
             isLoading={isLoading}
           />
-          <TableResource
-            name="UPPERCASADEMONT23_T9"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
-          <TableResource
-            name="UPPERCASADEMONT23_T11"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
+          <TableResource name="UPPERCASADEMONT23_T9" {...tableProps} />
+          <TableResource name="UPPERCASADEMONT23_T11" {...tableProps} />
           <TableResource
             name=""
             resources={resources}
@@ -129,20 +92,8 @@ const Casademont = (props) => {
             events={events}
             isLoading={isLoading}
           />
-          <TableResource
-            name="UPPERCASADEMONT23_T2"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
-          <TableResource
-            name="UPPERCASADEMONT23_T4"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
+          <TableResource name="UPPERCASADEMONT23_T2" {...tableProps} />
+          <TableResource name="UPPERCASADEMONT23_T4" {...tableProps} />
           <TableResource
             name=""
             resources={resources}
@@ -158,20 +109,8 @@ const Casademont = (props) => {
             events={events}
             isLoading={isLoading}
           />
-          <TableResource
-            name="UPPERCASADEMONT23_T6"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
-          <TableResource
-            name="UPPERCASADEMONT23_T8"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
+          <TableResource name="UPPERCASADEMONT23_T6" {...tableProps} />
+          <TableResource name="UPPERCASADEMONT23_T8" {...tableProps} />
           <TableResource
             name=""
             resources={resources}
@@ -193,13 +132,7 @@ const Casademont = (props) => {
             events={events}
             isLoading={isLoading}
           />
-          <TableResource
-            name="UPPERCASADEMONT23_T12"
-            resources={resources}
-            events={events}
-            isLoading={isLoading}
-            onClick={openDialog}
-          />
+          <TableResource name="UPPERCASADEMONT23_T12" {...tableProps} />
           <TableResource
             name=""
             resources={resources}

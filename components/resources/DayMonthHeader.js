@@ -9,6 +9,8 @@ import DatePicker from '@mui/lab/DatePicker'
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import TodayIcon from '@mui/icons-material/Today'
+
 import { Typography } from '@mui/material'
 
 const DayMonthHeader = (props) => {
@@ -27,29 +29,41 @@ const DayMonthHeader = (props) => {
       <IconButton aria-label="previous" onClick={handlePrev}>
         <ArrowBackIosIcon />
       </IconButton>
-      <Box sx={{ display: 'flex' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around'
+        }}>
+        <IconButton
+          aria-label="Today"
+          onClick={(event) => {
+            event.preventDefault()
+            handlePicker(dayjs().startOf('day'))
+          }}
+          sx={{ display: 'flex', alignItems: 'center' }}>
+          <TodayIcon />
+        </IconButton>
         <DatePicker
           open={open}
           value={date}
           minDate={new Date()}
+          views={['day', 'month']}
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
-          onChange={(newValue) => {
-            handlePicker(dayjs(newValue).startOf('day'))
+          onChange={(newDate) => {
+            handlePicker(dayjs(newDate).startOf('day'))
             setOpen(false)
           }}
           renderInput={({ inputRef, inputProps, InputProps }) => (
             <>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                {InputProps?.endAdornment}
-              </Box>
               <Typography
                 variant="h5"
                 onClick={() => setOpen(true)}
                 sx={{
                   fontSize: '1.2rem',
                   fontWeight: 400,
-                  margin: '16px',
+                  margin: '16px 4px',
                   cursor: 'pointer',
                   '@media (min-width: 780px)': {
                     fontSize: '1.5rem'

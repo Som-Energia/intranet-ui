@@ -29,6 +29,7 @@ import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined'
 import { Select } from '@mui/material'
+import { isRRHH } from '@lib/utils'
 
 dayjs.extend(isoWeek)
 
@@ -51,35 +52,43 @@ const WorkspaceWrapper = (props) => {
   const maxDate = dayjs().endOf('year').toDate()
 
   const [event, setEvent] = useState({
-    startDate: date,
-    endDate: date,
+    resourceId: selectedResource?.id,
+    startDate: dayjs(date).startOf('day'),
+    endDate: dayjs(date).endOf('day'),
     description: session?.user?.name,
-    period: 0
+    period: 0,
+    userId: session?.user?.email
   })
 
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setLoading(false)
+    setEvent({ ...event, resourceId: selectedResource?.id })
   }, [selectedResource])
 
   useEffect(() => {
-    setEvent({ ...event, startDate: date, endDate: date })
+    if (selectedEvent) {
+      console.log('selected', selectedEvent)
+      setEvent({
+        ...event,
+        description: selectedEvent?.summary,
+        userId: selectedEvent?.userId
+      })
+    }
+  }, [selectedEvent])
+
+  useEffect(() => {
+    setEvent({
+      ...event,
+      startDate: dayjs(date).startOf('day'),
+      endDate: dayjs(date).endOf('day')
+    })
   }, [date])
 
   const handleSubmit = () => {
     setLoading(true)
-    const startDate = dayjs(event?.startDate).startOf('day')
-    const endDate = dayjs(event?.endDate).add(1, 'd')
-    endDate.startOf('day')
-
-    insertEvent(
-      selectedResource?.id,
-      startDate.toISOString(),
-      endDate.toISOString(),
-      event?.description,
-      event?.period
-    )
+    insertEvent(event)
       .then((response) => {
         reloadResources()
         enqueueSnackbar('Reserva finalitzada correctament!', {
@@ -187,7 +196,11 @@ const WorkspaceWrapper = (props) => {
                 minDate={new Date()}
                 maxDate={maxDate}
                 onChange={(date) =>
-                  setEvent({ ...event, startDate: date, period: 0 })
+                  setEvent({
+                    ...event,
+                    startDate: dayjs(date).startOf('day'),
+                    period: 0
+                  })
                 }
                 renderInput={(params) => (
                   <TextField variant="outlined" fullWidth {...params} />
@@ -203,7 +216,11 @@ const WorkspaceWrapper = (props) => {
                 inputFormat="dd/MM/yyyy"
                 variant="inline"
                 onChange={(date) =>
-                  setEvent({ ...event, endDate: date, period: 0 })
+                  setEvent({
+                    ...event,
+                    endDate: dayjs(date).endOf('day'),
+                    period: 0
+                  })
                 }
                 minDate={dayjs(event.startDate).toDate()}
                 maxDate={maxDate}
@@ -216,18 +233,36 @@ const WorkspaceWrapper = (props) => {
               <Grid item xs={12}>
                 <Select
                   fullWidth
+                  label="Periodicitat"
                   disabled={!!selectedEvent}
                   value={event?.period}
                   onChange={(inputEvent) => {
                     setEvent({ ...event, period: inputEvent.target.value })
                   }}>
-                  <MenuItem value={0}>Tots els dies</MenuItem>
-                  <MenuItem value={dayjs(event.startDate).isoWeekday()}>
-                    Tots els {dayjs(event.startDate).format('dddd')}
-                  </MenuItem>
+                  <MenuItem value={0}>Cada dia</MenuItem>
+                  {[...new Array(5).keys()].map((weekday) => (
+                    <MenuItem key={weekday} value={weekday + 1}>
+                      Tots els{' '}
+                      {dayjs()
+                        .isoWeekday(weekday + 1)
+                        .format('dddd')}
+                    </MenuItem>
+                  ))}
                 </Select>
               </Grid>
             )}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Usuari"
+                variant="outlined"
+                disabled={!!selectedEvent || !isRRHH(session?.user)}
+                value={event.userId}
+                onChange={(inputEvent) => {
+                  setEvent({ ...event, userId: inputEvent.target.value })
+                }}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
