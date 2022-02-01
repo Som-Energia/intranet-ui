@@ -69,7 +69,6 @@ const WorkspaceWrapper = (props) => {
 
   useEffect(() => {
     if (selectedEvent) {
-      console.log('selected', selectedEvent)
       setEvent({
         ...event,
         description: selectedEvent?.summary,
