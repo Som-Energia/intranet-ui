@@ -10,7 +10,8 @@ export default async function handle(req, res) {
     const { workspaceId, timeMax, timeMin } = query
     const resources = await prisma.resource.findMany({
       where: {
-        workspaceId: Number(workspaceId) || -1
+        workspaceId: Number(workspaceId) || -1,
+        published: true
       },
       include: {
         events: {
