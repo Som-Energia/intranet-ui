@@ -1,19 +1,27 @@
 import { useEffect } from 'react'
 import { useSession, signIn } from 'next-auth/client'
+import { useRouter } from 'next/router'
 
 import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
 
-const RouteGuard = ({ children }) => {
+const Auth = ({ children }) => {
   const [session, loading] = useSession()
   const isUser = !!session?.user
+  const router = useRouter()
+
+  const publicPaths = ['/auth/signin']
+
+  const path = router.asPath.split('?')[0]
+  console.log(path)
+  const isPublic = publicPaths.includes(path)
 
   useEffect(() => {
     if (loading) return // Do nothing while loading
-    if (!isUser) signIn() // If not authenticated, force log in
+    if (!isUser && !isPublic) signIn() // If not authenticated, force log in
   }, [isUser, loading])
 
-  if (isUser) {
+  if (isPublic || isUser) {
     return children
   }
 
@@ -30,4 +38,4 @@ const RouteGuard = ({ children }) => {
   )
 }
 
-export default RouteGuard
+export default Auth
