@@ -22,8 +22,12 @@ const DayMonthHeader = (props) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-around',
-        marginTop: '0'
+        justifyContent: 'space-between',
+        marginTop: '0',
+        padding: '0 0.8rem',
+        '@media (min-width: 780px)': {
+          padding: '0 4rem'
+        }
       }}
       elevation={0}>
       <IconButton aria-label="previous" onClick={handlePrev}>
