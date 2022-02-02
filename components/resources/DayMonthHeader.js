@@ -40,7 +40,8 @@ const DayMonthHeader = (props) => {
           justifyContent: 'space-around'
         }}>
         <IconButton
-          aria-label="Today"
+          aria-label="Anar al dia d'avui"
+          title="Anar al dia d'avui"
           onClick={(event) => {
             event.preventDefault()
             handlePicker(dayjs().startOf('day'))
@@ -63,6 +64,7 @@ const DayMonthHeader = (props) => {
             <>
               <Typography
                 variant="h5"
+                title="Veure calendari"
                 onClick={() => setOpen(true)}
                 sx={{
                   fontSize: '1.2rem',
