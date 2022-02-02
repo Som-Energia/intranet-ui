@@ -18,7 +18,7 @@ export default async function handle(req, res) {
       where: {
         id: Number(query.eventId),
         resourceId: Number(query.resourceId),
-        userId: session?.user?.email
+        userId: !isRRHH(session?.user) ? session?.user?.email : undefined
       }
     })
     res.json(resource)
@@ -54,8 +54,8 @@ export default async function handle(req, res) {
 
     while (currentDate.isSameOrBefore(timeMax, 'day')) {
       events.push({
-        startDate: currentDate.utc().toISOString(),
-        endDate: currentDate.add(1, 'd').utc().toISOString(),
+        startDate: currentDate.toISOString(),
+        endDate: currentDate.add(1, 'd').toISOString(),
         summary: summary,
         resourceId: Number(query.resourceId),
         userId: userEmail
