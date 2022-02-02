@@ -39,10 +39,6 @@ export default function WebformsAnalytics() {
   const [numDays, setNumDays] = useState(7)
 
   useEffect(() => {
-    if (!loading && !session) signIn()
-  })
-
-  useEffect(() => {
     setClientSide(true)
   }, [])
 
@@ -53,12 +49,6 @@ export default function WebformsAnalytics() {
     }
     getRemoteDataAsync()
   }, [clientSide])
-
-  useEffect(() => {
-    if (session?.error === 'RefreshAccessTokenError') {
-      signIn() // Force sign in to hopefully resolve error
-    }
-  }, [session])
 
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue)
@@ -236,17 +226,15 @@ export default function WebformsAnalytics() {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
-  if (!session) {
-    context.res.statusCode = 302
-    context.res.setHeader('Location', '/auth/signin')
-  }
 
-  /*
-  if (session?.user && !isIT(session?.user)) {
-    context.res.statusCode = 302
-    context.res.setHeader('Location', '/')
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false
+      }
+    }
   }
-  */
 
   return { props: {} }
 }

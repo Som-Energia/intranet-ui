@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useSession, getSession, signIn } from 'next-auth/client'
+import { useSession, getSession } from 'next-auth/client'
 
 import { welcomeMessage } from '@lib/utils'
 
@@ -17,12 +16,7 @@ const menuItems = [
 export default function Home() {
   const theme = useTheme()
   const router = useRouter()
-
   const [session, loading] = useSession()
-
-  useEffect(() => {
-    if (!loading && !session) signIn()
-  })
 
   return (
     <>
@@ -86,9 +80,14 @@ export default function Home() {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
+
   if (!session) {
-    context.res.statusCode = 302
-    context.res.setHeader('Location', '/auth/signin')
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false
+      }
+    }
   }
   return { props: {} }
 }

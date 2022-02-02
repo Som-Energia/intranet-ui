@@ -8,7 +8,7 @@ import Router from 'next/router'
 import { Box, CssBaseline } from '@mui/material'
 
 import { CacheProvider } from '@emotion/react'
-import { Provider, useSession } from 'next-auth/client'
+import { Provider } from 'next-auth/client'
 import { SnackbarProvider } from 'notistack'
 
 import { ThemeProvider } from '@mui/material/styles'
@@ -22,6 +22,7 @@ import createEmotionCache from '@styles/createEmotionCache'
 
 import Header from '@components/layout/Header'
 import Footer from '@components/layout/Footer'
+import Auth from '@components/layout/Auth'
 
 const progress = new ProgressBar({
   size: 2,
@@ -37,7 +38,6 @@ Router.events.on('routeChangeError', progress.finish)
 const clientSideEmotionCache = createEmotionCache()
 export default function App(props) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
-  const [session, loading] = useSession()
 
   return (
     <CacheProvider value={emotionCache}>
@@ -76,7 +76,9 @@ export default function App(props) {
                     display: 'flex',
                     flexDirection: 'column'
                   }}>
-                  <Component {...pageProps} />
+                  <Auth>
+                    <Component {...pageProps} />
+                  </Auth>
                 </Box>
                 <Footer />
               </Box>

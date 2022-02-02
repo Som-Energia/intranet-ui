@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import { getToken } from 'next-auth/jwt'
+import useSWR from 'swr'
 
 import Head from 'next/head'
-import { signIn, useSession, getSession } from 'next-auth/client'
+import { getSession } from 'next-auth/client'
 
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography, CircularProgress } from '@mui/material'
 import { useTheme } from '@mui/styles'
 
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
@@ -13,23 +13,31 @@ import Breadcrumbs from 'components/layout/Breadcrumbs'
 import Workspace from 'components/resources/Workspace'
 
 import { getResources } from 'lib/resources'
+import { fetcher } from 'lib/utils'
+
 require('typeface-montserrat')
 
-export default function ResourcePage(props) {
+export default function ResourcePage({ workspaceId, date }) {
   const theme = useTheme()
-  const [session, loading] = useSession()
 
-  const { token, workspaceId, date, workspace } = props
+  const { data, error } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/resources/workspace/${workspaceId}`,
+    fetcher
+  )
 
-  useEffect(() => {
-    if (!loading && !session) signIn()
-  })
-
-  useEffect(() => {
-    if (session?.error === 'RefreshAccessTokenError') {
-      signIn() // Force sign in to hopefully resolve error
-    }
-  }, [session])
+  if (!data) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '80vh'
+        }}>
+        <CircularProgress size={80} />
+      </Box>
+    )
+  }
 
   return (
     <>
@@ -68,18 +76,12 @@ export default function ResourcePage(props) {
             }}>
             <PlaceOutlinedIcon />
             &nbsp;
-            {workspace?.name}
+            {data?.name}
           </Typography>
           <Breadcrumbs />
         </Box>
         <Box sx={{ paddingTop: '24px' }}>
-          {session && (
-            <Workspace
-              {...workspace}
-              workspaceId={workspaceId}
-              initialDate={date}
-            />
-          )}
+          <Workspace {...data} workspaceId={workspaceId} initialDate={date} />
         </Box>
       </Container>
     </>
@@ -89,25 +91,21 @@ export default function ResourcePage(props) {
 export async function getServerSideProps(context) {
   const session = await getSession(context)
   if (!session) {
-    context.res.statusCode = 302
-    context.res.setHeader('Location', '/auth/signin')
-    return { props: {} }
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false
+      }
+    }
   }
 
   const { workspaceId, date = false } = context.query
-  const secret = process.env.SECRET
-  const req = context.req
-  const token = await getToken({ req, secret })
-
   const numWorkspaceId = workspaceId.replace(/-.*/, '')
-  const workspace = (await getResources(numWorkspaceId)) || []
 
   return {
     props: {
-      token: token.accessToken,
-      workspace,
       workspaceId: numWorkspaceId,
-      date
-    } // will be passed to the page component as props
+      date: date
+    }
   }
 }

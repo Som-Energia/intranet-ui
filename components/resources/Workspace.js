@@ -24,19 +24,10 @@ dayjs.extend(customParseFormat)
 dayjs.locale('ca')
 
 const Workspace = (props) => {
-  const {
-    resources,
-    workspaceId,
-    token,
-    buildingId,
-    initialDate,
-    name,
-    place
-  } = props
+  const { workspaceId, buildingId, initialDate, name, place } = props
 
   const theme = useTheme()
   const router = useRouter()
-  const { enqueueSnackbar } = useSnackbar()
 
   const newDate = initialDate
     ? dayjs(initialDate, 'DD-MM-YYYY', 'ca').startOf('day')

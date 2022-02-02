@@ -21,6 +21,7 @@ export default function UserMenu() {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState(null)
   const [session, loading] = useSession()
+  const isUser = !!session?.user
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -30,9 +31,9 @@ export default function UserMenu() {
     setAnchorEl(null)
   }
 
-  return (
-    <>
-      {!session && (
+  if (!isUser) {
+    return (
+      <>
         <IconButton
           onClick={() => signIn()}
           disabled={loading}
@@ -41,46 +42,49 @@ export default function UserMenu() {
           aria-label="user">
           <AccountCircleIcon fontSize="large" />
         </IconButton>
-      )}
-      {session && (
-        <Box className={classes.userProfile}>
-          <Box
-            component="span"
-            sx={{
-              '@media (max-width: 780px)': {
-                display: 'none'
-              }
-            }}>
-            {session?.user?.name}
-          </Box>
-          <IconButton
-            onClick={handleClick}
-            aria-controls="userMenu"
-            aria-haspopup="true">
-            <Avatar alt={session?.user?.name} src={session?.user?.image} />
-          </IconButton>
-          <Menu
-            id="userMenu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}>
-            <MenuItem sx={{ fontSize: '0.85rem' }} disabled>
-              <ListItemIcon>
-                <PersonOutlineIcon />
-              </ListItemIcon>
-              {session?.user?.email}
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={() => signOut()}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText>Tanca sessió</ListItemText>
-            </MenuItem>
-          </Menu>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Box className={classes.userProfile}>
+        <Box
+          component="span"
+          sx={{
+            '@media (max-width: 780px)': {
+              display: 'none'
+            }
+          }}>
+          {session?.user?.name}
         </Box>
-      )}
+        <IconButton
+          onClick={handleClick}
+          aria-controls="userMenu"
+          aria-haspopup="true">
+          <Avatar alt={session?.user?.name} src={session?.user?.image} />
+        </IconButton>
+        <Menu
+          id="userMenu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}>
+          <MenuItem sx={{ fontSize: '0.85rem' }} disabled>
+            <ListItemIcon>
+              <PersonOutlineIcon />
+            </ListItemIcon>
+            {session?.user?.email}
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={() => signOut()}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText>Tanca sessió</ListItemText>
+          </MenuItem>
+        </Menu>
+      </Box>
     </>
   )
 }

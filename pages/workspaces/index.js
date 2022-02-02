@@ -11,20 +11,8 @@ import { getWorkspaces } from '@lib/resources'
 
 require('typeface-montserrat')
 
-export default function WorkspacesPage(props) {
+export default function WorkspacesPage({ workspaces }) {
   const theme = useTheme()
-  const [session, loading] = useSession()
-  const { workspaces } = props
-
-  useEffect(() => {
-    if (!loading && !session) signIn()
-  })
-
-  useEffect(() => {
-    if (session?.error === 'RefreshAccessTokenError') {
-      signIn() // Force sign in to hopefully resolve error
-    }
-  }, [session])
 
   return (
     <>
@@ -63,7 +51,7 @@ export default function WorkspacesPage(props) {
           <Breadcrumbs />
         </Box>
         <Box sx={{ paddingTop: '24px' }}>
-          {session && <WorkspaceList workspaces={workspaces} />}
+          <WorkspaceList workspaces={workspaces} />
         </Box>
       </Container>
     </>
@@ -72,9 +60,14 @@ export default function WorkspacesPage(props) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
+
   if (!session) {
-    context.res.statusCode = 302
-    context.res.setHeader('Location', '/auth/signin')
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false
+      }
+    }
   }
 
   const workspaces = await getWorkspaces()
