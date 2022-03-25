@@ -10,7 +10,12 @@ import { useTheme } from '@mui/styles'
 
 const menuItems = [
   { title: "Reserva d'espais", path: '/workspaces', icon: 'absencies' },
-  { title: 'Webforms analytics', path: '/analytics', icon: 'analytics' }
+  { title: 'Webforms analytics', path: '/analytics', icon: 'analytics' },
+  {
+    title: 'Incidències i consultes',
+    path: '/incidences',
+    icon: 'incidencies'
+  }
 ]
 
 export default function Home() {
