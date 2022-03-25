@@ -22,7 +22,7 @@ export default async function handle(req, res) {
       }
     })
     res.json(resource)
-    res.end()
+    return res.end()
   }
 
   if (method === 'POST') {
@@ -33,20 +33,18 @@ export default async function handle(req, res) {
       : dayjs(timeMin).isoWeekday(period)
 
     if (dayjs(timeMax).isBefore(timeMin, 'day')) {
-      res
-        .status(403)
-        .send({ error: 'timeMin is not greater than timeMax' })
-        .end()
+      res.status(403).send({ error: 'timeMin is not greater than timeMax' })
+      return res.end()
     }
 
-    if (dayjs().isAfter(currentDate, 'day')) {
+    if (dayjs(currentDate).isBefore(dayjs().startOf('day'), 'day')) {
       res.status(403).send({ error: 'date is gone' })
-      res.end()
+      return res.end()
     }
 
     if (dayjs(currentDate).isAfter(dayjs().endOf('year'), 'day')) {
       res.status(403).send({ error: 'date is next year' })
-      res.end()
+      return res.end()
     }
 
     const userEmail =
@@ -68,7 +66,7 @@ export default async function handle(req, res) {
     })
 
     res.json(result)
-    res.end()
+    return res.end()
   }
 
   if (method === 'GET') {
@@ -96,7 +94,7 @@ export default async function handle(req, res) {
       }
     })
     res.json(resource || [])
-    res.end()
+    return res.end()
   }
 
   res.status(401)
