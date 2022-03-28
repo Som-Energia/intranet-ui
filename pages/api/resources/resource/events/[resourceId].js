@@ -38,7 +38,12 @@ export default async function handle(req, res) {
     }
 
     if (dayjs().isAfter(dayjs(currentDate), 'day')) {
-      res.status(403).send({ error: 'date is gone' })
+      console.log(
+        `date is gone: ${dayjs().format()} > ${dayjs(currentDate).format()}`
+      )
+      res.status(403).send({
+        error: 'date is gone'
+      })
       return res.end()
     }
 
