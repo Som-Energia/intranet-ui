@@ -29,8 +29,8 @@ export default async function handle(req, res) {
     const { timeMin, timeMax, summary, period, userId } = body
     const events = []
     let currentDate = !period
-      ? dayjs(timeMin)
-      : dayjs(timeMin).isoWeekday(period)
+      ? dayjs(timeMin).startOf('day')
+      : dayjs(timeMin).isoWeekday(period).startOf('day')
 
     if (dayjs(timeMax).isBefore(timeMin, 'day')) {
       res.status(403).send({ error: 'timeMin is not greater than timeMax' })

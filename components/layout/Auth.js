@@ -13,7 +13,6 @@ const Auth = ({ children }) => {
   const publicPaths = ['/auth/signin']
 
   const path = router.asPath.split('?')[0]
-  console.log(path)
   const isPublic = publicPaths.includes(path)
 
   useEffect(() => {
