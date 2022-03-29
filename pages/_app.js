@@ -35,6 +35,12 @@ Router.events.on('routeChangeStart', progress.start)
 Router.events.on('routeChangeComplete', progress.finish)
 Router.events.on('routeChangeError', progress.finish)
 
+if (process.env.NODE_ENV === 'production') {
+  console.log(
+    `intranet version: ${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`
+  )
+}
+
 const clientSideEmotionCache = createEmotionCache()
 export default function App(props) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
