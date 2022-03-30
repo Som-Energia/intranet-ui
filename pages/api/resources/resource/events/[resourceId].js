@@ -1,12 +1,23 @@
 import prisma from '@lib/prisma'
 import { isRRHH } from '@lib/utils'
 import dayjs from 'dayjs'
+
+import { getSession } from 'next-auth/client'
+
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import { getSession } from 'next-auth/client'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import 'dayjs/locale/ca'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
+
+dayjs.locale('ca')
+dayjs.tz.setDefault('Europe/Madrid')
 
 // GET /api/resources/resource/events/resourceId
 export default async function handle(req, res) {

@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/ca'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
 import useSWR from 'swr'
 
 import { useRouter } from 'next/router'
@@ -13,15 +16,17 @@ import Paper from '@mui/material/Paper'
 import { useTheme } from '@mui/styles'
 import { fetcher } from 'lib/utils'
 
-import { useSnackbar } from 'notistack'
-
 import DayMonthHeader from 'components/resources/DayMonthHeader'
 import JunglaCristal from 'components/resources/workspaces/JunglaCristal'
 import Balneari from 'components/resources/workspaces/Balneari'
 import Txernobil from 'components/resources/workspaces/Txernobil'
 
 dayjs.extend(customParseFormat)
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 dayjs.locale('ca')
+dayjs.tz.setDefault('Europe/Madrid')
 
 const Workspace = (props) => {
   const { workspaceId, buildingId, initialDate, name, place } = props
