@@ -40,7 +40,7 @@ export default async function handle(req, res) {
     const events = []
     const today = dayjs().tz('Europe/Madrid')
     let currentDate = !period
-      ? dayjs(timeMin).startOf('day').tz('Europe/Madrid')
+      ? dayjs(timeMin).tz('Europe/Madrid').startOf('day')
       : dayjs(timeMin).tz('Europe/Madrid').isoWeekday(period).startOf('day')
 
     if (dayjs(timeMax).tz('Europe/Madrid').isBefore(timeMin, 'day')) {
