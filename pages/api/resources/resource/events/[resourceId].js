@@ -17,7 +17,6 @@ dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
 
 dayjs.locale('ca')
-dayjs.tz.setDefault('Europe/Madrid')
 
 // GET /api/resources/resource/events/resourceId
 export default async function handle(req, res) {
@@ -39,25 +38,28 @@ export default async function handle(req, res) {
   if (method === 'POST') {
     const { timeMin, timeMax, summary, period, userId } = body
     const events = []
+    const today = dayjs().tz('Europe/Madrid')
     let currentDate = !period
-      ? dayjs(timeMin).startOf('day')
-      : dayjs(timeMin).isoWeekday(period).startOf('day')
+      ? dayjs(timeMin).startOf('day').tz('Europe/Madrid')
+      : dayjs(timeMin).tz('Europe/Madrid').isoWeekday(period).startOf('day')
 
-    if (dayjs(timeMax).isBefore(timeMin, 'day')) {
+    if (dayjs(timeMax).tz('Europe/Madrid').isBefore(timeMin, 'day')) {
       res.status(403).send({ error: 'timeMin is not greater than timeMax' })
       return res.end()
     }
 
-    if (dayjs().startOf('day').isAfter(dayjs(currentDate), 'day')) {
+    if (today.startOf('day').isAfter(currentDate, 'day')) {
       res.status(403).send({
-        error: `date is gone: ${dayjs().startOf('day').format()} > ${dayjs(
+        error: `date is gone: ${today.startOf('day').format()} > ${dayjs(
           currentDate
-        ).format()}`
+        )
+          .tz('Europe/Madrid')
+          .format()} - ${currentDate}`
       })
       return res.end()
     }
 
-    if (dayjs(currentDate).isAfter(dayjs().endOf('year'), 'day')) {
+    if (dayjs(currentDate).isAfter(today.endOf('year'), 'day')) {
       res.status(403).send({ error: 'date is next year' })
       return res.end()
     }
